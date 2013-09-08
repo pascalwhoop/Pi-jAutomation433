@@ -1,5 +1,8 @@
 package com.opitz.bpmEngine.devices.controller;
 
+import org.camunda.bpm.engine.RuntimeService;
+import org.camunda.bpm.engine.runtime.ProcessInstance;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,6 +17,9 @@ import org.springframework.web.bind.annotation.*;
 public class UserStateController {
 
 
+    @Autowired
+    private RuntimeService runtimeService;
+
     /**
      *
      * Method to set the current state of the user. For now only basic functionality
@@ -23,9 +29,18 @@ public class UserStateController {
      */
     @ResponseBody
     @RequestMapping(value="/{username}/setuserstate", method = RequestMethod.POST)
-    public boolean setUserState(@PathVariable("username") String username, @RequestParam String state){
+    public String setUserState(@PathVariable("username") String username, @RequestParam String state){
 
-        return true;
+        return "foo";
+    }
+
+    @ResponseBody
+    @RequestMapping(value="/triggerprocess", method = RequestMethod.GET)
+    public String triggerProcess(){
+        ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("userstatechange");
+        System.out.print(processInstance.toString());
+        return processInstance.toString();
+
     }
 
 
