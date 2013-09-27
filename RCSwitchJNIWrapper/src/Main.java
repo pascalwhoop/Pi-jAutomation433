@@ -4,6 +4,6 @@ public class Main {
 
         NativeRCSwitchAdapter adapter = new NativeRCSwitchAdapter();
 
-        adapter.sendBinary("");
+        adapter.sendBinary("some Text From Java");
     }
 }

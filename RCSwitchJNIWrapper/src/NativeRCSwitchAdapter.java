@@ -5,9 +5,15 @@
  */
 public class NativeRCSwitchAdapter {
 
+    private static final NativeRCSwitchAdapter instance = new NativeRCSwitchAdapter();
+
+    public static NativeRCSwitchAdapter getInstance(){
+        return instance;
+    }
+
+
     static{
         String path = NativeRCSwitchAdapter.class.getProtectionDomain().getCodeSource().getLocation().getPath();
-
         System.load(path + "NativeRCSwitchAdapter.so");
     }
 
