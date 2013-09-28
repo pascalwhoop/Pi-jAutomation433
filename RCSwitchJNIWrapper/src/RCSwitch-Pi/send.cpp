@@ -21,7 +21,7 @@ int main(int argc, char *argv[]) {
 
   if (wiringPiSetup () == -1) return 1;
   piHiPri(20);
-  printf("sending systemCode[%s] unitCode[%i] command[%i]\n", systemCode, unitCode, command);
+  printf("sending systemCode[%s] unitCode[%s] command[%i]\n", systemCode, unitCode, command);
   RCSwitch mySwitch = RCSwitch();
   mySwitch.setPulseLength(300);
   mySwitch.enableTransmit(PIN);

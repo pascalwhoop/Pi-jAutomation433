@@ -21,3 +21,34 @@ JNIEXPORT void JNICALL Java_NativeRCSwitchAdapter_sendBinary (JNIEnv *env, jobje
     env->ReleaseStringUTFChars(javaString, nativeString);
 }
 
+JNIEXPORT void JNICALL Java_NativeRCSwitchAdapter_switchOn(JNIEnv *, jobject, jstring jsGroup, jstring jsChannel )
+{
+    const char *sGroup = env->GetStringUTFChars(jsGroup, 0);
+    const char *sChannel = env->GetStringUTFChars(jsChannel, 0);
+    RCSwitch mySwitch = RCSwitch();
+
+    //for testing purposes set to the ELRO Power Plugs
+    mySwitch.setPulseLength(300)
+    mySwitch.enableTransmit(0);
+    mySwitch.setRepeatTransmit(3);
+
+    mySwitch.switchOn(sGroup, sChannel);
+
+
+}
+
+JNIEXPORT void JNICALL Java_NativeRCSwitchAdapter_switchOff(JNIEnv *, jobject, jstring jsGroup, jstring jsChannel )
+{
+    const char *sGroup = env->GetStringUTFChars(jsGroup, 0);
+    const char *sChannel = env->GetStringUTFChars(jsChannel, 0);
+    RCSwitch mySwitch = RCSwitch();
+
+    //for testing purposes set to the ELRO Power Plugs
+    mySwitch.setPulseLength(300)
+    mySwitch.enableTransmit(0);
+    mySwitch.setRepeatTransmit(3);
+
+    mySwitch.switchOff(sGroup, sChannel);
+
+
+}

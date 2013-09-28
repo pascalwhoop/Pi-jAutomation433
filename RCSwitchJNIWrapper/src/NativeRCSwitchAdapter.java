@@ -21,6 +21,9 @@ public class NativeRCSwitchAdapter {
 
     public native void sendBinary(String binaryEncodedSignal);
 
+    public native void switchOn(String group, String channel);
+    public native void switchOff(String group, String channel);
+
     public native void setPulseLength(int lengthInMilliseconds);
 
     public native void enableTransmitPin(int pinNumber);

@@ -17,6 +17,22 @@ JNIEXPORT void JNICALL Java_NativeRCSwitchAdapter_sendBinary
 
 /*
  * Class:     NativeRCSwitchAdapter
+ * Method:    switchOn
+ * Signature: (Ljava/lang/String;Ljava/lang/String;)V
+ */
+JNIEXPORT void JNICALL Java_NativeRCSwitchAdapter_switchOn
+  (JNIEnv *, jobject, jstring, jstring);
+
+/*
+ * Class:     NativeRCSwitchAdapter
+ * Method:    switchOff
+ * Signature: (Ljava/lang/String;Ljava/lang/String;)V
+ */
+JNIEXPORT void JNICALL Java_NativeRCSwitchAdapter_switchOff
+  (JNIEnv *, jobject, jstring, jstring);
+
+/*
+ * Class:     NativeRCSwitchAdapter
  * Method:    setPulseLength
  * Signature: (I)V
  */
