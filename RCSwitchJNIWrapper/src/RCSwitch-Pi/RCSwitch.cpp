@@ -357,13 +357,9 @@ char* RCSwitch::getCodeWordC(char sFamily, int nGroup, int nDevice, boolean bSta
  * @param sCodeWord   /^[10FS]*$/  -> see getCodeWord
  */
 void RCSwitch::sendTriState(char* sCodeWord) {
-	  	   printf("function sendTriState performed with nrepeat set to  %d\n", nRepeatTransmit);
-	  	   	  	   printf("=================\n");
   for (int nRepeat=0; nRepeat<nRepeatTransmit; nRepeat++) {
 int i=0;
     while (sCodeWord[i] != '\0') {
-      printf("after while");
-printf("\n char is %c", sCodeWord[i]);
       switch(sCodeWord[i]) {
         case '0':
         
@@ -380,7 +376,6 @@ printf("\n char is %c", sCodeWord[i]);
     }
     this->sendSync();
   }
-printf("for loop ended\n");
 }
 
 void RCSwitch::send(unsigned long Code, unsigned int length) {

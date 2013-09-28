@@ -58,20 +58,31 @@ class RCSwitch {
 
     void switchOn(int nGroupNumber, int nSwitchNumber);
     void switchOff(int nGroupNumber, int nSwitchNumber);
+
     void switchOn(char* sGroup, int nSwitchNumber);
     void switchOff(char* sGroup, int nSwitchNumber);
+
     void switchOn(char sFamily, int nGroup, int nDevice);
     void switchOff(char sFamily, int nGroup, int nDevice);
+
+    void switchOn(char* sGroup, char* sChannel);
+    void switchOff(char* sGroup, char* sChannel);
+
+
 
     void sendTriState(char* Code);
     void send(unsigned long Code, unsigned int length);
     void send(char* Code);
+
+
 
     void enableReceive(int interrupt);
     void enableReceive();
     void disableReceive();
     bool available();
     void resetAvailable();
+
+
 
     unsigned long getReceivedValue();
     unsigned int getReceivedBitlength();
@@ -88,6 +99,7 @@ class RCSwitch {
     void setProtocol(int nProtocol, int nPulseLength);
 
   private:
+    char* getCodeWordD(char* sGroup, char* sChannel, boolean bStatus);
     char* getCodeWordB(int nGroupNumber, int nSwitchNumber, boolean bStatus);
     char* getCodeWordA(char* sGroup, int nSwitchNumber, boolean bStatus);
     char* getCodeWordC(char sFamily, int nGroup, int nDevice, boolean bStatus);
