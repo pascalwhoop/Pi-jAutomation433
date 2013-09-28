@@ -26,4 +26,5 @@ public class NativeRCSwitchAdapter {
     public native void enableTransmitPin(int pinNumber);
 
     public native void setRepeatTimes(int repeatTimes);
+
 }
