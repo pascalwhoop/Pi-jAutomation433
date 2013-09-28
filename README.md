@@ -5,7 +5,7 @@ JVM with Spring MVC + Rule/BPM Engine + JNI to access C library controlling 433m
 
 
 ### Short description
-This project is supposed to bring a powerfull middleware environment to the Pi and make "stupid" 433mhz plugs very smart. 
+This project is supposed to bring a powerful middleware environment to the Pi and make "stupid" 433mhz plugs very smart.
 
 * There will be a Spring MVC Application running in a JVM (J SE 8 ARM optimized hardware float)
 * There should be a rule engine coming + a BPM engine

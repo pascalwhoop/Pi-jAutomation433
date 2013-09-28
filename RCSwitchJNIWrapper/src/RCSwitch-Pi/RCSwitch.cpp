@@ -1,6 +1,6 @@
 /*
   RCSwitch - Arduino libary for remote control outlet switches
-  Copyright (c) 2011 Suat Özgür.  All right reserved.
+  Copyright (c) 2011 Suat ï¿½zgï¿½r.  All right reserved.
 
   Contributors:
   - Andre Koehler / info(at)tomate-online(dot)de
@@ -162,6 +162,26 @@ void RCSwitch::switchOn(char* sGroup, int nChannel) {
 }
 
 /**
+ * Switch a remote switch on (Type A with 10 pole DIP switches - Here we can pass twice binary encoded)
+ *
+ * @param sGroup        Code of the switch group (refers to DIP switches 1..5 where "1" = on and "0" = off, if all DIP switches are on it's "11111")
+ * @param nChannelCode  Code of the switch (device) itself (second 5 DIPs)... Same rules as with group
+ */
+void RCSwitch::switchOn(char* sGroup, char* sChannel) {
+  this->sendTriState( this->getCodeWordD(sGroup, sChannel, true) );
+}
+
+/**
+ * Switch a remote switch on (Type A with 10 pole DIP switches - Here we can pass twice binary encoded)
+ *
+ * @param sGroup        Code of the switch group (refers to DIP switches 1..5 where "1" = on and "0" = off, if all DIP switches are on it's "11111")
+ * @param nChannelCode  Code of the switch (device) itself (second 5 DIPs)... Same rules as with group
+ */
+void RCSwitch::switchOff(char* sGroup, char* sChannel) {
+  this->sendTriState( this->getCodeWordD(sGroup, sChannel, false) );
+}
+
+/**
  * Switch a remote switch off (Type A with 10 pole DIP switches)
  *
  * @param sGroup        Code of the switch group (refers to DIP switches 1..5 where "1" = on and "0" = off, if all DIP switches are on it's "11111")
@@ -224,7 +244,6 @@ char* RCSwitch::getCodeWordB(int nAddressCode, int nChannelCode, boolean bStatus
  */
 char* RCSwitch::getCodeWordA(char* sGroup, int nChannelCode, boolean bStatus) {
 
-   printf("function getCodeWordA started\n");
    int nReturnPos = 0;
    static char sReturn[13];
 
@@ -247,6 +266,48 @@ char* RCSwitch::getCodeWordA(char* sGroup, int nChannelCode, boolean bStatus) {
   for (int i = 0; i<5; i++) {
     sReturn[nReturnPos++] = code[ nChannelCode ][i];
   }
+
+  if (bStatus) {
+    sReturn[nReturnPos++] = '0';
+    sReturn[nReturnPos++] = 'F';
+  } else {
+    sReturn[nReturnPos++] = 'F';
+    sReturn[nReturnPos++] = '0';
+  }
+  sReturn[nReturnPos] = '\0';
+
+  return sReturn;
+}
+
+
+/**
+ * Like getCodeWord  (Type D)
+ */
+char* RCSwitch::getCodeWordD(char* sGroup, char* sChannel, boolean bStatus) {
+
+   int nReturnPos = 0;
+   static char sReturn[13];
+
+
+  for (int i = 0; i<5; i++) {
+    if (sGroup[i] == '0') {
+      sReturn[nReturnPos++] = 'F';
+    } else if (sGroup[i] == '1') {
+      sReturn[nReturnPos++] = '0';
+    } else {
+      return '\0';
+    }
+  }
+
+  for (int i = 0; i<5; i++) {
+      if (sChannel[i] == '0') {
+        sReturn[nReturnPos++] = 'F';
+      } else if (sChannel[i] == '1') {
+        sReturn[nReturnPos++] = '0';
+      } else {
+        return '\0';
+      }
+    }
 
   if (bStatus) {
     sReturn[nReturnPos++] = '0';
