@@ -16,7 +16,7 @@ int main(int argc, char *argv[]) {
    */
   int PIN = 0;
   char* systemCode = argv[1];
-  int unitCode = atoi(argv[2]);
+  char* unitCode = argv[2];
   int command  = atoi(argv[3]);
 
   if (wiringPiSetup () == -1) return 1;
