@@ -1,5 +1,5 @@
 #include "NativeRCSwitchAdapter.h"
-#include "piRemote/RCSwitch.h"
+#include "RCSwitch-Pi/RCSwitch.h"
 #include <stdio.h>
 #include <iostream>
 
