@@ -10,6 +10,7 @@ public class NativeRCSwitchAdapter {
     public static NativeRCSwitchAdapter getInstance(){
         return instance;
     }
+    private NativeRCSwitchAdapter(){};
 
 
     static{

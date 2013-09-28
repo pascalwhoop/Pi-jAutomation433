@@ -2,7 +2,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-        NativeRCSwitchAdapter adapter = new NativeRCSwitchAdapter();
+        NativeRCSwitchAdapter adapter = NativeRCSwitchAdapter.getInstance();
 
         adapter.switchOn("11111", "11111");
 

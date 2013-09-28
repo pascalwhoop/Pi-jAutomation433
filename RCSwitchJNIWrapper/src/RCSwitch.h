@@ -28,7 +28,7 @@
 #if defined(ARDUINO) && ARDUINO >= 100
     #include "Arduino.h"
 #else
-    #include "wiringPi/wiringPi/wiringPi.h"
+    #include <wiringPi.h>
     #include <stdint.h>
     #define CHANGE 1
 #ifdef __cplusplus

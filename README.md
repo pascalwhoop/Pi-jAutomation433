@@ -4,6 +4,8 @@ Pi-jAutomation433
 JVM with Spring MVC + Rule/BPM Engine + JNI to access C library controlling 433mhz plugs
 
 
+install wiringPi first!!!
+
 ### Short description
 This project is supposed to bring a powerful middleware environment to the Pi and make "stupid" 433mhz plugs very smart.
 
