@@ -1,6 +1,8 @@
 Pi-jAutomation433
 =================
 
+LOOKOUT! WORK IN PROGRESS. This not even close to a usable prototype yet! lets call it v.0.0001 ;-)
+
 JVM with Spring MVC + Rule/BPM Engine + JNI to access C library controlling 433mhz plugs
 
 
