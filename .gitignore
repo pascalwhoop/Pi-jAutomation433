@@ -2,6 +2,6 @@
 .settings/
 /target
 out/
-.class
-.so
-.o
+*.class
+*.so
+*.o

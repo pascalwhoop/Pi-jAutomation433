@@ -7,18 +7,22 @@ using namespace std;
 
 
 
-JNIEXPORT void JNICALL Java_NativeRCSwitchAdapter_sendBinary (JNIEnv *env, jobject obj, jstring javaString)
-{
-    //Get the native string from javaString
-    const char *nativeString = env->GetStringUTFChars(javaString, 0);
-    //Do something with the nativeString
-    cout<<nativeString<<endl;
+int main(int argc, char *argv[]) {
 
+  char* systemCode = "11111";
+  char* unitCode = "11111";
 
+  RCSwitch mySwitch = RCSwitch();
 
+  //for testing purposes set to the ELRO Power Plugs
+  mySwitch.setPulseLength(300);
+  mySwitch.enableTransmit(0);
+  mySwitch.setRepeatTransmit(3);
 
-    //DON'T FORGET THIS LINE!!!
-    env->ReleaseStringUTFChars(javaString, nativeString);
+  mySwitch.switchOn(systemCode, unitCode);
+
+  }
+
 }
 
 JNIEXPORT void JNICALL Java_NativeRCSwitchAdapter_switchOn(JNIEnv * env, jobject obj, jstring jsGroup, jstring jsChannel ){
@@ -41,7 +45,7 @@ JNIEXPORT void JNICALL Java_NativeRCSwitchAdapter_switchOn(JNIEnv * env, jobject
     cout<<sChannel<<endl;
 
 
-    RCSwitch mySwitch = new RCSwitch();
+    RCSwitch mySwitch = RCSwitch();
 
     //for testing purposes set to the ELRO Power Plugs
     mySwitch.setPulseLength(300);
@@ -82,4 +86,20 @@ JNIEXPORT void JNICALL Java_NativeRCSwitchAdapter_switchOff(JNIEnv * env, jobjec
     mySwitch.switchOff(sGroup, sChannel);
 
 
+}
+
+
+
+JNIEXPORT void JNICALL Java_NativeRCSwitchAdapter_sendBinary (JNIEnv *env, jobject obj, jstring javaString)
+{
+    //Get the native string from javaString
+    const char *nativeString = env->GetStringUTFChars(javaString, 0);
+    //Do something with the nativeString
+    cout<<nativeString<<endl;
+
+
+
+
+    //DON'T FORGET THIS LINE!!!
+    env->ReleaseStringUTFChars(javaString, nativeString);
 }
