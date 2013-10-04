@@ -7,24 +7,6 @@ using namespace std;
 
 
 
-int main(int argc, char *argv[]) {
-
-  char* systemCode = "11111";
-  char* unitCode = "11111";
-
-  RCSwitch mySwitch = RCSwitch();
-
-  //for testing purposes set to the ELRO Power Plugs
-  mySwitch.setPulseLength(300);
-  mySwitch.enableTransmit(0);
-  mySwitch.setRepeatTransmit(3);
-
-  mySwitch.switchOn(systemCode, unitCode);
-
-  }
-
-}
-
 JNIEXPORT void JNICALL Java_NativeRCSwitchAdapter_switchOn(JNIEnv * env, jobject obj, jstring jsGroup, jstring jsChannel ){
     cout<<"teststring output"<<endl;
     const char *csGroup = env->GetStringUTFChars(jsGroup, 0);
