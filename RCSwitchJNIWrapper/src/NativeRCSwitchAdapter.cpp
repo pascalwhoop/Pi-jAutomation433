@@ -8,7 +8,6 @@ using namespace std;
 
 
 JNIEXPORT void JNICALL Java_NativeRCSwitchAdapter_switchOn(JNIEnv * env, jobject obj, jstring jsGroup, jstring jsChannel ){
-    cout<<"teststring output"<<endl;
     const char *csGroup = env->GetStringUTFChars(jsGroup, 0);
     const char *csChannel = env->GetStringUTFChars(jsChannel, 0);
 

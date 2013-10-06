@@ -2,5 +2,17 @@
 
 # A shell script to compile the libs on the Pi
 
+rm *.so
+rm *.o
 
-g++ -shared -I/usr/jdk1.8.0/include -I/usr/jdk1.8.0/include/linux NativeRCSwitchAdapter.cpp RCSwitch.cpp -o NativeRCSwitchAdapter.so
+g++ -c -I/usr/jdk1.8.0/include -I/usr/jdk1.8.0/include/linux NativeRCSwitchAdapter.cpp RCSwitch.cpp
+g++ -shared  /usr/local/lib/libwiringPiDev.so /usr/local/lib/libwiringPi.so  NativeRCSwitchAdapter.o RCSwitch.o  -o libRCSwitchAdapter.so
+echo -n "build done"
+g++ -c send.cpp
+g++ RCSwitch.o send.o -Wall -lwiringPi -o send
+
+#install wiringPi (optional)
+#cd wiringPi
+#./build
+
+
