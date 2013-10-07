@@ -72,30 +72,12 @@ JNIEXPORT void JNICALL Java_NativeRCSwitchAdapter_switchOff(JNIEnv * env, jobjec
 
     mySwitch.switchOff(sGroup, sChannel);
 
+}
+
+JNIEXPORT void JNICALL Java_NativeRCSwitchAdapter_setPulseLength(JNIEnv * env, jobject obj , jint pulseLength){
+    int = env->GetStringUTFChars(jsGroup, 0);
+
 
 }
 
 
-
-JNIEXPORT void JNICALL Java_NativeRCSwitchAdapter_sendBinary (JNIEnv *env, jobject obj, jstring javaString)
-{
-    //Get the native string from javaString
-    //const char *nativeString = env->GetStringUTFChars(javaString, 0);
-    //Do something with the nativeString
-    //cout<<nativeString<<endl;
-    //DON'T FORGET THIS LINE!!!
-    //env->ReleaseStringUTFChars(javaString, nativeString);
-
-    //turning on an LED on pin 0
-    wiringPiSetup ();
-
-      RCSwitch mySwitch = RCSwitch();
-      mySwitch.setPulseLength(300);
-      mySwitch.enableTransmit(0);
-      mySwitch.setRepeatTransmit(4);
-
-      mySwitch.switchOn("10101", "11111");
-
-
-
-}
