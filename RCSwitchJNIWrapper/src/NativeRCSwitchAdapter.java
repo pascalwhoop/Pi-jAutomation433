@@ -10,16 +10,19 @@ public class NativeRCSwitchAdapter {
     public static NativeRCSwitchAdapter getInstance(){
         return instance;
     }
+    private NativeRCSwitchAdapter(){};
 
 
     static{
-        String path = NativeRCSwitchAdapter.class.getProtectionDomain().getCodeSource().getLocation().getPath();
-        System.load(path + "NativeRCSwitchAdapter.so");
+        System.loadLibrary("RCSwitchAdapter");
     }
 
     // methods to redirect to native layer (C++)
 
     public native void sendBinary(String binaryEncodedSignal);
+
+    public native void switchOn(String group, String channel);
+    public native void switchOff(String group, String channel);
 
     public native void setPulseLength(int lengthInMilliseconds);
 
