@@ -4,7 +4,9 @@ public class Main {
 
         NativeRCSwitchAdapter adapter = NativeRCSwitchAdapter.getInstance();
 
-        adapter.switchOn("11111", "11111");
+        //adapter.sendBinary("1010101011");
+
+        adapter.switchOn("11111", "10101");
 
         try {
             Thread.sleep(2000);
@@ -12,6 +14,8 @@ public class Main {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
 
-        adapter.switchOff("11111", "11111");
+        adapter.switchOff("11111", "10101");
+
+
     }
 }

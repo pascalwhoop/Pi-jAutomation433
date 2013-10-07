@@ -1,13 +1,21 @@
 #include "NativeRCSwitchAdapter.h"
 #include "RCSwitch.h"
 #include <stdio.h>
+#include <stdlib.h>
+
 #include <iostream>
+#include <wiringPi.h>
 
 using namespace std;
 
+RCSwitch mySwitch = RCSwitch();
 
 
 JNIEXPORT void JNICALL Java_NativeRCSwitchAdapter_switchOn(JNIEnv * env, jobject obj, jstring jsGroup, jstring jsChannel ){
+    if (wiringPiSetup () == -1) {
+       printf("noWiringPiSetup");
+    }
+
     const char *csGroup = env->GetStringUTFChars(jsGroup, 0);
     const char *csChannel = env->GetStringUTFChars(jsChannel, 0);
 
@@ -21,13 +29,8 @@ JNIEXPORT void JNICALL Java_NativeRCSwitchAdapter_switchOn(JNIEnv * env, jobject
     sGroup[5] = '\0';
     sChannel[5] = '\0';
 
-    cout<<"ONON"<<endl;
-    cout<<sGroup<<endl;
-    cout<<sChannel<<endl;
-
-
-    RCSwitch mySwitch = RCSwitch();
-
+    cout<<"ON with"<<sGroup<<"and "<< sChannel <<endl;
+    piHiPri(20);
     //for testing purposes set to the ELRO Power Plugs
     mySwitch.setPulseLength(300);
     mySwitch.enableTransmit(0);
@@ -38,8 +41,11 @@ JNIEXPORT void JNICALL Java_NativeRCSwitchAdapter_switchOn(JNIEnv * env, jobject
 
 }
 
-JNIEXPORT void JNICALL Java_NativeRCSwitchAdapter_switchOff(JNIEnv * env, jobject obj, jstring jsGroup, jstring jsChannel )
-{
+JNIEXPORT void JNICALL Java_NativeRCSwitchAdapter_switchOff(JNIEnv * env, jobject obj, jstring jsGroup, jstring jsChannel ){
+    if (wiringPiSetup () == -1) {
+            printf("noWiringPiSetup");
+    }
+
     const char *csGroup = env->GetStringUTFChars(jsGroup, 0);
     const char *csChannel = env->GetStringUTFChars(jsChannel, 0);
 
@@ -53,11 +59,11 @@ JNIEXPORT void JNICALL Java_NativeRCSwitchAdapter_switchOff(JNIEnv * env, jobjec
     sGroup[5] = '\0';
     sChannel[5] = '\0';
 
-    cout<<"OFFOFF"<<endl;
-    cout<<sGroup;
-    cout<<sChannel;
+    cout<<"OFF with "<<sGroup<<" and "<< sChannel <<endl;
 
-    RCSwitch mySwitch = RCSwitch();
+
+    piHiPri(20);
+
 
     //for testing purposes set to the ELRO Power Plugs
     mySwitch.setPulseLength(300);
@@ -74,13 +80,22 @@ JNIEXPORT void JNICALL Java_NativeRCSwitchAdapter_switchOff(JNIEnv * env, jobjec
 JNIEXPORT void JNICALL Java_NativeRCSwitchAdapter_sendBinary (JNIEnv *env, jobject obj, jstring javaString)
 {
     //Get the native string from javaString
-    const char *nativeString = env->GetStringUTFChars(javaString, 0);
+    //const char *nativeString = env->GetStringUTFChars(javaString, 0);
     //Do something with the nativeString
-    cout<<nativeString<<endl;
-
-
-
-
+    //cout<<nativeString<<endl;
     //DON'T FORGET THIS LINE!!!
-    env->ReleaseStringUTFChars(javaString, nativeString);
+    //env->ReleaseStringUTFChars(javaString, nativeString);
+
+    //turning on an LED on pin 0
+    wiringPiSetup ();
+
+      RCSwitch mySwitch = RCSwitch();
+      mySwitch.setPulseLength(300);
+      mySwitch.enableTransmit(0);
+      mySwitch.setRepeatTransmit(4);
+
+      mySwitch.switchOn("10101", "11111");
+
+
+
 }
