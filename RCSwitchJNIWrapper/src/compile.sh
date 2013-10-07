@@ -9,6 +9,7 @@ rm send
 install wiringPi (optional)
 cd wiringPi
 ./build
+cd ..
 
 #build libWiringPi.so
 g++ -c -I/usr/jdk1.8.0/include -I/usr/jdk1.8.0/include/linux NativeRCSwitchAdapter.cpp RCSwitch.cpp

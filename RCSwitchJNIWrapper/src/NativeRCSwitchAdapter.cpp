@@ -75,7 +75,7 @@ JNIEXPORT void JNICALL Java_NativeRCSwitchAdapter_switchOff(JNIEnv * env, jobjec
 }
 
 JNIEXPORT void JNICALL Java_NativeRCSwitchAdapter_setPulseLength(JNIEnv * env, jobject obj , jint pulseLength){
-    int = env->GetStringUTFChars(jsGroup, 0);
+    //int = env->GetStringUTFChars(jsGroup, 0);
 
 
 }
