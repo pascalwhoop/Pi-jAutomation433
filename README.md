@@ -6,7 +6,11 @@ LOOKOUT! WORK IN PROGRESS. This not even close to a usable prototype yet! lets c
 JVM with Spring MVC + Rule/BPM Engine + JNI to access C library controlling 433mhz plugs
 
 
-install wiringPi first!!!
+to install switch to /RCSwitchJNIWrapper/src
+and run 
+sudo ./compile.sh
+This should install wiringPi as well as our library to /usr/local/lib
+The Java Class responsible for the JNI adapter will then later look for our lib in this path.
 
 ### Short description
 This project is supposed to bring a powerful middleware environment to the Pi and make "stupid" 433mhz plugs very smart.
