@@ -1,4 +1,4 @@
-#include "NativeRCSwitchAdapter.h"
+#include "com_opitz_jni_NativeRCSwitchAdapter.h"
 #include "RCSwitch.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -11,7 +11,7 @@ using namespace std;
 RCSwitch mySwitch = RCSwitch();
 
 
-JNIEXPORT void JNICALL Java_NativeRCSwitchAdapter_switchOn(JNIEnv * env, jobject obj, jstring jsGroup, jstring jsChannel ){
+JNIEXPORT void JNICALL Java_com_opitz_jni_NativeRCSwitchAdapter_switchOn(JNIEnv * env, jobject obj, jstring jsGroup, jstring jsChannel ){
     if (wiringPiSetup () == -1) {
        printf("noWiringPiSetup");
     }
@@ -41,7 +41,7 @@ JNIEXPORT void JNICALL Java_NativeRCSwitchAdapter_switchOn(JNIEnv * env, jobject
 
 }
 
-JNIEXPORT void JNICALL Java_NativeRCSwitchAdapter_switchOff(JNIEnv * env, jobject obj, jstring jsGroup, jstring jsChannel ){
+JNIEXPORT void JNICALL Java_com_opitz_jni_NativeRCSwitchAdapter_switchOff(JNIEnv * env, jobject obj, jstring jsGroup, jstring jsChannel ){
     if (wiringPiSetup () == -1) {
             printf("noWiringPiSetup");
     }
