@@ -2,7 +2,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.springapp</groupId>
-    <artifactId>IoT_Spring_BPM</artifactId>
+    <artifactId>prototype</artifactId>
     <packaging>war</packaging>
     <version>1.0-SNAPSHOT</version>
     <name>IoT_Spring_BPM</name>
@@ -12,6 +12,7 @@
         <camunda.version>7.0.0-alpha3</camunda.version>
         <jackson-2-version>2.2.0</jackson-2-version>
         <drools-version>6.0.0.CR3</drools-version>
+        <cargo.plugin.version>1.4.4</cargo.plugin.version>
     </properties>
 
 
@@ -132,9 +133,8 @@
             <name>JBoss-Community</name>
             <url>https://community.jboss.org/wiki/MavenRepository</url>
         </repository>
-
-
     </repositories>
+
 
 
 
@@ -142,10 +142,47 @@
         <finalName>IoT_Spring_BPM</finalName>
         <plugins>
             <plugin>
+                <groupId>org.codehaus.cargo</groupId>
+                <artifactId>cargo-maven2-plugin</artifactId>
+                <version>${cargo.plugin.version}</version>
+                <configuration>
+                    <container>
+                        <containerId>jetty7x</containerId>
+                        <type>remote</type>
+                    </container>
+
+                    <configuration>
+                        <type>runtime</type>
+                        <properties>
+                            <cargo.hostname>192.168.1.102</cargo.hostname>
+                            <cargo.servlet.port>8080</cargo.servlet.port>
+                            <cargo.remote.username>cargo</cargo.remote.username>
+                            <cargo.remote.password>cargo</cargo.remote.password>
+                        </properties>
+                    </configuration>
+
+                    <deployer>
+                        <type>remote</type>
+                    </deployer>
+
+                    <deployables>
+                        <deployable>
+                            <groupId>com.springapp</groupId>
+                            <artifactId>prototype</artifactId>
+                            <type>war</type>
+                            <properties>
+                                <context>/prototype</context>
+                            </properties>
+                        </deployable>
+                    </deployables>
+                </configuration>
+            </plugin>
+
+            <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>1.6</source>
-                    <target>1.6</target>
+                    <source>1.7</source>
+                    <target>1.7</target>
                 </configuration>
             </plugin>
             <plugin>
