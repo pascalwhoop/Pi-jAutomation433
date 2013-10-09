@@ -1,8 +1,5 @@
 package com.opitz.bpmEngine.devices.controller;
 
-import org.camunda.bpm.engine.RuntimeService;
-import org.camunda.bpm.engine.runtime.ProcessInstance;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,8 +14,8 @@ import org.springframework.web.bind.annotation.*;
 public class UserStateController {
 
 
-    @Autowired
-    private RuntimeService runtimeService;
+    //@Autowired
+    //private RuntimeService runtimeService;
 
     /**
      *
@@ -34,14 +31,14 @@ public class UserStateController {
         return "foo";
     }
 
-    @ResponseBody
+    /*@ResponseBody
     @RequestMapping(value="/triggerprocess", method = RequestMethod.GET)
     public String triggerProcess(){
         ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("userstatechange");
         System.out.print(processInstance.toString());
         return processInstance.toString();
 
-    }
+    }*/
 
 
 

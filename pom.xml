@@ -1,15 +1,16 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.springapp</groupId>
+    <groupId>com.opitz.iot</groupId>
     <artifactId>prototype</artifactId>
     <packaging>war</packaging>
     <version>1.0-SNAPSHOT</version>
     <name>IoT_Spring_BPM</name>
 
     <properties>
-        <spring.version>3.1.2.RELEASE</spring.version>
+        <spring.version>3.2.4.RELEASE</spring.version>
         <camunda.version>7.0.0-alpha3</camunda.version>
+        <hibernate.version>4.2.4.Final</hibernate.version>
         <jackson-2-version>2.2.0</jackson-2-version>
         <drools-version>6.0.0.CR3</drools-version>
         <cargo.plugin.version>1.4.4</cargo.plugin.version>
@@ -21,7 +22,7 @@
 
         <!-- Camunda -->
 
-        <dependency>
+        <!--<dependency>
             <groupId>org.camunda.bpm</groupId>
             <artifactId>camunda-engine</artifactId>
             <version>${camunda.version}</version>
@@ -31,12 +32,19 @@
             <groupId>org.camunda.bpm</groupId>
             <artifactId>camunda-engine-spring</artifactId>
             <version>${camunda.version}</version>
-        </dependency>
+        </dependency>-->
 
         <!-- Spring -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-core</artifactId>
+            <version>${spring.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-orm</artifactId>
             <version>${spring.version}</version>
         </dependency>
 
@@ -59,29 +67,43 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- hibernate -->
+
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>${hibernate.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.javassist</groupId>
+            <artifactId>javassist</artifactId>
+            <version>3.18.0-GA</version>
+        </dependency>
+
         <!-- Jackson -->
 
         <!-- the core, which includes Streaming API, shared low-level abstractions (but NOT data-binding) -->
-        <dependency>
+        <!--<dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
             <version>${jackson-2-version}</version>
-        </dependency>
+        </dependency>-->
 
         <!-- Just the annotations; use this dependency if you want to attach annotations
              to classes without connecting them to the code. -->
-        <dependency>
+       <!-- <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
             <version>${jackson-2-version}</version>
-        </dependency>
+        </dependency>-->
 
         <!-- databinding; ObjectMapper, JsonNode and related classes are here -->
-        <dependency>
+        <!--<dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
             <version>${jackson-2-version}</version>
-        </dependency>
+        </dependency>-->
 
         <!-- h2 databse -->
 
@@ -116,7 +138,7 @@
 
     <repositories>
         <!-- Spring Maven repository -->
-        <repository>
+        <!--<repository>
             <id>springsource-repo</id>
             <name>SpringSource Repository</name>
             <url>http://repo.springsource.org/release</url>
@@ -132,10 +154,8 @@
             <id>jboss-community-repo</id>
             <name>JBoss-Community</name>
             <url>https://community.jboss.org/wiki/MavenRepository</url>
-        </repository>
+        </repository> -->
     </repositories>
-
-
 
 
     <build>
@@ -167,7 +187,7 @@
 
                     <deployables>
                         <deployable>
-                            <groupId>com.springapp</groupId>
+                            <groupId>com.opitz.iot</groupId>
                             <artifactId>prototype</artifactId>
                             <type>war</type>
                             <properties>
