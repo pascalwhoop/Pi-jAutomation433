@@ -1,4 +1,4 @@
-package com.opitz.bpmEngine.devices.controller;
+package com.opitz.devices.controller;
 
 import com.opitz.jni.NativeRCSwitchAdapter;
 import org.springframework.stereotype.Controller;

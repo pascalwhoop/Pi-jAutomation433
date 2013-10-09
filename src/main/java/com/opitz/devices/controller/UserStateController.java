@@ -1,4 +1,4 @@
-package com.opitz.bpmEngine.devices.controller;
+package com.opitz.devices.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;

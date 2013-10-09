@@ -1,4 +1,4 @@
-package com.opitz.bpmEngine.devices.engine.user.userstatus;
+package com.opitz.devices.engine.user.userstatus;
 
 /**
  * User: Pascal
