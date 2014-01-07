@@ -18,6 +18,7 @@ public class ElroPowerPlug {
     private String label;
     private String switchID;
     private String groupID;
+    private boolean lastKnownState;
 
 
     //Getter Setter
@@ -57,5 +58,14 @@ public class ElroPowerPlug {
 
     public void setGroupID(String groupID) {
         this.groupID = groupID;
+    }
+
+    @Basic(optional = true)
+    public boolean isLastKnownState() {
+        return lastKnownState;
+    }
+
+    public void setLastKnownState(boolean lastKnownState) {
+        this.lastKnownState = lastKnownState;
     }
 }

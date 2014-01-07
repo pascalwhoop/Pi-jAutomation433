@@ -2,7 +2,6 @@ package com.opitz.devices.controller;
 
 import com.opitz.devices.utils.DataNotFoundException;
 import com.opitz.devices.utils.ErrorResource;
-import com.sun.servicetag.UnauthorizedAccessException;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -23,12 +22,6 @@ import javax.servlet.http.HttpServletResponse;
 @ControllerAdvice
 public class ExceptionController {
 
-    @ExceptionHandler(UnauthorizedAccessException.class)
-    @ResponseBody
-    public ErrorResource handleUnauthorizedAccessException(UnauthorizedAccessException e, HttpServletResponse response) throws Exception{
-        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        return new ErrorResource(response.getStatus(), e.getMessage());
-    }
 
     @ExceptionHandler(KeyAlreadyExistsException.class)
     @ResponseBody

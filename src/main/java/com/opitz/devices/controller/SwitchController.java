@@ -1,12 +1,14 @@
 package com.opitz.devices.controller;
 
 import com.opitz.devices.entities.ElroPowerPlug;
-import com.opitz.jni.NativeRCSwitchAdapter;
+import com.opitz.devices.services.ElroPowerPlugService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.List;
 
 /**
  * User: Pascal
@@ -18,7 +20,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping("/service/switch")
 public class SwitchController {
 
-    @ResponseBody
+
+    @Autowired
+    ElroPowerPlugService elroPowerPlugService;
+
+    /*@ResponseBody
     @RequestMapping(value="/{switchID}/activate", method = RequestMethod.POST)
     public void testStaticAddress(@PathVariable("switchID") String switchID){
 
@@ -29,30 +35,33 @@ public class SwitchController {
         } catch (InterruptedException e) {}
         jniAdapter.switchOff("11111", "10101");
 
+    }*/
+
+    @ResponseBody
+    @RequestMapping(value="/activate", method = RequestMethod.PUT)
+    public void activateSwitch(ElroPowerPlug plug){
+        elroPowerPlugService.setState(plug, true);
     }
 
     @ResponseBody
-    @RequestMapping(value="/activate/{groupID}/{switchID}", method = RequestMethod.POST)
-    public void activateSwitch(@PathVariable("switchID") String switchID,@PathVariable("groupID") String groupID){
-
-        NativeRCSwitchAdapter jniAdapter= NativeRCSwitchAdapter.getInstance();
-        jniAdapter.switchOn(groupID, switchID);
+    @RequestMapping(value="/deactivate", method = RequestMethod.PUT)
+    public void deactivateSwitch(ElroPowerPlug plug){
+        elroPowerPlugService.setState(plug, false);
     }
 
     @ResponseBody
-    @RequestMapping(value="/deactivate/{groupID}/{switchID}", method = RequestMethod.POST)
-    public void deactivateSwitch(@PathVariable("switchID") String switchID,@PathVariable("groupID") String groupID){
-
-        NativeRCSwitchAdapter jniAdapter = NativeRCSwitchAdapter.getInstance();
-        jniAdapter.switchOff(groupID, switchID);
+    @RequestMapping(value="/getAllPlugsAvailable", method = RequestMethod.GET)
+    public List<ElroPowerPlug> getAllPlugsAvailable(){
+        return elroPowerPlugService.listAll();
     }
 
     @ResponseBody
     @RequestMapping(value="/addplug", method = RequestMethod.POST)
     public void addSwitch(ElroPowerPlug newPlug){
-
-
+        elroPowerPlugService.save(newPlug);
     }
+
+
 }
 
 

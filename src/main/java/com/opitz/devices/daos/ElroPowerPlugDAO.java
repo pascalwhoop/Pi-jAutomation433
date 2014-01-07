@@ -1,7 +1,6 @@
-package com.opitz.devices.services;
+package com.opitz.devices.daos;
 
 import com.opitz.devices.entities.ElroPowerPlug;
-import com.opitz.devices.utils.DataNotFoundException;
 
 import java.io.Serializable;
 import java.util.List;
@@ -9,17 +8,21 @@ import java.util.List;
 /**
  * User: Pascal
  * Date: 07.01.14
- * Time: 14:42
+ * Time: 15:46
  */
-public interface ElroPowerPlugService {
-
-    public void setState(ElroPowerPlug elroPowerPlug, boolean state);
+public interface ElroPowerPlugDAO {
 
     public Serializable save(ElroPowerPlug elroPowerPlug);
 
-    public void delete(Integer id) throws DataNotFoundException;
+    public void update(ElroPowerPlug elroPowerPlug);
+
+    public void delete(ElroPowerPlug elroPowerPlug);
+
+    public void delete(Serializable id);
 
     public List<ElroPowerPlug> findByLabel(String label);
+
+    public ElroPowerPlug load(Serializable id);
 
     public List<ElroPowerPlug> listAll();
 }
