@@ -20,7 +20,22 @@ If you need wiringPi as well uncomment the line saying "#./build" to build and i
 Detailed Developing reports are available only for OPITZ-CONSULTING Deutschland GmbH employees (in our internal confluence). sorry bout this!
 This will most likely change once we're out of pre-pre-alpha stage but for now what you got is what you get. make it work or leave it be for a while and come back later. or write me an email! ;)
 
-The Java Class responsible for the JNI adapter will then later look for our lib in this path.
+### Structure and Frameworks
+
+* AngularJS and ionic for the Mobile Frontend
+* Yeoman (yo, bower, grunt) for the scaffolding, js dependency mgmt and build of the frontend
+* Maven based for the backend
+* Spring, Hibernate, Jackson
+
+###Development
+
+I use IntelliJ as an IDE. I have a Project on the root, and 3 modules. One for the entire project (which is sort of the backend), one for the RCSwitchJNIWrapper and one for the www Folder in the Phonegap (Frontend) Folder.
+
+I deploy to the mobile device via phonegap command line (i have a run config in intellij for that).
+
+For testing purposes of the backend without the need to actually access jni I deploy to a local jetty which I can debug and up faster than on the pi
+
+For ad hoch UI tests i run "grunt server" within the Frontend folder which hosts my UI
 
 ### Short description
 This project is supposed to bring a powerful middleware environment to the Pi and make "stupid" 433mhz plugs very smart.
