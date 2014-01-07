@@ -5,13 +5,17 @@ LOOKOUT! WORK IN PROGRESS. This not even close to a usable prototype yet! lets c
 
 JVM with Spring MVC + Rule/BPM Engine + JNI to access C library controlling 433mhz plugs
 
+###install
 
+#####shared libs and wiringPi
 to install switch to /RCSwitchJNIWrapper/src and run 
 ```
 sudo ./compile.sh
 ```
 This should install our library to /usr/local/lib
 If you need wiringPi as well uncomment the line saying "#./build" to build and install wiringPi as well.
+
+
 
 Detailed Developing reports are available only for OPITZ-CONSULTING Deutschland GmbH employees (in our internal confluence). sorry bout this!
 This will most likely change once we're out of pre-pre-alpha stage but for now what you got is what you get. make it work or leave it be for a while and come back later. or write me an email! ;)

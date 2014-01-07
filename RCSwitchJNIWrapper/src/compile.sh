@@ -22,7 +22,7 @@ echo "done"
 echo -n "building c++ library...."
 g++ -c -I/usr/jdk1.8.0/include -I/usr/jdk1.8.0/include/linux com_opitz_jni_NativeRCSwitchAdapter.cpp RCSwitch.cpp
 g++ -shared  /usr/local/lib/libwiringPiDev.so /usr/local/lib/libwiringPi.so  com_opitz_jni_NativeRCSwitchAdapter.o RCSwitch.o  -o libRCSwitchAdapter.so
-echo "done"
+echo -n "done"
 
 #move library to installation path
 mv libRCSwitchAdapter.so /usr/local/lib/libRCSwitchAdapter.so
