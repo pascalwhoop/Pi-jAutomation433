@@ -13,7 +13,7 @@ import java.util.List;
  */
 public interface ElroPowerPlugService {
 
-    public void setState(ElroPowerPlug elroPowerPlug, boolean state);
+    public ElroPowerPlug setState(ElroPowerPlug elroPowerPlug, boolean state);
 
     public Serializable save(ElroPowerPlug elroPowerPlug);
 

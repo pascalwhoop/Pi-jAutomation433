@@ -15,6 +15,19 @@
     <context:component-scan base-package="com.opitz"/>
 
 
+    <mvc:annotation-driven>
+        <mvc:message-converters>
+            <!-- Use the HibernateAware mapper instead of the default -->
+            <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+                <property name="objectMapper">
+                    <bean class="com.opitz.devices.utils.HibernateAwareObjectMapper" />
+                </property>
+            </bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+    <mvc:default-servlet-handler/>
+
+
     <!-- database -->
 
     <!-- database transactions manager-->
@@ -36,7 +49,13 @@
                 <prop key="hibernate.default_schema">${hibernate.schema.name}</prop>
                 <prop key="show_sql">${hibernate.show_sql}</prop>
                 <prop key="format_sql">${hibernate.format_sql}</prop>
+
             </props>
+        </property>
+        <property name="packagesToScan">
+            <list>
+                <value>com.opitz.devices.entities</value>
+            </list>
         </property>
     </bean>
 
@@ -53,16 +72,7 @@
         </property>
     </bean>
 
-    <mvc:annotation-driven>
-        <mvc:message-converters>
-            <!-- Use the HibernateAware mapper instead of the default -->
-            <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
-                <property name="objectMapper">
-                    <bean class="com.opitz.devices.utils.HibernateAwareObjectMapper" />
-                </property>
-            </bean>
-        </mvc:message-converters>
-    </mvc:annotation-driven>
+
 
     <bean id="persistenceExceptionTranslationPostProcessor"
           class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor"/>

@@ -4,6 +4,7 @@ import com.opitz.devices.entities.ElroPowerPlug;
 import com.opitz.devices.services.ElroPowerPlugService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -39,14 +40,14 @@ public class SwitchController {
 
     @ResponseBody
     @RequestMapping(value="/activate", method = RequestMethod.PUT)
-    public void activateSwitch(ElroPowerPlug plug){
-        elroPowerPlugService.setState(plug, true);
+    public ElroPowerPlug activateSwitch(ElroPowerPlug plug){
+        return elroPowerPlugService.setState(plug, true);
     }
 
     @ResponseBody
     @RequestMapping(value="/deactivate", method = RequestMethod.PUT)
-    public void deactivateSwitch(ElroPowerPlug plug){
-        elroPowerPlugService.setState(plug, false);
+    public ElroPowerPlug deactivateSwitch(ElroPowerPlug plug){
+        return elroPowerPlugService.setState(plug, false);
     }
 
     @ResponseBody
@@ -57,9 +58,12 @@ public class SwitchController {
 
     @ResponseBody
     @RequestMapping(value="/addplug", method = RequestMethod.POST)
-    public void addSwitch(ElroPowerPlug newPlug){
+    public void addSwitch(@RequestBody ElroPowerPlug newPlug){
         elroPowerPlugService.save(newPlug);
     }
+
+
+
 
 
 }

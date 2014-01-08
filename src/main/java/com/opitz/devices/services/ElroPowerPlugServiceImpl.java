@@ -26,13 +26,23 @@ public class ElroPowerPlugServiceImpl implements ElroPowerPlugService {
 
     @Override
     @Transactional
-    public void setState(ElroPowerPlug elroPowerPlug, boolean state) {
+    public ElroPowerPlug setState(ElroPowerPlug elroPowerPlug, boolean state) {
 
         NativeRCSwitchAdapter jniAdapter= NativeRCSwitchAdapter.getInstance();
-        jniAdapter.switchOn(elroPowerPlug.getGroupID(), elroPowerPlug.getSwitchID());
+
+        if(state){
+            jniAdapter.switchOn(elroPowerPlug.getGroupID(), elroPowerPlug.getSwitchID());
+        }
+        else if (!state){
+            jniAdapter.switchOff(elroPowerPlug.getGroupID(), elroPowerPlug.getSwitchID());
+        }
+
+
 
         elroPowerPlug.setLastKnownState(state);
         save(elroPowerPlug);    //saves the current last known state of the plug, of course only if the signal went through
+        return elroPowerPlugDAO.load(elroPowerPlug.getId());
+
     }
 
     @Override
