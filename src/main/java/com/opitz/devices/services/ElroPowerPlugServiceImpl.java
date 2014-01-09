@@ -29,16 +29,18 @@ public class ElroPowerPlugServiceImpl implements ElroPowerPlugService {
     public ElroPowerPlug setState(ElroPowerPlug elroPowerPlug, boolean state) {
 
         NativeRCSwitchAdapter jniAdapter= NativeRCSwitchAdapter.getInstance();
+        System.out.println("++++++++" + state + " setting to Switch: " + elroPowerPlug.getGroupID() + " " + elroPowerPlug.getSwitchID());
+
 
         if(state){
             jniAdapter.switchOn(elroPowerPlug.getGroupID(), elroPowerPlug.getSwitchID());
         }
-        else if (!state){
+        else{
             jniAdapter.switchOff(elroPowerPlug.getGroupID(), elroPowerPlug.getSwitchID());
         }
 
 
-
+        // after sending the Signal, we set the new "last known state"
         elroPowerPlug.setLastKnownState(state);
         save(elroPowerPlug);    //saves the current last known state of the plug, of course only if the signal went through
         return elroPowerPlugDAO.load(elroPowerPlug.getId());

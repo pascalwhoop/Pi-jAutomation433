@@ -31,9 +31,11 @@ public class  NativeRCSwitchAdapter {
             e.printStackTrace();
         }
 
-        System.out.print(System.getProperty("java.library.path"));
+        System.out.println("+++++++++++"+System.getProperty("java.library.path"));
         System.loadLibrary("RCSwitchAdapter");
         System.load("/usr/local/lib/libRCSwitchAdapter.so");
+        System.out.println("+++++++++++" + "loading librarys worked");
+
     }
 
     // methods to redirect to native layer (C++)

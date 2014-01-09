@@ -40,13 +40,13 @@ public class SwitchController {
 
     @ResponseBody
     @RequestMapping(value="/activate", method = RequestMethod.PUT)
-    public ElroPowerPlug activateSwitch(ElroPowerPlug plug){
+    public ElroPowerPlug activateSwitch(@RequestBody ElroPowerPlug plug){
         return elroPowerPlugService.setState(plug, true);
     }
 
     @ResponseBody
     @RequestMapping(value="/deactivate", method = RequestMethod.PUT)
-    public ElroPowerPlug deactivateSwitch(ElroPowerPlug plug){
+    public ElroPowerPlug deactivateSwitch(@RequestBody ElroPowerPlug plug){
         return elroPowerPlugService.setState(plug, false);
     }
 
