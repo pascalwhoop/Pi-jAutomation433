@@ -2,6 +2,9 @@ package com.opitz.devices.controller;
 
 import com.opitz.devices.entities.ElroPowerPlug;
 import com.opitz.devices.services.ElroPowerPlugService;
+import org.camunda.bpm.engine.ProcessEngine;
+import org.camunda.bpm.engine.repository.ProcessDefinition;
+import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,6 +27,9 @@ public class SwitchController {
 
     @Autowired
     ElroPowerPlugService elroPowerPlugService;
+
+    @Autowired
+    ProcessEngine processEngine;
 
     /*@ResponseBody
     @RequestMapping(value="/{switchID}/activate", method = RequestMethod.POST)
@@ -61,6 +67,20 @@ public class SwitchController {
     public void addSwitch(@RequestBody ElroPowerPlug newPlug){
         elroPowerPlugService.save(newPlug);
     }
+    @ResponseBody
+    @RequestMapping(value="/startprocess", method = RequestMethod.GET)
+    public String startProcess(){
+
+        ProcessInstance processInstance = processEngine.getRuntimeService().startProcessInstanceByKey("Process_1");
+        /*List<ProcessDefinition> processDefinitions = processEngine.getRepositoryService().createProcessDefinitionQuery().list();
+        for(ProcessDefinition def: processDefinitions){
+            System.out.println(def.getKey());
+        }
+        return "" + processDefinitions.size();
+          */
+        return processInstance.getId();
+        }
+
 
 
 
