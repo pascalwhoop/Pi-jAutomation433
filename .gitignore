@@ -8,3 +8,4 @@ out/
 *.2.0
 Frontend/node_modules/
 Frontend/www/components/
+.metadata/

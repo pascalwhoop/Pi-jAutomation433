@@ -27,7 +27,6 @@ public class UserStateController {
     @ResponseBody
     @RequestMapping(value="/{username}/setuserstate", method = RequestMethod.POST)
     public String setUserState(@PathVariable("username") String username, @RequestParam String state){
-
         return "foo";
     }
 

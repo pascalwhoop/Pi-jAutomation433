@@ -6,7 +6,6 @@ angular.module('pi4jfrontend')
 
         $scope.init = function () {
             $scope.plugs = backendService.getAllPlugs();
-
         }
 
 
@@ -19,9 +18,8 @@ angular.module('pi4jfrontend')
                 promise = backendService.plugOff(plug);
             }
             promise.success(function(result){
-                if(result.data.lastKnownState != plug.lastKnownState){
-                    $scope.updateLocalPlugStateById(result.data.id, result.data.lastKnownState)
-                }
+                    $scope.updateLocalPlugStateById(result.id, result.lastKnownState)
+
             })
         }
 
