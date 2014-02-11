@@ -7,24 +7,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
- * Created with IntelliJ IDEA.
- * User: cor
- * Date: 21.01.14
- * Time: 13:20
- * To change this template use File | Settings | File Templates.
+ * User: Pascal
+ * Date: 10.02.14
+ * Time: 15:39
  */
 @Service
-public class DeactivatePlugDelegate implements JavaDelegate {
+public class ActivatePlugDelegate implements JavaDelegate {
 
     @Autowired
     ElroPowerPlugService elroPowerPlugService;
     @Override
     public void execute(DelegateExecution execution) throws Exception {
-        System.out.println("Camunda delegate: setting plug (" + execution.getVariable("plugId") + ") to state off");
+        System.out.println("Camunda delegate: setting plug (" + execution.getVariable("plugId") + ") to state on");
 
-
-
-        elroPowerPlugService.setState((Integer)execution.getVariable("plugId"), false);
-
+        elroPowerPlugService.setState((Integer)execution.getVariable("plugId"), true);
     }
 }

@@ -3,8 +3,6 @@ package com.opitz.devices.controller;
 import com.opitz.devices.entities.ElroPowerPlug;
 import com.opitz.devices.services.ElroPowerPlugService;
 import org.camunda.bpm.engine.ProcessEngine;
-import org.camunda.bpm.engine.repository.ProcessDefinition;
-import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -47,13 +46,27 @@ public class SwitchController {
     @ResponseBody
     @RequestMapping(value="/activate", method = RequestMethod.PUT)
     public ElroPowerPlug activateSwitch(@RequestBody ElroPowerPlug plug){
-        return elroPowerPlugService.setState(plug, true);
+
+        HashMap<String, Object> processInformation = new HashMap();
+        processInformation.put("plugId", plug.getId());
+        processInformation.put("newState", true);
+        processEngine.getRuntimeService().startProcessInstanceByKey("setPlugStateProcess", processInformation);
+
+        return null;
+        //return elroPowerPlugService.setState(plug, true);
     }
 
     @ResponseBody
     @RequestMapping(value="/deactivate", method = RequestMethod.PUT)
     public ElroPowerPlug deactivateSwitch(@RequestBody ElroPowerPlug plug){
-        return elroPowerPlugService.setState(plug, false);
+
+        HashMap<String, Object> processInformation = new HashMap();
+        processInformation.put("plugId", plug.getId());
+        processInformation.put("newState", false);
+        processEngine.getRuntimeService().startProcessInstanceByKey("setPlugStateProcess", processInformation);
+
+        return null;
+        //return elroPowerPlugService.setState(plug, false);
     }
 
     @ResponseBody
@@ -67,19 +80,6 @@ public class SwitchController {
     public void addSwitch(@RequestBody ElroPowerPlug newPlug){
         elroPowerPlugService.save(newPlug);
     }
-    @ResponseBody
-    @RequestMapping(value="/startprocess", method = RequestMethod.GET)
-    public String startProcess(){
-
-        ProcessInstance processInstance = processEngine.getRuntimeService().startProcessInstanceByKey("Process_1");
-        /*List<ProcessDefinition> processDefinitions = processEngine.getRepositoryService().createProcessDefinitionQuery().list();
-        for(ProcessDefinition def: processDefinitions){
-            System.out.println(def.getKey());
-        }
-        return "" + processDefinitions.size();
-          */
-        return processInstance.getId();
-        }
 
 
 
@@ -89,4 +89,3 @@ public class SwitchController {
 }
 
 
-//01111 01111

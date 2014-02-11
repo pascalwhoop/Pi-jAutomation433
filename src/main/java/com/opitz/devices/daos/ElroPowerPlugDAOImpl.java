@@ -60,7 +60,8 @@ public class ElroPowerPlugDAOImpl implements ElroPowerPlugDAO {
     @Override
     public ElroPowerPlug load(Serializable id){
         Session session = sessionFactory.getCurrentSession();
-        return (ElroPowerPlug) session.load(ElroPowerPlug.class, id);
+        ElroPowerPlug plug = (ElroPowerPlug) session.get(ElroPowerPlug.class, id);
+        return plug;
     }
 
 
