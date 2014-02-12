@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('pi4jfrontend')
-    .factory('backendService', function ($http, $resource) {
+    .factory('backendService', function ($http, $resource, localStorageService) {
 
         var ip = localStorage.getItem("backendIP");
 
@@ -12,9 +12,14 @@ angular.module('pi4jfrontend')
             return "http://"+ip+portAndUri;
         }
 
-        var getAllPlugs = function () {
+        var fetchPlugsFromServerAndUpdateLocalStorage = function () {
+
+
             var backend = $resource(getURLString() + '/getAllPlugsAvailable');
-            return backend.query();
+            var result = backend.query();
+            result.$promise.then(function(result){
+                localStorageService.updatePlugsInLocalStorage(result);
+            })
         };
 
         var plugOff = function (plug) {
@@ -71,7 +76,7 @@ angular.module('pi4jfrontend')
 
         // Public API here
         return {
-            getAllPlugs: getAllPlugs,
+            fetchPlugsAndUpdateLocalStorage: fetchPlugsFromServerAndUpdateLocalStorage,
             submitPlug: submitPlug,
             plugOff: plugOff,
             plugOn: plugOn,
