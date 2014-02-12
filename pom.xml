@@ -9,7 +9,7 @@
 
     <properties>
         <spring.version>4.0.0.RELEASE</spring.version>
-        <camunda.version>7.0.0-alpha3</camunda.version>
+        <camunda.version>7.0.0-Final</camunda.version>
         <hibernate.version>4.3.0.Final</hibernate.version>
         <jackson-2-version>2.2.2</jackson-2-version>
         <drools-version>6.0.0.CR3</drools-version>
@@ -22,17 +22,57 @@
 
         <!-- Camunda -->
 
-        <!--<dependency>
+        <dependency>
             <groupId>org.camunda.bpm</groupId>
             <artifactId>camunda-engine</artifactId>
             <version>${camunda.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring-core</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring-beans</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
             <groupId>org.camunda.bpm</groupId>
             <artifactId>camunda-engine-spring</artifactId>
             <version>${camunda.version}</version>
-        </dependency>-->
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring-aop</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring-orm</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring-expression</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring-core</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring-context</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring-jdbc</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring-tx</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
 
         <!-- Spring -->
         <dependency>
@@ -136,6 +176,11 @@
     </dependencies>
 
     <repositories>
+        <repository>
+            <id>camunda-bpm-nexus</id>
+            <name>camunda-bpm-nexus</name>
+            <url>https://app.camunda.com/nexus/content/groups/public</url>
+        </repository>
         <!-- Spring Maven repository -->
         <!--<repository>
             <id>springsource-repo</id>

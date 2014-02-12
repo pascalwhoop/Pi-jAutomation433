@@ -1,11 +1,12 @@
 'use strict';
 
 angular.module('pi4jfrontend')
-    .controller('MainCtrl', function ($scope, backendService) {
+    .controller('MainCtrl', function ($scope, backendService, localStorageService) {
 
 
         $scope.init = function () {
-            $scope.plugs = backendService.getAllPlugs();
+            $scope.plugs = localStorageService.getAllPlugs();
+            backendService.fetchPlugsAndUpdateLocalStorage();
         }
 
 

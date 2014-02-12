@@ -48,6 +48,11 @@ public class ElroPowerPlugServiceImpl implements ElroPowerPlugService {
     }
 
     @Override
+    public ElroPowerPlug setState(Integer id, boolean state) {
+        return this.setState(elroPowerPlugDAO.load(id), state);
+    }
+
+    @Override
     @Transactional
     public Serializable save(ElroPowerPlug elroPowerPlug) {
         if(elroPowerPlug.getId() == null){

@@ -2,6 +2,7 @@ package com.opitz.devices.controller;
 
 import com.opitz.devices.entities.ElroPowerPlug;
 import com.opitz.devices.services.ElroPowerPlugService;
+import org.camunda.bpm.engine.ProcessEngine;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -24,6 +26,9 @@ public class SwitchController {
 
     @Autowired
     ElroPowerPlugService elroPowerPlugService;
+
+    @Autowired
+    ProcessEngine processEngine;
 
     /*@ResponseBody
     @RequestMapping(value="/{switchID}/activate", method = RequestMethod.POST)
@@ -41,13 +46,27 @@ public class SwitchController {
     @ResponseBody
     @RequestMapping(value="/activate", method = RequestMethod.PUT)
     public ElroPowerPlug activateSwitch(@RequestBody ElroPowerPlug plug){
-        return elroPowerPlugService.setState(plug, true);
+
+        HashMap<String, Object> processInformation = new HashMap();
+        processInformation.put("plugId", plug.getId());
+        processInformation.put("newState", true);
+        processEngine.getRuntimeService().startProcessInstanceByKey("setPlugStateProcess", processInformation);
+
+        return null;
+        //return elroPowerPlugService.setState(plug, true);
     }
 
     @ResponseBody
     @RequestMapping(value="/deactivate", method = RequestMethod.PUT)
     public ElroPowerPlug deactivateSwitch(@RequestBody ElroPowerPlug plug){
-        return elroPowerPlugService.setState(plug, false);
+
+        HashMap<String, Object> processInformation = new HashMap();
+        processInformation.put("plugId", plug.getId());
+        processInformation.put("newState", false);
+        processEngine.getRuntimeService().startProcessInstanceByKey("setPlugStateProcess", processInformation);
+
+        return null;
+        //return elroPowerPlugService.setState(plug, false);
     }
 
     @ResponseBody
@@ -66,7 +85,7 @@ public class SwitchController {
 
 
 
+
 }
 
 
-//01111 01111

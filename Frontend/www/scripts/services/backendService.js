@@ -1,23 +1,32 @@
 'use strict';
 
 angular.module('pi4jfrontend')
-    .factory('backendService', function ($http, $resource) {
+    .factory('backendService', function ($http, $resource, localStorageService) {
 
+        var ip = localStorage.getItem("backendIP");
 
-        var baseURL = "http://192.168.1.102:8080/IoT_Spring_BPM/service/switch";
+        var portAndUri = ":8080/IoT_Spring_BPM/service/switch";
         //var baseURL = "http://localhost:8080/IoT_Spring_BPM/service/switch";
 
+        var getURLString = function(){
+            return "http://"+ip+portAndUri;
+        }
 
-        var getAllPlugs = function () {
-            var Backend = $resource(baseURL + '/getAllPlugsAvailable');
-            return Backend.query();
+        var fetchPlugsFromServerAndUpdateLocalStorage = function () {
+
+
+            var backend = $resource(getURLString() + '/getAllPlugsAvailable');
+            var result = backend.query();
+            result.$promise.then(function(result){
+                localStorageService.updatePlugsInLocalStorage(result);
+            })
         };
 
         var plugOff = function (plug) {
             return $http(
                 {
                     method: 'PUT',
-                    url: baseURL + '/deactivate',
+                    url: getURLString()+ '/deactivate',
                     data: plug,
                     headers: {'Content-Type': 'application/json'}
                 }
@@ -28,7 +37,7 @@ angular.module('pi4jfrontend')
             return $http(
                 {
                     method: 'PUT',
-                    url: baseURL + '/activate',
+                    url: getURLString() + '/activate',
                     data: plug,
                     headers: {'Content-Type': 'application/json'}
                 }
@@ -45,7 +54,7 @@ angular.module('pi4jfrontend')
         var submitPlug = function (plug) {
             return $http({
                 method: 'POST',
-                url: baseURL + "/addplug",
+                url: getURLString() + "/addplug",
                 data: plug
             }).then(function (response) {
                     return response.data;
@@ -53,13 +62,26 @@ angular.module('pi4jfrontend')
             )
         };
 
+        var setIP = function(newIP){
+            ip = newIP;
+
+            localStorage.setItem("backendIP", newIP);
+
+        }
+
+        var getIP = function(){
+            return ip;
+        }
+
 
         // Public API here
         return {
-            getAllPlugs: getAllPlugs,
+            fetchPlugsAndUpdateLocalStorage: fetchPlugsFromServerAndUpdateLocalStorage,
             submitPlug: submitPlug,
             plugOff: plugOff,
-            plugOn: plugOn
+            plugOn: plugOn,
+            setIP: setIP,
+            getIP: getIP
         };
 
     }
