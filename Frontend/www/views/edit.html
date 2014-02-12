@@ -2,8 +2,8 @@
     <h1 class="title">Edit plug</h1>
 </div>
 
-<content has-header="true" has-footer="true">
-    <div class="card">
+<content has-header="true" has-footer="true" padding="true">
+    <div class="card" >
         <div class="item item-divider">
           Add new plug
         </div>
@@ -22,6 +22,19 @@
         <button class="button button-block button-positive" ng-click="submitPlug(newPlug)">
             Add to home!
         </button>
+    </div>
+
+    <h3>Manage existing plugs</h3>
+    <div class="list">
+
+        <div class="item item-button-right" ng-repeat="plug in plugs">
+            {{plug.label}}
+            <button class="button button-assertive" ng-click="deletePlug(plug)">
+                <i class="icon ion-close"></i>
+            </button>
+        </div>
+
+
     </div>
 
 

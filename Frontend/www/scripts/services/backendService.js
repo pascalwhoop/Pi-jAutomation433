@@ -22,8 +22,10 @@ angular.module('pi4jfrontend')
             })
         };
 
+
+
         var plugOff = function (plug) {
-            return $http(
+            var promise =  $http(
                 {
                     method: 'PUT',
                     url: getURLString()+ '/deactivate',
@@ -31,10 +33,16 @@ angular.module('pi4jfrontend')
                     headers: {'Content-Type': 'application/json'}
                 }
             )
+
+            promise.then(function(response){
+                localStorageService.updateSpecificPlugInLocalStorage(response.data);
+            })
+
+            return promise;
         }
 
         var plugOn = function (plug) {
-            return $http(
+            var promise =  $http(
                 {
                     method: 'PUT',
                     url: getURLString() + '/activate',
@@ -42,6 +50,12 @@ angular.module('pi4jfrontend')
                     headers: {'Content-Type': 'application/json'}
                 }
             )
+
+            promise.then(function(response){
+                localStorageService.updateSpecificPlugInLocalStorage(response.data);
+            })
+
+            return promise;
         }
 
 
@@ -62,6 +76,18 @@ angular.module('pi4jfrontend')
             )
         };
 
+        var deletePlug = function(plug){
+            return $http({
+                method: 'DELETE',
+                url: getURLString() + "/deleteplug/" + plug.id
+            }).then(function (response) {
+                    if(response.status == 200){
+                        localStorageService.removePlugFromLocalStorage(plug);
+                    }
+                }
+            )
+        }
+
         var setIP = function(newIP){
             ip = newIP;
 
@@ -81,7 +107,8 @@ angular.module('pi4jfrontend')
             plugOff: plugOff,
             plugOn: plugOn,
             setIP: setIP,
-            getIP: getIP
+            getIP: getIP,
+            deletePlug: deletePlug
         };
 
     }

@@ -74,6 +74,12 @@ public class ElroPowerPlugServiceImpl implements ElroPowerPlugService {
         return elroPowerPlugDAO.findByLabel(label);
     }
 
+    @Override
+    @Transactional
+    public ElroPowerPlug load(Serializable id) {
+        return elroPowerPlugDAO.load(id);
+    }
+
     @Transactional
     @Override
     public List<ElroPowerPlug> listAll() {

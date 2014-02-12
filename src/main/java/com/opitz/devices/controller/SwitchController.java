@@ -2,13 +2,11 @@ package com.opitz.devices.controller;
 
 import com.opitz.devices.entities.ElroPowerPlug;
 import com.opitz.devices.services.ElroPowerPlugService;
+import com.opitz.devices.utils.DataNotFoundException;
 import org.camunda.bpm.engine.ProcessEngine;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -52,7 +50,7 @@ public class SwitchController {
         processInformation.put("newState", true);
         processEngine.getRuntimeService().startProcessInstanceByKey("setPlugStateProcess", processInformation);
 
-        return null;
+        return elroPowerPlugService.load(plug.getId());
         //return elroPowerPlugService.setState(plug, true);
     }
 
@@ -65,7 +63,7 @@ public class SwitchController {
         processInformation.put("newState", false);
         processEngine.getRuntimeService().startProcessInstanceByKey("setPlugStateProcess", processInformation);
 
-        return null;
+        return elroPowerPlugService.load(plug.getId());
         //return elroPowerPlugService.setState(plug, false);
     }
 
@@ -79,6 +77,12 @@ public class SwitchController {
     @RequestMapping(value="/addplug", method = RequestMethod.POST)
     public void addSwitch(@RequestBody ElroPowerPlug newPlug){
         elroPowerPlugService.save(newPlug);
+    }
+
+    @ResponseBody
+    @RequestMapping(value="/deleteplug/{id}", method = RequestMethod.DELETE)
+    public void deleteSwitch(@PathVariable("id") Integer id) throws DataNotFoundException{
+        elroPowerPlugService.delete(id);
     }
 
 

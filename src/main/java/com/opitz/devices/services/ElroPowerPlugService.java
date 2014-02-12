@@ -22,5 +22,8 @@ public interface ElroPowerPlugService {
 
     public List<ElroPowerPlug> findByLabel(String label);
 
+    public ElroPowerPlug load(Serializable id);
+
+
     public List<ElroPowerPlug> listAll();
 }
