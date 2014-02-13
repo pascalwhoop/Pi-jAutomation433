@@ -6,6 +6,9 @@ angular.module('pi4jfrontend')
         // ...
 
         var allPlugs = JSON.parse(localStorage.getItem("allPlugs"));
+        if (allPlugs == null){
+            allPlugs = [];
+        }
 
         var updatePlugsInLocalStorage = function (serverList) {
             if(allPlugs){

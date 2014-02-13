@@ -29,10 +29,10 @@ module.exports = function (grunt) {
         files: ['test/spec/{,*/}*.coffee'],
         tasks: ['coffee:test']
       },
-      compass: {
-        files: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],
+      /*compass: {
+        files: ['<%= yeoman.app %>/styles/{,*//*}*.{scss,sass}'],
         tasks: ['compass']
-      },
+      },*/
       livereload: {
         files: [
           '<%= yeoman.app %>/{,*/}*.html',
@@ -124,7 +124,7 @@ module.exports = function (grunt) {
         }]
       }
     },
-    compass: {
+    /*compass: {
       options: {
         sassDir: '<%= yeoman.app %>/styles',
         cssDir: '.tmp/styles',
@@ -140,7 +140,7 @@ module.exports = function (grunt) {
           debugInfo: true
         }
       }
-    },
+    },*/
     concat: {
       dist: {
         files: {
@@ -265,7 +265,7 @@ module.exports = function (grunt) {
   grunt.registerTask('server', [
     'clean:server',
     'coffee:dist',
-    'compass:server',
+    /*'compass:server',*/
     'livereload-start',
     'connect:livereload',
     'open',
