@@ -173,6 +173,14 @@
             <version>4.8.2</version>
             <scope>test</scope>
         </dependency>
+
+        <!--Kraken Dependency-->
+        <dependency>
+            <groupId>org.krakenapps</groupId>
+            <artifactId>kraken-pcap</artifactId>
+            <version>1.3.0</version>
+        </dependency>
+
     </dependencies>
 
     <repositories>
@@ -181,6 +189,14 @@
             <name>camunda-bpm-nexus</name>
             <url>https://app.camunda.com/nexus/content/groups/public</url>
         </repository>
+
+        <!--Kraken Repository (Network communication tooling)-->
+        <repository>
+            <id>kraken-maven</id>
+            <name>kraken-maven-repo</name>
+            <url>http://download.krakenapps.org/</url>
+        </repository>
+
         <!-- Spring Maven repository -->
         <!--<repository>
             <id>springsource-repo</id>
