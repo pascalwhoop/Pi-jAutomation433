@@ -26,13 +26,17 @@ public class TestClass {
         TestClass testClass = new TestClass();
 
         try {
-            InetAddress address = InetAddress.getByName("192.168.1.1");
-            System.out.print(address.toString());
 
+
+
+            //InetAddress address = InetAddress.getByName("192.168.1.1");
+            //System.out.print(address.toString());
+            TestQueryNetworkInterfaces tqni = new TestQueryNetworkInterfaces();
+            tqni.printInterfaces();
             //testClass.checkHosts(null);
             //testClass.runPingToBroadcast(testClass.getOwnSubnet());
             //testClass.runARP();
-            testClass.tryARPing();
+           // testClass.tryARPing();
         }catch (Exception e){
             e.printStackTrace();
         };
@@ -69,6 +73,7 @@ public class TestClass {
         for (int i=start;i<254;i++){
             String host=subnet + "." + i;
             InetAddress hostInQuestion = InetAddress.getByName(host);
+
             if (hostInQuestion.isReachable(timeout)){
 
                 System.out.println(host + " aka " + hostInQuestion.getCanonicalHostName() + " is reachable");
