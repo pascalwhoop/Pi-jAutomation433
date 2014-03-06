@@ -26,6 +26,13 @@ echo -n "done"
 
 #move library to installation path
 mv libRCSwitchAdapter.so /usr/local/lib/libRCSwitchAdapter.so
+mv pcap-libs/libkpcap.so /usr/local/lib/libkpcap.so
+mv pcap-libs/libpcap.a /usr/local/lib/libpcap.a
+mv pcap-libs/libpcap.so /usr/local/lib/libpcap.so
+mv pcap-libs/libpcap.so.1 /usr/local/lib/libpcap.so.1
+mv pcap-libs/libpcap.so.1.5.3 /usr/local/lib/libpcap.so.1.5.3
+
+
 
 
 ###only used for testing purposes...
