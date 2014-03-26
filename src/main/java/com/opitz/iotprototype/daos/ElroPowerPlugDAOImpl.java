@@ -1,6 +1,6 @@
-package com.opitz.devices.daos;
+package com.opitz.iotprototype.daos;
 
-import com.opitz.devices.entities.ElroPowerPlug;
+import com.opitz.iotprototype.entities.ElroPowerPlug;
 import org.hibernate.*;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.springframework.beans.factory.annotation.Autowired;

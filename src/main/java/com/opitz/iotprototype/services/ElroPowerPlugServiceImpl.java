@@ -1,8 +1,8 @@
-package com.opitz.devices.services;
+package com.opitz.iotprototype.services;
 
-import com.opitz.devices.daos.ElroPowerPlugDAO;
-import com.opitz.devices.entities.ElroPowerPlug;
-import com.opitz.devices.utils.DataNotFoundException;
+import com.opitz.iotprototype.daos.ElroPowerPlugDAO;
+import com.opitz.iotprototype.entities.ElroPowerPlug;
+import com.opitz.iotprototype.utils.DataNotFoundException;
 import com.opitz.jni.NativeRCSwitchAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

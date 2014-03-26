@@ -7,5 +7,5 @@ package com.opitz.test;
  */
 public class TestNetworkNodeServiceImpl {
 
-    private boolean testGetNodeDataFromARPCacheString
+    private boolean testGetNodeDataFromARPCacheString;
 }

@@ -1,11 +1,11 @@
-package com.opitz.devices.services;
+package com.opitz.iotprototype.executors;
 
-import com.opitz.devices.utils.InputStreamHelper;
 import org.krakenapps.pcap.decoder.ethernet.MacAddress;
 import org.krakenapps.pcap.live.PcapDeviceManager;
 import org.krakenapps.pcap.live.PcapDeviceMetadata;
 import org.krakenapps.pcap.util.Arping;
-import org.springframework.stereotype.Service;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -20,58 +20,42 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * User: Pascal
- * Date: 04.03.14
- * Time: 21:39
+ * Date: 25.03.14
+ * Time: 10:20
+ *
+ * This class handles the periodic network scan via ping and arp cache lookup. it uses the NetworkNodeService but this one is supposed to be running constantly.
  */
 
+@Component
+public class NetworkDiscoveryExecutor {
 
-/**
- * This class provides services that tell you which devices are currently found on the network.
- * It can or is supposed to be able to perform both ping based finding as well as ARP based finding of nodes.
- * However TODO ARP is not yet working
- */
-@Service
-public class NetworkNodeServiceImpl implements NetworkNodeService {
 
-    @Override
-    public void periodicPingScan() {
-        pingAllInSubnet();
-
-        Set<String> nodes = getArpTable();
-
-        for (String node : nodes){
-            String[] nodeData = node.split(" ");
-        }
-    }
-
-    public String[] getNodeDataFromARPCacheString(String node){
-        return node.split(" ");
-    }
-
-    public Set<String> pingAndQueryArp(){
-        boolean pingSuccess = pingAllInSubnet();
-
-        return getArpTable();
-    }
-
-    public boolean pingAllInSubnet() {
+    @Async
+    public void pingAllInSubnet() {
 
         // create a pool of threads, 20 max jobs will execute in parallel
         ExecutorService threadPool = Executors.newFixedThreadPool(20);
         // submit jobs to be executing by the pool
         for (int i = 1;i<255;i++) {
 
-            final String execStatement = "ping -c 1 -i 0.6 " + getOwnSubnet() + "." + i;
+            //final String execStatement = "ping -c 2 -i 0.1 " + getOwnSubnet() + "." + i;
+            final String ipToPing = getOwnSubnet() + "." + i;
             threadPool.submit(new Runnable() {
                 public void run() {
-                    Runtime rt = Runtime.getRuntime();
+                    /*Runtime rt = Runtime.getRuntime();
                     Process pr = null;
                     try {
-                        System.out.println("exec: " + execStatement);
+                        System.out.println("exec: " + execStatement + "with thread ID: " + Thread.currentThread().getId());
                         pr = rt.exec(execStatement);
-                    } catch (IOException  e) {
+
+                    } catch (IOException e) {
                         e.printStackTrace();
-                    }
+                    }*/
+                   try {
+                       // System.out.println(ipToPing + " is " + InetAddress.getByName(ipToPing).isReachable(100));
+                       InetAddress.getByName(ipToPing).isReachable(100);
+                   }catch (Exception e){}
+
                 }
             });
 
@@ -80,38 +64,34 @@ public class NetworkNodeServiceImpl implements NetworkNodeService {
         // once you've submitted your last job to the service it should be shut down
         threadPool.shutdown();
         try {
-           return threadPool.awaitTermination(5, TimeUnit.SECONDS);
+            //threadpool not yet finished? Force..
+            if(!threadPool.awaitTermination(5, TimeUnit.SECONDS)){
+                List<Runnable> remaining = threadPool.shutdownNow();
+
+                //to see how many are left
+                for(Runnable left : remaining){
+                    System.out.println("There was one left behind: " + left.toString());
+
+                }
+
+            }
         } catch (InterruptedException e) {
+            threadPool.shutdownNow();
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-            return false;
         }
     }
 
-    public Set<String> getArpTable() {
-
-        Runtime rt = Runtime.getRuntime();
-        Process pr = null;
+    private String getOwnSubnet() {
+        String subnet;
+        String ownIp = null;
         try {
-            pr = rt.exec("arp -a");
-            String arp = InputStreamHelper.getStringFromInputStream(pr.getInputStream());
-            HashSet<String> nodes = new HashSet<>(Arrays.asList(arp.split("\n")));
-            Iterator<String> it = nodes.iterator();
-            while(it.hasNext()){
-                String node = it.next();
-
-                if(node.contains("incomplete") || node.contains("ff:ff:ff:ff:ff:ff")){
-                    it.remove();
-                }
-            }
-
-
-            for(String node : nodes){System.out.println(node);};
-
-            return nodes;
-        }catch (IOException e){
-            e.printStackTrace();
-            return new HashSet<String>();
+            ownIp = InetAddress.getLocalHost().getHostAddress();
+        } catch (UnknownHostException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
+        String[] ipParts = ownIp.split("\\.");
+        subnet = ipParts[0] + "." + ipParts[1] + "." + ipParts[2]; //subnet aus eigener IP schließen
+        return subnet;
 
     }
 
@@ -213,17 +193,4 @@ public class NetworkNodeServiceImpl implements NetworkNodeService {
     }
 
 
-    private String getOwnSubnet() {
-        String subnet;
-        String ownIp = null;
-        try {
-            ownIp = InetAddress.getLocalHost().getHostAddress();
-        } catch (UnknownHostException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
-        String[] ipParts = ownIp.split("\\.");
-        subnet = ipParts[0] + "." + ipParts[1] + "." + ipParts[2]; //subnet aus eigener IP schließen
-        return subnet;
-
-    }
 }

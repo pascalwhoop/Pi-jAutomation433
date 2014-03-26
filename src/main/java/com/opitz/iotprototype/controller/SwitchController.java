@@ -1,8 +1,8 @@
-package com.opitz.devices.controller;
+package com.opitz.iotprototype.controller;
 
-import com.opitz.devices.entities.ElroPowerPlug;
-import com.opitz.devices.services.ElroPowerPlugService;
-import com.opitz.devices.utils.DataNotFoundException;
+import com.opitz.iotprototype.entities.ElroPowerPlug;
+import com.opitz.iotprototype.services.ElroPowerPlugService;
+import com.opitz.iotprototype.utils.DataNotFoundException;
 import org.camunda.bpm.engine.ProcessEngine;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

@@ -1,6 +1,6 @@
-package com.opitz.devices.delegates;
+package com.opitz.iotprototype.delegates;
 
-import com.opitz.devices.services.ElroPowerPlugService;
+import com.opitz.iotprototype.services.ElroPowerPlugService;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.springframework.beans.factory.annotation.Autowired;

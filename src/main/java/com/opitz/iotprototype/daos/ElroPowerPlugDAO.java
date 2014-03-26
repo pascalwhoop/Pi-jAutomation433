@@ -1,6 +1,6 @@
-package com.opitz.devices.daos;
+package com.opitz.iotprototype.daos;
 
-import com.opitz.devices.entities.ElroPowerPlug;
+import com.opitz.iotprototype.entities.ElroPowerPlug;
 
 import java.io.Serializable;
 import java.util.List;

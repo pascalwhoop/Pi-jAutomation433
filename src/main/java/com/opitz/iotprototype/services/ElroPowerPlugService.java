@@ -1,7 +1,7 @@
-package com.opitz.devices.services;
+package com.opitz.iotprototype.services;
 
-import com.opitz.devices.entities.ElroPowerPlug;
-import com.opitz.devices.utils.DataNotFoundException;
+import com.opitz.iotprototype.entities.ElroPowerPlug;
+import com.opitz.iotprototype.utils.DataNotFoundException;
 
 import java.io.Serializable;
 import java.util.List;

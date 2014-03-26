@@ -1,7 +1,7 @@
-package com.opitz.devices.controller;
+package com.opitz.iotprototype.controller;
 
-import com.opitz.devices.utils.DataNotFoundException;
-import com.opitz.devices.utils.ErrorResource;
+import com.opitz.iotprototype.utils.DataNotFoundException;
+import com.opitz.iotprototype.utils.ErrorResource;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;

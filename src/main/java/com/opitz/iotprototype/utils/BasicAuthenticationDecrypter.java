@@ -1,4 +1,4 @@
-package com.opitz.devices.utils;
+package com.opitz.iotprototype.utils;
 
 import org.springframework.stereotype.Component;
 import sun.misc.BASE64Decoder;

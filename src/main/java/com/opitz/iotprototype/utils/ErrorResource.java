@@ -1,4 +1,4 @@
-package com.opitz.devices.utils;
+package com.opitz.iotprototype.utils;
 
 /**
  * Created with IntelliJ IDEA.

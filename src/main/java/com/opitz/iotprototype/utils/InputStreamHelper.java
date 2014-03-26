@@ -1,4 +1,4 @@
-package com.opitz.devices.utils;
+package com.opitz.iotprototype.utils;
 
 import java.io.BufferedReader;
 import java.io.IOException;

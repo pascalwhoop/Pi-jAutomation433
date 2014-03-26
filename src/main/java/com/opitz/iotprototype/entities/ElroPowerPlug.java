@@ -1,4 +1,4 @@
-package com.opitz.devices.entities;
+package com.opitz.iotprototype.entities;
 
 import javax.persistence.*;
 

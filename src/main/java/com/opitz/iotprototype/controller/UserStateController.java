@@ -1,15 +1,12 @@
-package com.opitz.devices.controller;
+package com.opitz.iotprototype.controller;
 
-import com.opitz.devices.services.NetworkNodeService;
-import org.krakenapps.pcap.decoder.ethernet.MacAddress;
+import com.opitz.iotprototype.entities.NetworkNode;
+import com.opitz.iotprototype.services.NetworkNodeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
-import java.net.InetAddress;
-import java.util.Map;
-import java.util.Set;
+import java.util.HashMap;
 
 /**
  * User: Pascal
@@ -41,16 +38,16 @@ public class UserStateController {
         return "foo";
     }
 
-    @ResponseBody
+    /*@ResponseBody
     @RequestMapping(value="/findAllDevices", method=RequestMethod.GET)
     public Map<MacAddress, InetAddress> findAllDevicesOnLocalNetwork() throws IOException{
         return networkNodeService.getAllDevicesWithARPing();
-    }
+    }*/
 
     @ResponseBody
-    @RequestMapping(value = "/findallbyping", method = RequestMethod.GET)
-    public Set<String> findAllByPing(){
-        return networkNodeService.pingAndQueryArp();
+    @RequestMapping(value = "/getnetworkdevices", method = RequestMethod.GET)
+    public HashMap<String, NetworkNode> findAllByPing(){
+        return networkNodeService.getAllDevices();
     }
 
 

@@ -2,17 +2,17 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:jdbc="http://www.springframework.org/schema/jdbc"
-       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:tx="http://www.springframework.org/schema/tx" xmlns:task="http://www.springframework.org/schema/task"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context.xsd
         http://www.springframework.org/schema/mvc
-        http://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd">
 
     <context:property-placeholder location="classpath:hibernate.properties" />
 
-    <context:component-scan base-package="com.opitz"/>
+    <context:component-scan base-package="com.opitz.iotprototype"/>
 
 
     <mvc:annotation-driven>
@@ -20,12 +20,15 @@
             <!-- Use the HibernateAware mapper instead of the default -->
             <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
                 <property name="objectMapper">
-                    <bean class="com.opitz.devices.utils.HibernateAwareObjectMapper" />
+                    <bean class="com.opitz.iotprototype.utils.HibernateAwareObjectMapper" />
                 </property>
             </bean>
         </mvc:message-converters>
     </mvc:annotation-driven>
     <mvc:default-servlet-handler/>
+
+    <!--activates @scheduled and @async annotations for scheduling-->
+    <task:annotation-driven/>
 
 
     <!-- database -->
@@ -54,7 +57,7 @@
         </property>
         <property name="packagesToScan">
             <list>
-                <value>com.opitz.devices.entities</value>
+                <value>com.opitz.iotprototype.entities</value>
             </list>
         </property>
     </bean>

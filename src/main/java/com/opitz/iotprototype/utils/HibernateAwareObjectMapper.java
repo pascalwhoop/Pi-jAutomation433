@@ -1,4 +1,4 @@
-package com.opitz.devices.utils;
+package com.opitz.iotprototype.utils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.hibernate4.Hibernate4Module;
