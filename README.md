@@ -1,24 +1,46 @@
 Pi-jAutomation433
 =================
 
-LOOKOUT! WORK IN PROGRESS. This not even close to a usable prototype yet! lets call it v.0.0001 ;-)
+LOOKOUT! WORK IN PROGRESS. This may be close to a usable prototype. But still lets call it v.0.1 ;-)
 
 JVM with Spring MVC + Rule/BPM Engine + JNI to access C library controlling 433mhz plugs
 
-###install
+##install
+
+###Backend
 
 #####shared libs and wiringPi
-to install switch to /RCSwitchJNIWrapper/src and run 
+to install cd to /RCSwitchJNIWrapper/src and run 
 ```
 sudo ./compile.sh
 ```
 This should install our library to /usr/local/lib
 If you need wiringPi as well uncomment the line saying "#./build" to build and install wiringPi as well.
 
+##### Build and deploy to server
+I use a jetty on my pi. I also use java se 1.8 hard float. Then just build the project using maven on a normal pc with the specified jdk and drop the .war on your server. 
+
+It should then boot up, find the native libs in /usr/local/lib and be able to control the plugs. 
+
+##### Connecting the 433mhz sender the right way
+Refer to this:
+[wiringPi Pins explained](https://projects.drogon.net/raspberry-pi/wiringpi/pins/)
+
+Connect the Data cable to wiringPi pin no. 0 !! 
 
 
-Detailed Developing reports are available only for OPITZ-CONSULTING Deutschland GmbH employees (in our internal confluence). sorry bout this!
-This will most likely change once we're out of pre-pre-alpha stage but for now what you got is what you get. make it work or leave it be for a while and come back later. or write me an email! ;)
+
+### Frontend
+The Frontend is based on Ionic and I use yeoman, bower and grunt. To get the frontend running do:
+`npm install` in the frontend folder. then do `bower install` as well. This should install all neccessary things. If you havent installed the upper mentioned tools yet make sure to do so (just google them and you'll find out how)
+
+you can use `grunt server` to preview the UI or deploy it to your device of choice. be aware that the code won't be able to access the backend if you don't disable the websecurity in chrome. to disable start chrome like this (mac):
+`open -a Google\ Chrome --args --disable-web-security`
+Otherwise just deploy to a device like `ionic run android`
+
+## Starting the server
+
+
 
 ### Structure and Frameworks
 
