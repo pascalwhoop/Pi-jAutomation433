@@ -5,30 +5,19 @@
 
 <ion-content has-header="true" has-footer="true" scroll="true">
 
+    <ul class="list">
+        <li class="item item-divider">Users:</li>
+        <li ng-repeat="(user, state) in userStates" class="item item-icon-right">
+            {{user}} ({{state}})
+            <i class="icon ion-home balanced" ng-if="state == 'online'"></i>
+            <i class="icon ion-home assertive" ng-if="state == 'offline'"></i>
+        </li>
+    </ul>
 
-    <!--<div class="card" ng-repeat="plug in plugs">
-        <div class="item item-text-wrap" style="padding: 0px;">
-            <div class="row">
-                <div class="col col-50">
-                    <div class="row">
-                        <div class="col col-20"><i class="icon ion-lightbulb"
-                                                   ng-class="{'assertive': !plug.lastKnownState, balanced: plug.lastKnownState}"></i></div>
-                        <div class="col col-80">{{plug.label}}</div>
-                    </div>
-                </div>
 
-                <div class="col col-50">
-                    <button ng-click="setPlugState(plug, true)" class="button button-outline">
-                        <i class="icon ion-power balanced"></i>
-                    </button>
-
-                    <button ng-click="setPlugState(plug, false)" class="button button-outline">
-                        <i class="icon ion-power assertive"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>-->
+    <ul class="list">
+        <li class="item item-divider">Plugs:</li>
+    </ul>
     <div class="card" ng-repeat="plug in plugs">
         <div class="item item-thumbnail-left">
 

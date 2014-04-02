@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -84,8 +85,15 @@ public class UserController {
     @ResponseBody
     @RequestMapping(value="/{username}/state", method = RequestMethod.GET)
     public String getUserState(@PathVariable String username){
-        return userService.retrieveUserStatus(username);
+        return userService.retrieveUserStatusByUsername(username);
     }
+
+    @ResponseBody
+    @RequestMapping(value="/all/state", method = RequestMethod.GET)
+    public HashMap<String, String> getAllUserStates(){
+        return userService.retrieveAllUserStatuses();
+    }
+
 
 
 

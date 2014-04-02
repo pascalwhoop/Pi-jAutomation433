@@ -124,6 +124,10 @@ angular.module('pi4jfrontend')
             }).success(callback);
         }
 
+        var getAllUserStates = function(callback){
+            $http.get("http://" + ip + ":" + port + baseURI + "user/all/state").success(callback);
+        }
+
         /* getter and setter e.g. for local storage */
 
         var setIP = function(newIP){
@@ -159,7 +163,8 @@ angular.module('pi4jfrontend')
             getOwnIpAddress:getOwnIpAddress,
             getAllUsers: getAllUsers,
             submitNewUser: submitNewUser,
-            deleteUser: deleteUser
+            deleteUser: deleteUser,
+            getAllUserStates:getAllUserStates
         };
 
     }

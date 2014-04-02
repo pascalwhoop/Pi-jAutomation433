@@ -7,6 +7,9 @@ angular.module('pi4jfrontend')
         $scope.init = function () {
             $scope.plugs = localStorageService.getAllPlugs();
             backendService.fetchPlugsAndUpdateLocalStorage();
+            backendService.getAllUserStates(function(result){
+                $scope.userStates = result;
+            })
         }
 
 

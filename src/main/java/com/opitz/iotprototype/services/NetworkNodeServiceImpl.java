@@ -32,18 +32,25 @@ public class NetworkNodeServiceImpl implements NetworkNodeService {
     NetworkNodeDAO networkNodeDAO;
     @Autowired
     NodeLogEntryDAO nodeLogEntryDAO;
+    @Autowired
+    UserService userService;
 
     private static HashMap<String, NetworkNode> nodeCache = new HashMap<>();
 
+
+
     /**
      * gets all devices from the current cache + all that are stored in the DB.
+     *
      * @return
      */
+
+    @Transactional
     @Override
     public HashMap<String, NetworkNode> getAllStoredDevices() {
         HashMap<String, NetworkNode> nodes = new HashMap<>();
 
-        for (NetworkNode node : networkNodeDAO.listAll()){
+        for (NetworkNode node : networkNodeDAO.listAll()) {
             nodes.put(node.getMacAddress(), node);
         }
 
@@ -52,14 +59,14 @@ public class NetworkNodeServiceImpl implements NetworkNodeService {
     }
 
     @Override
-    public HashMap<String, NetworkNode> getAllDevicesFromArpCache(){
+    public HashMap<String, NetworkNode> getAllDevicesFromArpCache() {
         HashMap<String, NetworkNode> nodes = new HashMap<>();
 
-        for(String line : getArpTable()){
+        for (String line : getArpTable()) {
             String[] nodeInfo = line.split(" +"); //regex to split all spaces
             // string is of form: <dnsname> (<ip>) at <macAddress> on en0 ifscope [ethernet]
             String dnsName = nodeInfo[0];
-            String ipAddress = nodeInfo[1].substring(1, nodeInfo[1].length()-1);
+            String ipAddress = nodeInfo[1].substring(1, nodeInfo[1].length() - 1);
             String macAddress = nodeInfo[3];
             NetworkNode node = new NetworkNode(macAddress, dnsName, ipAddress);
 
@@ -76,13 +83,13 @@ public class NetworkNodeServiceImpl implements NetworkNodeService {
     @Transactional
     public void storeAnyNewDevices(Map<String, NetworkNode> networkNodes) {
 
-        for (NetworkNode node : networkNodes.values()){
+        for (NetworkNode node : networkNodes.values()) {
             networkNodeDAO.saveOrUpdate(node);
         }
     }
 
     @Override
-    public void cacheDevices(HashMap<String, NetworkNode> newNetworkNodes){
+    public void cacheDevices(HashMap<String, NetworkNode> newNetworkNodes) {
         nodeCache.putAll(newNetworkNodes);
     }
 
@@ -102,18 +109,18 @@ public class NetworkNodeServiceImpl implements NetworkNodeService {
     public void performActiveDeviceLogging() {
         List<NetworkNode> nodes = networkNodeDAO.listAll();
         Date justNow = new Date();
-        justNow.setTime(justNow.getTime() - 1000* 60 * 2);
+        justNow.setTime(justNow.getTime() - 1000 * 60 * 2);
 
-        for(NetworkNode node : nodes){
+        for (NetworkNode node : nodes) {
 
             //just now is -2min from right now. So has the node been seen in the last two minutes? then interpret as present
-            if(node.getLastSeen().after(justNow)){
+            if (node.getLastSeen().after(justNow)) {
                 nodeLogEntryDAO.save(new NodeLogEntry(node, node.getLastSeen()));
             }
         }
     }
 
-    private Set<String> getArpTable(){
+    private Set<String> getArpTable() {
 
         Runtime rt = Runtime.getRuntime();
         Process pr = null;
@@ -122,10 +129,10 @@ public class NetworkNodeServiceImpl implements NetworkNodeService {
             String arp = InputStreamHelper.getStringFromInputStream(pr.getInputStream());
             HashSet<String> nodes = new HashSet<>(Arrays.asList(arp.split("\n")));
             Iterator<String> it = nodes.iterator();
-            while(it.hasNext()){
+            while (it.hasNext()) {
                 String node = it.next();
 
-                if(node.contains("incomplete") || node.contains("ff:ff:ff:ff:ff:ff")){
+                if (node.contains("incomplete") || node.contains("ff:ff:ff:ff:ff:ff")) {
                     it.remove();
                 }
             }
@@ -134,7 +141,7 @@ public class NetworkNodeServiceImpl implements NetworkNodeService {
             //for(String node : nodes){System.out.println(node);}
 
             return nodes;
-        }catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
             return new HashSet<String>();
         }

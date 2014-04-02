@@ -1,19 +1,12 @@
 package com.opitz.iotprototype.executors;
 
-import org.krakenapps.pcap.decoder.ethernet.MacAddress;
-import org.krakenapps.pcap.live.PcapDeviceManager;
-import org.krakenapps.pcap.live.PcapDeviceMetadata;
-import org.krakenapps.pcap.util.Arping;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.net.SocketException;
 import java.net.UnknownHostException;
-import java.util.*;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -102,7 +95,7 @@ public class NetworkDiscoveryExecutor {
      * @return
      * @throws IOException
      */
-    public Map<MacAddress, InetAddress> getAllDevicesWithARPing() throws IOException {
+   /* public Map<MacAddress, InetAddress> getAllDevicesWithARPing() throws IOException {
         HashSet<NetworkInterface> interfaces = getGoodNetworkInterfaces();
         Map<MacAddress, InetAddress> nodes = new HashMap<>();
         //iterate over network interfaces
@@ -110,7 +103,7 @@ public class NetworkDiscoveryExecutor {
             System.out.print("getting mac for 192.168.1.100");
             MacAddress address = Arping.query(InetAddress.getByName("192.168.1.100"), 2000);
             System.out.print(address.toString());
-            /*System.out.println("getting nodes for interface: " + ni.getName());
+            *//*System.out.println("getting nodes for interface: " + ni.getName());
             Map<InetAddress, MacAddress> newNodes = Arping.scan(ni.getName(), getSubnetInetAddressColl(), 10000);
             System.out.println("Nodes found: \n " + newNodes.toString());
             //iterate over found nodes
@@ -118,14 +111,14 @@ public class NetworkDiscoveryExecutor {
                 //if a node is found on two or more interfaces, well so be it.
                 //they must be connected then. Still we found our device we're looking for
                 nodes.put(entry.getValue(), entry.getKey());
-            }  */
+            }  *//*
         }
         System.out.print(nodes.toString());
         return nodes;
-    }
+    }*/
 
 
-    static {
+    /*static {
         try {
             System.setProperty("java.library.path", "/usr/local/lib");
             Field fieldSysPath = ClassLoader.class.getDeclaredField("sys_paths");
@@ -148,18 +141,18 @@ public class NetworkDiscoveryExecutor {
         System.out.println("+++++++++++" + "loading library kpcap");
 
 
-    }
+    }*/
 
 
-    private Collection<InetAddress> getSubnetInetAddressColl() throws UnknownHostException {
+    /*private Collection<InetAddress> getSubnetInetAddressColl() throws UnknownHostException {
         Set<InetAddress> addresses = new HashSet<InetAddress>();
         for (int i = 1; i < 255; i++) {
             addresses.add(InetAddress.getByName(this.getOwnSubnet() + "." + i));
         }
         return addresses;
-    }
+    }*/
 
-    private HashSet<NetworkInterface> getGoodNetworkInterfaces() {
+    /*private HashSet<NetworkInterface> getGoodNetworkInterfaces() {
 
         HashSet<NetworkInterface> returnInterfaces = new HashSet<>();
 
@@ -175,7 +168,7 @@ public class NetworkDiscoveryExecutor {
         }
 
         return returnInterfaces;
-    }
+    }*/
 
 
     /**
@@ -183,14 +176,14 @@ public class NetworkDiscoveryExecutor {
      *
      * @return
      */
-    private HashSet<NetworkInterface> getOwnInterfaces() {
+    /*private HashSet<NetworkInterface> getOwnInterfaces() {
         try {
             return new HashSet<>(Collections.list(NetworkInterface.getNetworkInterfaces()));
         } catch (SocketException e) {
             e.printStackTrace();
             return new HashSet<>();
         }
-    }
+    }*/
 
 
 }

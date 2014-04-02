@@ -1,8 +1,10 @@
 package com.opitz.iotprototype.services;
 
+import com.opitz.iotprototype.entities.NetworkNode;
 import com.opitz.iotprototype.entities.User;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -23,5 +25,9 @@ public interface UserService {
 
     public List<User> listAll();
 
-    public String retrieveUserStatus(String username);
+    public String retrieveUserStatusByUsername(String username);
+
+    public HashMap<String, String> retrieveAllUserStatuses();
+
+    public List<User> checkForUserNodes(HashMap<String, NetworkNode> nodes);
 }
