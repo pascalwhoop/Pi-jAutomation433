@@ -15,6 +15,8 @@ public interface NetworkNodeService {
 
     public HashMap<String, NetworkNode> getAllStoredDevices();
 
+    public NetworkNode getNodeFromCacheByMac(String macAddress);
+
     public HashMap<String,NetworkNode> getAllDevicesFromArpCache();
 
     public void storeAnyNewDevices(Map<String, NetworkNode> networkNodes);

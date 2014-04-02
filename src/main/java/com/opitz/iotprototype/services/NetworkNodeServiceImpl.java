@@ -32,8 +32,7 @@ public class NetworkNodeServiceImpl implements NetworkNodeService {
     NetworkNodeDAO networkNodeDAO;
     @Autowired
     NodeLogEntryDAO nodeLogEntryDAO;
-    @Autowired
-    UserService userService;
+
 
     private static HashMap<String, NetworkNode> nodeCache = new HashMap<>();
 
@@ -57,6 +56,20 @@ public class NetworkNodeServiceImpl implements NetworkNodeService {
         nodes.putAll(nodeCache);
         return nodes;
     }
+
+
+    /**
+     * returns a node in cache by macAddress if node is cached or null if none is found
+     * @param macAddress
+     * @return
+     */
+    @Override
+    public NetworkNode getNodeFromCacheByMac(String macAddress) {
+        return nodeCache.get(macAddress);
+    }
+
+    @Transactional
+
 
     @Override
     public HashMap<String, NetworkNode> getAllDevicesFromArpCache() {

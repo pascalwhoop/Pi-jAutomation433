@@ -24,6 +24,8 @@ public class UserServiceImpl implements UserService{
 
     @Autowired
     UserDAO userDAO;
+    @Autowired
+    NetworkNodeService networkNodeService;
 
     @Transactional
     @Override
@@ -62,9 +64,25 @@ public class UserServiceImpl implements UserService{
         return determineUserState(user);
     }
 
+    /**
+     * helper function which determines wether a user is considered "online" or "offline".
+     * @param user
+     * @return
+     */
     private String determineUserState(User user) {
+
+        //get the users data from DB and see how "long ago" the user device has last been seen
         Date now = new Date();
-        Date userLastSeen = user.getPersonalDevice().getLastSeen();
+        NetworkNode userDevice = user.getPersonalDevice();
+        Date userLastSeen = userDevice.getLastSeen();
+
+        //see if there is a newer node in cache with the same mac address
+        //(which translates in the same device just not from DB but form arp cache)
+
+        NetworkNode node = networkNodeService.getNodeFromCacheByMac(userDevice.getMacAddress());
+        if(node != null){
+            userLastSeen = node.getLastSeen();
+        }
         //hard coded for now 2 minutes away == offline
         if(now.getTime() - userLastSeen.getTime() < (1000*60*2)){
             return "online";
