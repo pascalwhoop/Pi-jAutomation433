@@ -1,6 +1,5 @@
 package com.opitz.iotprototype.daos;
 
-import com.opitz.iotprototype.entities.ElroPowerPlug;
 import com.opitz.iotprototype.entities.NetworkNode;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -45,6 +44,8 @@ public class NetworkNodeDAOImpl implements NetworkNodeDAO{
         return query.list();
 
     }
+
+
 
     @Override
     public void delete(Serializable id) {

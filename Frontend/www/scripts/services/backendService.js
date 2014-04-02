@@ -3,19 +3,35 @@
 angular.module('pi4jfrontend')
     .factory('backendService', function ($http, $resource, localStorageService) {
 
+        //connection data for backend
         var ip = localStorage.getItem("backendIP");
+        var username = localStorage.getItem("username");
 
-        var portAndUri = ":8080/IoT_Spring_BPM/service/switch";
-        //var baseURL = "http://localhost:8080/IoT_Spring_BPM/service/switch";
+        var port = "8080";
+        var baseURI = "/IoT_Spring_BPM/service/";
 
-        var getURLString = function(){
-            return "http://"+ip+portAndUri;
+
+        /* Local Network Services*/
+
+        var getLocalNetworkNodes = function(callback){
+            var resource = $resource("http://" + ip + ":" + port + baseURI + "networkdevices/getall")
+            var result = resource.get()
+             result.$promise.then(function(result){
+                callback(result);
+            });
         }
+
+        var getOwnIpAddress = function(callback){
+            $http.get("http://" + ip + ":" + port + baseURI + "networkdevices/getownip")
+                .success(callback);
+        }
+
+        /* plug services */
 
         var fetchPlugsFromServerAndUpdateLocalStorage = function () {
 
 
-            var backend = $resource(getURLString() + '/getAllPlugsAvailable');
+            var backend = $resource("http://" + ip + ":" + port + baseURI+ 'switch/getAllPlugsAvailable');
             var result = backend.query();
             result.$promise.then(function(result){
                 localStorageService.updatePlugsInLocalStorage(result);
@@ -28,7 +44,7 @@ angular.module('pi4jfrontend')
             var promise =  $http(
                 {
                     method: 'PUT',
-                    url: getURLString()+ '/deactivate',
+                    url: "http://" + ip + ":" + port + baseURI+ 'switch/deactivate',
                     data: plug,
                     headers: {'Content-Type': 'application/json'}
                 }
@@ -45,7 +61,7 @@ angular.module('pi4jfrontend')
             var promise =  $http(
                 {
                     method: 'PUT',
-                    url: getURLString() + '/activate',
+                    url: "http://" + ip + ":" + port + baseURI+ 'switch/activate',
                     data: plug,
                     headers: {'Content-Type': 'application/json'}
                 }
@@ -68,7 +84,7 @@ angular.module('pi4jfrontend')
         var submitPlug = function (plug) {
             return $http({
                 method: 'POST',
-                url: getURLString() + "/addplug",
+                url: "http://" + ip + ":" + port + baseURI+ "switch/addplug",
                 data: plug
             }).then(function (response) {
                     return response.data;
@@ -79,7 +95,7 @@ angular.module('pi4jfrontend')
         var deletePlug = function(plug){
             return $http({
                 method: 'DELETE',
-                url: getURLString() + "/deleteplug/" + plug.id
+                url: "http://" + ip + ":" + port + baseURI+ "switch/deleteplug/" + plug.id
             }).then(function (response) {
                     if(response.status == 200){
                         localStorageService.removePlugFromLocalStorage(plug);
@@ -88,17 +104,45 @@ angular.module('pi4jfrontend')
             )
         }
 
+        /* user services*/
+        var getAllUsers = function(callback){
+            var resource = $resource("http://" + ip + ":" + port + baseURI + "user/getall")
+            var result = resource.query();
+             result.$promise.then(function(result){
+                callback(result);
+            })
+        }
+
+
+        var submitNewUser = function(user, callback){
+            $http.put("http://" + ip + ":" + port + baseURI + "user/add", user).success(callback);
+        }
+
+        var deleteUser = function(user, callback){
+            $http.delete("http://"+ ip + ":" + port + baseURI + "user/delete", {
+                data:user
+            }).success(callback);
+        }
+
+        /* getter and setter e.g. for local storage */
+
         var setIP = function(newIP){
             ip = newIP;
-
             localStorage.setItem("backendIP", newIP);
-
         }
 
         var getIP = function(){
             return ip;
         }
 
+        var setUsername = function(newUsername){
+            username = newUsername;
+            localStorage.setItem("username", newUsername);
+        }
+
+        var getUsername = function(){
+            return username;
+        }
 
         // Public API here
         return {
@@ -108,7 +152,14 @@ angular.module('pi4jfrontend')
             plugOn: plugOn,
             setIP: setIP,
             getIP: getIP,
-            deletePlug: deletePlug
+            getUsername: getUsername,
+            setUsername: setUsername,
+            deletePlug: deletePlug,
+            getLocalNetworkNodes:getLocalNetworkNodes,
+            getOwnIpAddress:getOwnIpAddress,
+            getAllUsers: getAllUsers,
+            submitNewUser: submitNewUser,
+            deleteUser: deleteUser
         };
 
     }

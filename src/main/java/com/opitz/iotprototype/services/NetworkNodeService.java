@@ -13,8 +13,9 @@ import java.util.Map;
 public interface NetworkNodeService {
 
 
+    public HashMap<String, NetworkNode> getAllStoredDevices();
 
-    public HashMap<String,NetworkNode> getAllDevices();
+    public HashMap<String,NetworkNode> getAllDevicesFromArpCache();
 
     public void storeAnyNewDevices(Map<String, NetworkNode> networkNodes);
 

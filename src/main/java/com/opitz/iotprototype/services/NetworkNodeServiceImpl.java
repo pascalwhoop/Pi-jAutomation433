@@ -33,16 +33,26 @@ public class NetworkNodeServiceImpl implements NetworkNodeService {
     @Autowired
     NodeLogEntryDAO nodeLogEntryDAO;
 
-      /*  for (String node : nodes){
-            String[] nodeData = node.split(" ");
-        }
-    }*/
-
     private static HashMap<String, NetworkNode> nodeCache = new HashMap<>();
 
+    /**
+     * gets all devices from the current cache + all that are stored in the DB.
+     * @return
+     */
+    @Override
+    public HashMap<String, NetworkNode> getAllStoredDevices() {
+        HashMap<String, NetworkNode> nodes = new HashMap<>();
+
+        for (NetworkNode node : networkNodeDAO.listAll()){
+            nodes.put(node.getMacAddress(), node);
+        }
+
+        nodes.putAll(nodeCache);
+        return nodes;
+    }
 
     @Override
-    public HashMap<String, NetworkNode> getAllDevices(){
+    public HashMap<String, NetworkNode> getAllDevicesFromArpCache(){
         HashMap<String, NetworkNode> nodes = new HashMap<>();
 
         for(String line : getArpTable()){
@@ -56,6 +66,8 @@ public class NetworkNodeServiceImpl implements NetworkNodeService {
             nodes.put(node.getMacAddress(), node);
 
         }
+
+
         return nodes;
     }
 

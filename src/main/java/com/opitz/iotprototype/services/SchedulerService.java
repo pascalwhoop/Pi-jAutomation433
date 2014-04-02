@@ -29,7 +29,7 @@ public class SchedulerService {
     @Scheduled(cron="10,25,40,55 * * * * ? ")
     public void storeNodesInCache(){
         System.out.println("### caching devices in Memory ###");
-        nns.cacheDevices(nns.getAllDevices());
+        nns.cacheDevices(nns.getAllDevicesFromArpCache());
     }
 
     @Scheduled(cron="0 0/30 * * * ? ")

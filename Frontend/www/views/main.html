@@ -1,11 +1,12 @@
-<div class="bar bar-header bar-light">
-    <h1 class="title">Plugs</h1>
-</div>
+<body ng-controller="ContentCtrl">
+<ion-header-bar>
+    <h1 class="title">Home</h1>
+</ion-header-bar>
 
-<content has-header="true" has-footer="true" scroll="true">
+<ion-content has-header="true" has-footer="true" scroll="true">
 
 
-    <div class="card" ng-repeat="plug in plugs">
+    <!--<div class="card" ng-repeat="plug in plugs">
         <div class="item item-text-wrap" style="padding: 0px;">
             <div class="row">
                 <div class="col col-50">
@@ -27,13 +28,33 @@
                 </div>
             </div>
         </div>
+    </div>-->
+    <div class="card" ng-repeat="plug in plugs">
+        <div class="item item-thumbnail-left">
+
+            <img src="/images/litUp_200.png" alt="" ng-if="plug.lastKnownState"/>
+            <img src="/images/notLitUp_200.png" alt="" ng-if="!plug.lastKnownState"/>
+
+            <h3>{{plug.label}}</h3>
+
+
+            <div class="col col-50">
+                <button ng-click="setPlugState(plug, true)" class="button button-outline">
+                    <i class="icon ion-power balanced"></i>
+                </button>
+
+                <button ng-click="setPlugState(plug, false)" class="button button-outline">
+                    <i class="icon ion-power assertive"></i>
+                </button>
+            </div>
+        </div>
+    </div>
     </div>
 
+</ion-content>
 
-</content>
-
-<div class="tabs tabs-light">
-    <a class="tab-item  stable-bg">
+<div class="tabs tabs-stable">
+    <a class="tab-item  dark-bg light">
         Home
     </a>
     <a class="tab-item" href="#/edit">

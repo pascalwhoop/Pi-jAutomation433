@@ -9,3 +9,6 @@ out/
 Frontend/node_modules/
 
 .metadata/
+Frontend/www/components/*
+Frontend/www/components/
+Frontend/www/components

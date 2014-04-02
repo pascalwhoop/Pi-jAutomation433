@@ -1,6 +1,7 @@
 {
   "name": "ionic",
-  "version": "0.9.18-alpha",
+  "version": "1.0.0-beta.1",
+  "codename": "actinium",
   "homepage": "https://github.com/driftyco/ionic",
   "authors": [
     "Max Lynch <max@drifty.com>",
@@ -9,46 +10,56 @@
   ],
   "description": "Advanced HTML5 hybrid mobile app development framework.",
   "main": [
-    "dist/js/ionic.js",
-    "dist/js/angular/angular.js",
-    "dist/js/angular/angular-animate.js",
-    "dist/js/angular/angular-route.js",
-    "dist/js/angular/angular-touch.js",
-    "dist/js/angular/angular-sanitize.js",
-    "dist/js/ionic-angular.js",
-    "dist/css/ionic.css",
-    "dist/fonts/*"
+    "release/css/ionic.css",
+    "release/fonts/*",
+    "release/js/ionic.js",
+    "release/js/ionic-angular.js"
   ],
   "keywords": [
     "mobile",
     "html5",
     "ionic",
+    "cordova",
     "phonegap",
     "trigger",
     "triggerio",
     "angularjs",
-    "angular",
-    "ratchet",
-    "bootstrap"
+    "angular"
   ],
   "license": "MIT",
   "private": false,
   "ignore": [
     "**/.*",
-    "node_modules",
-    "bower_components",
-    "components",
+    "CONTRIBUTING.md",
+    "Gruntfile.js",
+    "component.json",
+    "config",
+    "examples",
+    "package.json",
+    "release/js/angular",
+    "release/js/angular-ui",
+    "scripts",
     "test",
-    "tests"
+    "js/controllers",
+    "js/ext",
+    "js/utils",
+    "js/views",
+    "js/_license.js",
+    "js/ionic.js"
   ],
-  "_release": "0.9.18-alpha",
+  "dependencies": {
+    "angular": "1.2.12",
+    "angular-animate": "1.2.12",
+    "angular-sanitize": "1.2.12",
+    "angular-ui-router": "0.2.7"
+  },
+  "_release": "1.0.0-beta.1",
   "_resolution": {
     "type": "version",
-    "tag": "v0.9.18-alpha",
-    "commit": "aa4053b3651195db75a502600f808a314f8212b7"
+    "tag": "v1.0.0-beta.1",
+    "commit": "78e99ec841764e6695752569e2b4d9416fc8d45d"
   },
   "_source": "git://github.com/driftyco/ionic.git",
-  "_target": "~0.9.18-alpha",
-  "_originalSource": "ionic",
-  "_direct": true
+  "_target": "1.0.0-beta.1",
+  "_originalSource": "ionic"
 }

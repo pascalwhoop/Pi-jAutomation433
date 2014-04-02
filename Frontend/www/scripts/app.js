@@ -18,4 +18,9 @@ angular.module('pi4jfrontend', ['ionic', 'ngRoute', 'ngAnimate', 'ngResource'])
             .otherwise({
                 redirectTo: '/'
             });
-    });
+    })
+    .config(function ($httpProvider) {
+        //setting http provider defaults
+        $httpProvider.defaults.headers.common['Content-Type'] = "application/json; charset=utf-8"
+    })
+;

@@ -6,28 +6,13 @@
 
 .list {
   position: relative;
-  margin-bottom: 20px;
   padding-top: $item-border-width;
   padding-bottom: $item-border-width;
   padding-left: 0; // reset padding because ul and ol
+  margin-bottom: 20px;
 }
-
-/**
- * List editing styles. These trigger when the entire list goes into
- * "edit mode" or reordering list items
- */
-.list-editing {
-  .item-content {
-    @include translate3d(50px, 0, 0);
-  }
-}
-.list-reordering {
-  .item-content {
-    margin-right: 50px;
-  }
-  .item-drag {
-    z-index: 1;
-  }
+.list:last-child {
+  margin-bottom: 0px;
 }
 
 
@@ -57,7 +42,7 @@
  * A card and list-inset are close to the same thing, except a card as a box shadow.
  */
 
-.card, 
+.card,
 .list-inset {
   overflow: hidden;
   margin: ($content-padding * 2) $content-padding;
@@ -95,7 +80,7 @@
   }
 }
 
-.card .item:last-child, 
+.card .item:last-child,
 .list-inset .item:last-child {
   margin-bottom: $item-border-width * -1;
 }

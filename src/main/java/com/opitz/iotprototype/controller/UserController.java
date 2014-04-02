@@ -1,12 +1,13 @@
 package com.opitz.iotprototype.controller;
 
-import com.opitz.iotprototype.entities.NetworkNode;
+import com.opitz.iotprototype.entities.User;
 import com.opitz.iotprototype.services.NetworkNodeService;
+import com.opitz.iotprototype.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
+import java.util.List;
 
 /**
  * User: Pascal
@@ -15,15 +16,13 @@ import java.util.HashMap;
  */
 
 @Controller
-@RequestMapping("/service/userstate")
+@RequestMapping("/service/user")
 public class UserController {
 
     @Autowired
     NetworkNodeService networkNodeService;
-
-
-    //@Autowired
-    //private RuntimeService runtimeService;
+    @Autowired
+    UserService userService;
 
     /**
      *
@@ -33,38 +32,60 @@ public class UserController {
      * @return
      */
     @ResponseBody
-    @RequestMapping(value="/{username}/setuserstate", method = RequestMethod.POST)
-    public String setUserState(@PathVariable("username") String username, @RequestParam String state){
+    @RequestMapping(value="/{username}/state/{setState}", method = RequestMethod.POST)
+    public String setUserState(@PathVariable("username") String username, @PathVariable("setState") String state){
         return "foo";
     }
 
-    /*@ResponseBody
-    @RequestMapping(value="/findAllDevices", method=RequestMethod.GET)
-    public Map<MacAddress, InetAddress> findAllDevicesOnLocalNetwork() throws IOException{
-        return networkNodeService.getAllDevicesWithARPing();
-    }*/
 
     /**
-     * Retreive all known network nodes.
-     * @return a list of all known nodes
+     * Please note that when adding a new user via rest, there must be a network node supplied with the user. so first fetch all network nodes from the api, then select the one that
+     * should be the one that the user usually carries on him (a smartphone e.g.) and then add the user with this method.
+     * @param user
+     * @return
      */
-
     @ResponseBody
-    @RequestMapping(value = "/getnetworkdevices", method = RequestMethod.GET)
-    public HashMap<String, NetworkNode> findAllByPing(){
-        return networkNodeService.getAllDevices();
+    @RequestMapping(value="/add", method = RequestMethod.PUT)
+    public User addNewUser(@RequestBody User user){
+        userService.save(user);
+        return userService.load(user.getUsername());
     }
 
+    @ResponseBody
+    @RequestMapping(value="/update", method = RequestMethod.POST)
+    public User updateUser(@RequestBody User user){
+        userService.update(user);
+        return userService.load(user.getUsername());
+    }
 
-    /*@ResponseBody
-    @RequestMapping(value="/triggerprocess", method = RequestMethod.GET)
-    public String triggerProcess(){
-        ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("userstatechange");
-        System.out.print(processInstance.toString());
-        return processInstance.toString();
+    @ResponseBody
+    @RequestMapping(value="/delete", method = RequestMethod.DELETE)
+    public boolean deleteUser(@RequestBody User user){
+        try{
+            userService.delete(user);
+            return true;
+        }catch (Exception e){
+            return false;
+        }
+    }
 
-    }*/
+    @ResponseBody
+    @RequestMapping(value="/getall", method = RequestMethod.GET)
+    public List<User> getAll(){
+        return userService.listAll();
+    }
 
+    @ResponseBody
+    @RequestMapping(value="/getbyusername/{username}", method = RequestMethod.GET)
+    public User getByUsername(@PathVariable String username){
+        return userService.load(username);
+    }
+
+    @ResponseBody
+    @RequestMapping(value="/{username}/state", method = RequestMethod.GET)
+    public String getUserState(@PathVariable String username){
+        return userService.retrieveUserStatus(username);
+    }
 
 
 

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -15,6 +16,9 @@ import java.util.List;
  * User: Pascal
  * Date: 07.10.13
  * Time: 12:31
+ * <p/>
+ * This Controller manages all switch interaction, so basically on and off adding deleting and querying.
+ * TODO scheduling plug actions
  */
 
 @Controller
@@ -41,9 +45,16 @@ public class SwitchController {
 
     }*/
 
+    /**
+     * REST call with PUT to activate a certain plug.
+     *
+     * @param plug a JSON representation of a ElroPowerPlug
+     * @return The same plug retreived from the DB after updating the lastKnownState
+     */
+
     @ResponseBody
-    @RequestMapping(value="/activate", method = RequestMethod.PUT)
-    public ElroPowerPlug activateSwitch(@RequestBody ElroPowerPlug plug){
+    @RequestMapping(value = "/activate", method = RequestMethod.PUT)
+    public ElroPowerPlug activateSwitch(@RequestBody ElroPowerPlug plug) {
 
         HashMap<String, Object> processInformation = new HashMap();
         processInformation.put("plugId", plug.getId());
@@ -54,9 +65,17 @@ public class SwitchController {
         //return elroPowerPlugService.setState(plug, true);
     }
 
+
+    /**
+     * REST call with PUT to deactivate a certain plug.
+     *
+     * @param plug a JSON representation of a ElroPowerPlug
+     * @return The same plug retreived from the DB after updating the lastKnownState
+     */
+
     @ResponseBody
-    @RequestMapping(value="/deactivate", method = RequestMethod.PUT)
-    public ElroPowerPlug deactivateSwitch(@RequestBody ElroPowerPlug plug){
+    @RequestMapping(value = "/deactivate", method = RequestMethod.PUT)
+    public ElroPowerPlug deactivateSwitch(@RequestBody ElroPowerPlug plug) {
 
         HashMap<String, Object> processInformation = new HashMap();
         processInformation.put("plugId", plug.getId());
@@ -67,27 +86,52 @@ public class SwitchController {
         //return elroPowerPlugService.setState(plug, false);
     }
 
+    /**
+     * REST call with GET to retreive all plugs (TODO available to the requesting user )
+     *
+     * @return A List of all plugs
+     */
+
     @ResponseBody
-    @RequestMapping(value="/getAllPlugsAvailable", method = RequestMethod.GET)
-    public List<ElroPowerPlug> getAllPlugsAvailable(){
+    @RequestMapping(value = "/getAllPlugsAvailable", method = RequestMethod.GET)
+    public List<ElroPowerPlug> getAllPlugsAvailable() {
         return elroPowerPlugService.listAll();
     }
 
+
     @ResponseBody
-    @RequestMapping(value="/addplug", method = RequestMethod.POST)
-    public void addSwitch(@RequestBody ElroPowerPlug newPlug){
+    @RequestMapping(value = "/timer/{time}/activate")
+    public boolean setTimerForPlug(@RequestBody ElroPowerPlug plug, @PathVariable String timeString) {
+        Date time = new Date(Long.decode(timeString));
+        return false;
+    }
+
+
+    /**
+     * REST call with POST to post a new plug to the system.
+     *
+     * @param newPlug
+     */
+
+
+    @ResponseBody
+    @RequestMapping(value = "/addplug", method = RequestMethod.POST)
+    public void addSwitch(@RequestBody ElroPowerPlug newPlug) {
         elroPowerPlugService.save(newPlug);
     }
 
+    /**
+     * REST call with DELETE to delete a plug from the system.
+     *
+     * @param id
+     * @throws DataNotFoundException
+     */
+
     @ResponseBody
-    @RequestMapping(value="/deleteplug/{id}", method = RequestMethod.DELETE)
-    public void deleteSwitch(@PathVariable("id") Integer id) throws DataNotFoundException{
+    @RequestMapping(value = "/deleteplug/{id}", method = RequestMethod.DELETE)
+    public void deleteSwitch(@PathVariable("id") Integer id) throws DataNotFoundException {
         elroPowerPlugService.delete(id);
     }
-
-
-
-
 
 
 }
