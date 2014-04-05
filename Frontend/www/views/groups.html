@@ -1,0 +1,32 @@
+<ion-header-bar>
+    <a href="#/" class="button button-clear button-positive icon ion-home"></a>
+    <h1 class="title">Groups</h1>
+    <a href="#/groups/add" class="button button-clear button-balanced icon ion-plus "></a>
+
+</ion-header-bar>
+
+<ion-content has-header="true" has-footer="true" padding="true">
+
+    <div class="card" ng-repeat="foo in bar">
+        <div class="item item-thumbnail-left">
+
+            <img src="/images/litUp_200.png" alt="" ng-if="plug.lastKnownState"/>
+            <img src="/images/notLitUp_200.png" alt="" ng-if="!plug.lastKnownState"/>
+
+            <h3>{{plug.label}}</h3>
+
+
+            <div class="col col-50">
+                <button ng-click="setPlugState(plug, true)" class="button button-outline">
+                    <i class="icon ion-power balanced"></i>
+                </button>
+
+                <button ng-click="setPlugState(plug, false)" class="button button-outline">
+                    <i class="icon ion-power assertive"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+</ion-content>
+

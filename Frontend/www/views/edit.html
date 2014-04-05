@@ -3,26 +3,7 @@
 </ion-header-bar>
 
 <ion-content has-header="true" has-footer="true" padding="true">
-    <div class="card" >
-        <div class="item item-divider">
-          Add new plug
-        </div>
-        <div class="list">
-                <label class="item item-input">
-                    <input type="tel" placeholder="group code" ng-model="newPlug.groupID">
-                </label>
-                <label class="item item-input">
-                    <input type="tel" placeholder="unit code" ng-model="newPlug.switchID">
-                </label>
-                <label class="item item-input">
-                    <input type="text" placeholder="Label" ng-model="newPlug.label">
-                </label>
-        </div>
 
-        <button class="button button-block button-positive" ng-click="submitPlug(newPlug)">
-            Add to home!
-        </button>
-    </div>
 
     <h3 class="text-center">Manage existing plugs</h3>
     <div class="list">
@@ -43,16 +24,3 @@
 
 
 </ion-content>
-
-
-<div class="tabs tabs-stable">
-    <a class="tab-item" href="#/">
-        Home
-    </a>
-    <a class="tab-item dark-bg light">
-        Edit
-    </a>
-    <a class="tab-item" href="#/settings">
-        Settings
-    </a>
-</div>

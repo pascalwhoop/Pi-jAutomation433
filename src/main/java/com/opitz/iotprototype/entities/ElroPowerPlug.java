@@ -12,7 +12,7 @@ import javax.persistence.*;
  */
 
 @Entity
-public class ElroPowerPlug {
+public class ElroPowerPlug{
 
     private Integer id;
     private String label;

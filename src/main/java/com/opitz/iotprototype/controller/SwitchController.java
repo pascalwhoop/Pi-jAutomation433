@@ -101,7 +101,7 @@ public class SwitchController {
 
     @ResponseBody
     @RequestMapping(value = "/timer/{time}/activate")
-    public boolean setTimerForPlug(@RequestBody ElroPowerPlug plug, @PathVariable String timeString) {
+    public boolean setTimerForPlug(@RequestBody ElroPowerPlug plug, @PathVariable("time") String timeString) {
         Date time = new Date(Long.decode(timeString));
         return false;
     }
@@ -116,8 +116,9 @@ public class SwitchController {
 
     @ResponseBody
     @RequestMapping(value = "/addplug", method = RequestMethod.POST)
-    public void addSwitch(@RequestBody ElroPowerPlug newPlug) {
-        elroPowerPlugService.save(newPlug);
+    public ElroPowerPlug addSwitch(@RequestBody ElroPowerPlug newPlug) {
+        Integer id = (Integer) elroPowerPlugService.save(newPlug);
+        return elroPowerPlugService.load(id);
     }
 
     /**

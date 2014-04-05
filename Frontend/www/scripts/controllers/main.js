@@ -5,37 +5,10 @@ angular.module('pi4jfrontend')
 
 
         $scope.init = function () {
-            $scope.plugs = localStorageService.getAllPlugs();
-            backendService.fetchPlugsAndUpdateLocalStorage();
             backendService.getAllUserStates(function(result){
                 $scope.userStates = result;
             })
         }
-
-
-        $scope.setPlugState = function(plug, state){
-            var promise;
-            if(state){
-                promise = backendService.plugOn(plug);
-            }
-            if(!state){
-                promise = backendService.plugOff(plug);
-            }
-            promise.success(function(result){
-                    $scope.updateLocalPlugStateById(result.id, result.lastKnownState)
-
-            })
-        }
-
-        $scope.updateLocalPlugStateById = function(plugId, state){
-            for(var i = 0; i<$scope.plugs.length;i++){
-                if ($scope.plugs[i].id == plugId){
-                    $scope.plugs[i].lastKnownState = state
-                }
-            }
-
-        }
-
 
         //trigger at the end
         $scope.init();

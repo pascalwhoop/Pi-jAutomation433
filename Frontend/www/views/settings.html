@@ -1,4 +1,5 @@
 <ion-header-bar>
+    <a href="#/" class="button button-clear button-positive icon ion-home"></a>
     <h1 class="title">Settings</h1>
 </ion-header-bar>
 
@@ -6,74 +7,17 @@
 
 
     <h4>Change IP</h4>
-    <label for="" class="item item-input">
+    <label class="item item-input">
         <input type="text" placeholder="IP Address" ng-change="setNewIP(ip)" ng-model="ip">
     </label>
 
-
     <h4>Select user</h4>
-
-
     <select
             ng-model="username"
-            ng-options="c.username as c.username for c in availableUsers"
+            ng-options="c.username as c.username for c in users"
             ng-change="setNewUsername(username)"
             style="width: 100%"
             ></select>
-
-
-
     <br><hr>
 
-    <h4>Add new user</h4>
-    <label class="item item-input">
-        <input ng-model="user.username" type="text" placeholder="username">
-    </label>
-
-
-    <span class="input-label">Select network device to bind to user</span>
-    <select
-            ng-model="user.personalDevice"
-            ng-options="node as (node.dnsName + ' at ' + node.lastKnownIPAddress) for (mac, node) in localNetworkNodes"
-            style="width:100%"
-            ></select>
-
-    <span>Own IP: {{deviceIp}}</span>
-
-    <button class="button button-block button-outline button-positive" ng-click="submitNewUser(user)">Submit user
-    </button>
-
-    <br><hr>
-
-        <h4>Delete users</h4>
-
-            <span class="input-label">Select user to delete</span>
-            <select
-                    ng-model="userToDelete"
-                    ng-options="c as c.username for c in availableUsers"
-                    style="width: 100%"
-                    ></select>
-
-
-
-        <button class="button button-block button-outline button-positive" ng-click="deleteUser(userToDelete)">Delete
-            user
-        </button>
-
-    </div>
-
-    <br><br><br><br>
 </ion-content>
-
-
-<div class="tabs tabs-primary">
-    <a class="tab-item" href="#/">
-        Home
-    </a>
-    <a class="tab-item" href="#/edit">
-        Edit
-    </a>
-    <a class="tab-item dark-bg light">
-        Settings
-    </a>
-</div>
