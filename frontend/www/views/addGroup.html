@@ -13,21 +13,30 @@
             <span class="input-label">Group name:</span>
             <input type="text" placeholder="Living room lights">
         </label>
-        <label class="item item-input item-stacked-label">
-            <span class="input-label">Select users</span>
-            <!--<select multiple
-                    ng-model="username"
-                    ng-options="c.username as c.username for c in availableUsers"
-                    ng-change="setNewUsername(username)"
-                    style="width: 100%"
-                    ></select>-->
-            <select ng-options="moo as moo.label in foo" style="width: 100%"></select>
-
-        </label>
-        <label class="item item-input item-stacked-label">
-            <span class="input-label">Email</span>
-            <input type="text" placeholder="john@suhr.com">
-        </label>
     </div>
+
+    <div>Select plugs: </div>
+    <ul class="list">
+
+        <li class="item item-checkbox" ng-repeat="plug in plugs">
+            <label class="checkbox">
+                <input type="checkbox" ng-model="newGroup.plugs[plug.label]">
+            </label>
+            {{plug.label}}
+        </li>
+
+    </ul>
+
+    <div>Select users:</div>
+    <ul class="list">
+
+        <li class="item item-checkbox" ng-repeat="user in users">
+            <label class="checkbox">
+                <input type="checkbox">
+            </label>
+            {{user.username}}
+        </li>
+
+    </ul>
 
 </ion-content>

@@ -21,7 +21,7 @@ angular.module('pi4jfrontend')
         }
 
         $scope.plugRefresh = function(){
-            backendService.fetchPlugsAndUpdateLocalStorage().then(function(result){
+            backendService.getAllPlugs().then(function(result){
                 $scope.$broadcast('scroll.refreshComplete');
             })
 

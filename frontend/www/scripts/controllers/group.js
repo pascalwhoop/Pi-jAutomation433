@@ -4,14 +4,16 @@ angular.module('pi4jfrontend')
     .controller('GroupCtrl', function ($scope, backendService, localStorageService) {
 
 
-
-        $scope.init = function () {
-            backendService.getAllUsers(function(result){
-                $scope.availableUsers = result;
-            });
+        $scope.newGroup = {
+            plugs : {},
+            users : {}
         }
 
-        $scope.foo = [{label: "foo"}, {label: "dnno"}];
+        $scope.init = function () {
+            $scope.users = localStorageService.getUsers();
+            backendService.getAllUsers();
+            $scope.plugs = localStorageService.getPlugs();
+        }
 
         //trigger at the end
         $scope.init();

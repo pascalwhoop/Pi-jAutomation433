@@ -28,12 +28,8 @@ angular.module('pi4jfrontend')
 
         /* plug services */
 
-        var fetchPlugsAndUpdateLocalStorage = function () {
-
-
-            var backend = $resource("http://" + ip + ":" + port + baseURI + 'switch/getAllPlugsAvailable');
-            var result = backend.query();
-            return result.$promise.then(function (result) {
+        var getAllPlugs = function () {
+            return $http.get("http://" + ip + ":" + port + baseURI + 'switch/getAllPlugsAvailable').success(function (result) {
                 localStorageService.setPlugs(result);
             })
         };
@@ -151,7 +147,7 @@ angular.module('pi4jfrontend')
 
         // Public API here
         return {
-            fetchPlugsAndUpdateLocalStorage: fetchPlugsAndUpdateLocalStorage,
+            getAllPlugs: getAllPlugs,
             submitPlug: submitPlug,
             plugOff: plugOff,
             plugOn: plugOn,
