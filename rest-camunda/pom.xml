@@ -12,7 +12,52 @@
 	<name>${project.groupId} - ${project.artifactId}</name>
 
 	<build>
-        	<finalName>iot-spring-bpm</finalName> 
+        	<finalName>iot-spring-bpm</finalName>
+		<plugins>		
+		  <plugin>
+			<groupId>org.codehaus.cargo</groupId>
+			<artifactId>cargo-maven2-plugin</artifactId>
+			<!--Configuration for remote server -->			
+			<configuration>
+				<container>
+					<containerId>jetty9x</containerId>
+					<type>remote</type>
+				</container>
+				<configuration>
+					<type>runtime</type>
+					<properties>
+						<cargo.hostname>192.168.1.102</cargo.hostname>
+						<cargo.servlet.port>8080</cargo.servlet.port>
+						<cargo.remote.username>cargo</cargo.remote.username>
+						<cargo.remote.password>cargo</cargo.remote.password>
+					</properties>
+				</configuration>
+				<deployer>
+					<type>remote</type>
+				</deployer>
+				<deployables>
+					<deployable>
+						<groupId>com.opitz.iot</groupId>
+						<artifactId>rest-camunda</artifactId>
+						<type>war</type>
+						<properties>
+							<context>/IoT_Spring_BPM</context>
+						</properties>
+					</deployable>
+						</deployables>
+			</configuration>
+			<!--Configuration for local server -->
+			<!--<configuration>
+            			<container>
+			              <containerId>tomcat7x</containerId>
+            			</container>
+            			<configuration>
+              				<type>existing</type>
+      					<home>/home/developer/server/apache-tomcat-7.0.53</home>
+            			</configuration>
+          		</configuration>-->
+		  </plugin>
+		</plugins>
         </build>
 
 	<dependencies>

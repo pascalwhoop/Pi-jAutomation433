@@ -53,37 +53,6 @@
 					<groupId>org.codehaus.cargo</groupId>
 					<artifactId>cargo-maven2-plugin</artifactId>
 					<version>${cargo.plugin.version}</version>
-					<configuration>
-						<container>
-							<containerId>jetty9x</containerId>
-							<type>remote</type>
-						</container>
-
-						<configuration>
-							<type>runtime</type>
-							<properties>
-								<cargo.hostname>192.168.1.102</cargo.hostname>
-								<cargo.servlet.port>8080</cargo.servlet.port>
-								<cargo.remote.username>cargo</cargo.remote.username>
-								<cargo.remote.password>cargo</cargo.remote.password>
-							</properties>
-						</configuration>
-
-						<deployer>
-							<type>remote</type>
-						</deployer>
-
-						<deployables>
-							<deployable>
-								<groupId>com.opitz.iot</groupId>
-								<artifactId>rest-camunda</artifactId>
-								<type>war</type>
-								<properties>
-									<context>/IoT_Spring_BPM</context>
-								</properties>
-							</deployable>
-						</deployables>
-					</configuration>
 				</plugin>
 
 				<plugin>
