@@ -1,0 +1,40 @@
+<ion-header-bar>
+    <a href="#/users" class="button button-clear icon ion-chevron-left">back</a>
+
+    <h1 class="title">Add User</h1>
+
+
+</ion-header-bar>
+
+<ion-content has-header="true" has-footer="true">
+
+    <div class="card">
+
+
+        <label class="item item-input">
+            <input ng-model="newUser.username" type="text" placeholder="username">
+        </label>
+
+        <label class="item item-input item-stacked-label">
+            <span class="input-label">Personal Device (<span>Own IP: {{deviceIp}}</span>)</span>
+            <select
+                    ng-model="newUser.personalDevice"
+                    ng-options="node as (node.dnsName + ' at ' + node.lastKnownIPAddress + '(' + node.macAddress + ')') for (mac, node) in localNetworkNodes"
+                    style="width:100%"
+                    ></select>
+            <span>User will be linked to device specified</span>
+        </label>
+
+
+        <button class="button button-block button-positive" ng-click="submitUser(newUser)">
+            Submit User!
+        </button>
+    </div>
+
+
+
+
+
+
+</ion-content>
+

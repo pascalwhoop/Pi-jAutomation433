@@ -1,0 +1,41 @@
+<ion-header-bar>
+    <a href="#/" class="button button-clear button-positive icon ion-home"></a>
+    <h1 class="title">Plugs</h1>
+    <a href="#/plugs/add" class="button button-clear button-balanced icon ion-plus "></a>
+
+</ion-header-bar>
+
+<ion-content has-header="true" has-footer="true">
+
+    <ion-refresher
+            pulling-text="Pull to refresh..."
+            on-refresh="plugRefresh()">
+    </ion-refresher>
+
+    <div class="card">
+
+        <div ng-if="plugs.length == 0" class="item"><h3>No plugs yet. Add some! </h3></div>
+
+        <div class="item item-thumbnail-left item-icon-right" ng-repeat="plug in plugs">
+
+            <img src="/images/litUp_200.png" alt="" ng-if="plug.lastKnownState"/>
+            <img src="/images/notLitUp_200.png" alt="" ng-if="!plug.lastKnownState"/>
+
+            <h3>{{plug.label}}</h3>
+            <a href="#/plugs/{{plug.id}}" class="energized"><i class="icon ion-wrench"></i></a>
+
+            <div class="col col-50">
+                <button ng-click="setPlugState(plug, true)" class="button button-outline">
+                    <i class="icon ion-power balanced"></i>
+                </button>
+
+                <button ng-click="setPlugState(plug, false)" class="button button-outline">
+                    <i class="icon ion-power assertive"></i>
+                </button>
+            </div>
+
+
+        </div>
+    </div>
+
+</ion-content>

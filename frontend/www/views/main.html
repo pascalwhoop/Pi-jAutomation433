@@ -1,0 +1,48 @@
+<body ng-controller="ContentCtrl">
+<ion-header-bar>
+    <h1 class="title">Home</h1>
+</ion-header-bar>
+
+<ion-content has-header="true" has-footer="true" scroll="true">
+
+
+    <div class="row">
+        <div class="col">
+            <div class="card">
+                <a href="#/groups" class="item item-text-wrap item-icon-right dark-bg light">Plug groups
+                    <i class="icon ion-grid"></i></a>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card">
+                <a href="#/plugs" class="item item-text-wrap item-icon-right dark-bg light">Plugs
+                    <i class="icon ion-power"></i></a>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="card">
+                <a href="#/settings" class="item item-text-wrap item-icon-right dark-bg light">Settings
+                    <i class="icon ion-settings"></i></a>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card">
+                <a href="#/users" class="item item-text-wrap item-icon-right dark-bg light">Users
+                    <i class="icon ion-person-stalker"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <ul class="list">
+        <li class="item item-divider">Users:</li>
+        <li ng-repeat="(user, state) in userStates" class="item item-icon-right">
+            {{user}} ({{state}})
+            <i class="icon ion-home balanced" ng-if="state == 'online'"></i>
+            <i class="icon ion-home assertive" ng-if="state == 'offline'"></i>
+        </li>
+    </ul>
+
+
+</ion-content>
