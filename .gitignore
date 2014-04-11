@@ -4,6 +4,7 @@
 out/
 bin/
 tmp/
+target/
 *.class
 *.so
 *.o

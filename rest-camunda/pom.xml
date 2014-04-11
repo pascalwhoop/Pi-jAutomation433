@@ -11,6 +11,10 @@
 	<packaging>war</packaging>
 	<name>${project.groupId} - ${project.artifactId}</name>
 
+	<build>
+        	<finalName>iot-spring-bpm</finalName> 
+        </build>
+
 	<dependencies>
 		<!-- IoT_Spring_BPM -->
 		<dependency>
