@@ -14,6 +14,9 @@ target/
 *.swp
 *~.nib
 *.launch
+*.classpath
+*.project
+*.*~
 *.jar
 *.war
 *.ear
