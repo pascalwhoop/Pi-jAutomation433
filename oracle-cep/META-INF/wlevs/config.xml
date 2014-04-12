@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<n1:config xmlns:n1="http://www.bea.com/ns/wlevs/config/application">
+	<processor>
+		<name>NetworkNodeProcessor</name>
+		<rules>
+			<query id="ExampleQuery"> <!-- <![CDATA[ select * from MyChannel [now] ]]> --> </query>
+		</rules>
+	</processor>
+</n1:config>

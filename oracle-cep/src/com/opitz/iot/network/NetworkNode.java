@@ -39,11 +39,11 @@ public class NetworkNode {
             anotherNode = (NetworkNode) o;
         }
 
-        boolean sameMac = anotherNode.macAddress == this.macAddress;
-        boolean sameIp = anotherNode.lastKnownIPAddress == this.lastKnownIPAddress;
-        boolean sameDns = anotherNode.dnsName == this.dnsName;
+        boolean mac = anotherNode.macAddress == this.macAddress;
+        boolean ip = anotherNode.lastKnownIPAddress == this.lastKnownIPAddress;
+        boolean dns = anotherNode.dnsName == this.dnsName;
 
-        if (sameMac && sameIp && sameDns) {
+        if (anotherNode.macAddress == this.macAddress && anotherNode.dnsName == this.dnsName && anotherNode.lastKnownIPAddress == this.lastKnownIPAddress) {
             return true;
         } else {
             return false;

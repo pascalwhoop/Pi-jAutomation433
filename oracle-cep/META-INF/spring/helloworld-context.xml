@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:osgi="http://www.springframework.org/schema/osgi"
+       xmlns:wlevs="http://www.bea.com/ns/wlevs/spring"
+       xsi:schemaLocation="
+  http://www.springframework.org/schema/beans
+  http://www.springframework.org/schema/beans/spring-beans.xsd
+  http://www.springframework.org/schema/osgi
+  http://www.springframework.org/schema/osgi/spring-osgi.xsd
+  http://www.bea.com/ns/wlevs/spring
+  http://www.bea.com/ns/wlevs/spring/spring-wlevs-v11_1_1_7.xsd">
+
+    <wlevs:event-type-repository>
+        <wlevs:event-type type-name="HelloWorldEvent">
+            <wlevs:class>com.bea.wlevs.event.example.helloworld.HelloWorldEvent</wlevs:class>
+        </wlevs:event-type>
+    </wlevs:event-type-repository>
+
+    <!-- Adapter can be created from a local class, without having to go through a adapter factory -->
+    <wlevs:adapter id="helloworldAdapter" class="com.bea.wlevs.adapter.example.helloworld.HelloWorldAdapter" >
+        <wlevs:instance-property name="message" value="HelloWorld - the current time is:"/>
+    </wlevs:adapter>
+
+    <wlevs:channel id="helloworldInputChannel" event-type="HelloWorldEvent" >
+        <wlevs:listener ref="helloworldProcessor"/>
+        <wlevs:source ref="helloworldAdapter"/>
+    </wlevs:channel>
+
+    <!-- The default processor for OCEP 11.0.0.0 is CQL -->
+    <wlevs:processor id="helloworldProcessor" />
+    
+    <wlevs:channel id="helloworldOutputChannel" event-type="HelloWorldEvent" advertise="true">
+        <wlevs:listener>
+            <bean class="com.bea.wlevs.example.helloworld.HelloWorldBean"/>
+        </wlevs:listener>
+        <wlevs:source ref="helloworldProcessor"/>
+    </wlevs:channel>
+	<wlevs:adapter id="NetworkNodeAdapter"
+		class="com.opitz.iot.network.NetworkNodeAdapter">
+	</wlevs:adapter>
+</beans>
+
+

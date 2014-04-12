@@ -58,7 +58,7 @@ public class DiscoveryService {
     }
 
     public HashMap<String, NetworkNode> getAllDevicesFromArpCache() {
-        HashMap<String, NetworkNode> nodes = new HashMap<>();
+        HashMap<String, NetworkNode> nodes = new HashMap<String, NetworkNode>();
         for (String line : getArpTable()) {
             String[] nodeInfo = line.split(" +"); //regex to split all spaces
             // string is of form: <dnsname> (<ip>) at <macAddress> on en0 ifscope [ethernet]
@@ -82,7 +82,7 @@ public class DiscoveryService {
         try {
             pr = rt.exec("arp -a");
             String arp = InputStreamHelper.getStringFromInputStream(pr.getInputStream());
-            HashSet<String> nodes = new HashSet<>(Arrays.asList(arp.split("\n")));
+            HashSet<String> nodes = new HashSet<String>(Arrays.asList(arp.split("\n")));
             Iterator<String> it = nodes.iterator();
             while (it.hasNext()) {
                 String node = it.next();
