@@ -81,24 +81,33 @@
           class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor"/>
 
 
-
-
-    <!-- camunda config -->
+    <!-- camunda process engine configuration -->
     <bean id="processEngineConfiguration" class="org.camunda.bpm.engine.spring.SpringProcessEngineConfiguration">
         <property name="processEngineName" value="default" />
         <property name="dataSource" ref="dataSource" />
         <property name="transactionManager" ref="transactionManager" />
         <property name="databaseSchemaUpdate" value="true" />
         <property name="jobExecutorActivate" value="false" />
-        <property name="deploymentResources" value="classpath*:/bpmn/*.bpmn" />
-
     </bean>
-    <bean id="processEngine" class="org.camunda.bpm.engine.spring.ProcessEngineFactoryBean">
+    
+    <!-- embedded camunda process engine -->
+    <bean id="processEngine" class="org.camunda.bpm.engine.spring.container.ManagedProcessEngineFactoryBean">
         <property name="processEngineConfiguration" ref="processEngineConfiguration" />
     </bean>
+    
+    <!-- camunda process engine services -->
     <bean id="repositoryService" factory-bean="processEngine" factory-method="getRepositoryService" />
     <bean id="runtimeService" factory-bean="processEngine" factory-method="getRuntimeService" />
     <bean id="taskService" factory-bean="processEngine" factory-method="getTaskService" />
     <bean id="historyService" factory-bean="processEngine" factory-method="getHistoryService" />
     <bean id="managementService" factory-bean="processEngine" factory-method="getManagementService" />
+    
+    <!-- deployable camunda process application for process engine (see processes.xml)  -->
+     <bean id="processApplication" class="org.camunda.bpm.engine.spring.application.SpringServletProcessApplication" depends-on="processEngine" />
+
+	<!-- camunda delegates -->
+    <bean id="fetchDeviceService" class="com.opitz.iotprototype.delegates.FetchDeviceDelegate" />
+    <bean id="droolsService" class="com.opitz.iotprototype.delegates.DroolsDelegate" />
+    <bean id="controlPlugService" class="com.opitz.iotprototype.delegates.ControlPlugDelegate" />
+    
 </beans>

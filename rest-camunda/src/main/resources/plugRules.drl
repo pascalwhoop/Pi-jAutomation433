@@ -1,0 +1,34 @@
+package com.opitz.iotprototype
+
+import com.opitz.iotprototype.entities.ElroPowerPlug;
+global String requestedState;
+
+rule "Switch plug state to false"
+when 
+   e : ElroPowerPlug( lastKnownState == true , requestedState == "absent" )  
+then
+   e.setLastKnownState(false);
+   System.out.println("## drools: switched state to false ##");
+end      
+
+rule "Switch plug state to true"
+when 
+   e : ElroPowerPlug( lastKnownState == false , requestedState == "present" )  
+then
+   e.setLastKnownState(true);
+   System.out.println("## drools: switched state to true ##");
+end
+
+rule "No plug state switch necessary for present"
+when 
+   e : ElroPowerPlug( lastKnownState == true , requestedState == "present" )  
+then
+   System.out.println("## drools: no switch necessary for present ##");
+end
+
+rule "No plug state switch necessary for absent"
+when 
+   e : ElroPowerPlug( lastKnownState == false , requestedState == "absent" )  
+then
+   System.out.println("## drools: no switch necessary for absent ##");
+end    
