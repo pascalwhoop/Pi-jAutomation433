@@ -12,7 +12,6 @@
 		<module>rc-switch-jni-wrapper</module>
 		<module>spring-service</module>
 		<module>rest-camunda</module>
-		<module>oracle-cep</module>
 	</modules>
 
 	<properties>

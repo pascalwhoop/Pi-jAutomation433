@@ -1,15 +1,7 @@
 package com.opitz.iotprototype.entities;
 
+import javax.persistence.*;
 import java.io.Serializable;
-
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
 
 /**
  * User: Pascal Date: 27.03.14 Time: 10:06
@@ -20,9 +12,10 @@ import javax.persistence.OneToOne;
 @Entity
 public class User implements Serializable {
 
-	private Integer id;
-	private String username;
-	private NetworkNode personalDevice;
+        private Integer id;
+        private String username;
+        private NetworkNode personalDevice;
+        private UserState state;
 
 	/* private String passwordHash; */
 
@@ -54,7 +47,17 @@ public class User implements Serializable {
 	public void setPersonalDevice(NetworkNode phone) {
 		this.personalDevice = phone;
 	}
-	/*
+
+    @Basic(optional = true)
+    public UserState getState() {
+        return state;
+    }
+
+    public void setState(UserState state) {
+        this.state = state;
+    }
+
+    /*
 	 * public String getPasswordHash() { return passwordHash; }
 	 * 
 	 * public void setPasswordHash(String passwordHash) { this.passwordHash =
