@@ -7,11 +7,16 @@ import java.io.Serializable;
  * User: Pascal Date: 27.03.14 Time: 10:06
  * 
  * ORM class representation of our users.
+ *
+ *
  */
 
 @Entity
 public class User implements Serializable {
 
+    /**
+     * duplicate can be found in oracle-cep. Please make sure to update any new required fields added to this class in the oracle-cep module as well.
+     */
         private Integer id;
         private String username;
         private NetworkNode personalDevice;

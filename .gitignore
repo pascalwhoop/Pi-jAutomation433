@@ -17,7 +17,7 @@ target/
 *.classpath
 *.project
 *.*~
-
+*.jar
 *.war
 *.ear
 .metadata
