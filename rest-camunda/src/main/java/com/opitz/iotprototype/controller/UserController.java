@@ -112,6 +112,16 @@ public class UserController {
         return userService.listAll();
     }
 
+    /**
+     *
+     * @return HashMap of form Entry(MacAddress, Username)
+     */
+    @ResponseBody
+    @RequestMapping(value="/deviceList", method = RequestMethod.GET)
+    public HashMap<String, String> deviceList(){
+        return userService.getDeviceMACUserMap();
+    }
+
 	@ResponseBody
 	@RequestMapping(value = "/getbyusername/{username}", method = RequestMethod.GET)
 	public User getByUsername(@PathVariable String username) {

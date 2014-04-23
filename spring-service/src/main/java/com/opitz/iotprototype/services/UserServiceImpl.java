@@ -53,6 +53,17 @@ public class UserServiceImpl implements UserService{
 
     @Transactional
     @Override
+    public HashMap<String, String> getDeviceMACUserMap() {
+        List<User> users = userDAO.listAll();
+        HashMap<String, String> map = new HashMap<>();
+        for(User user : users){
+            map.put(user.getPersonalDevice().getMacAddress(), user.getUsername());
+        }
+        return map;
+    }
+
+    @Transactional
+    @Override
     public List<User> listAll() {
         return userDAO.listAll();
     }

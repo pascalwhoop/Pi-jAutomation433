@@ -25,6 +25,8 @@ public interface UserService {
 
     public List<User> listAll();
 
+    public HashMap<String, String> getDeviceMACUserMap();
+
     public String retrieveUserStatusByUsername(String username);
 
     public HashMap<String, String> retrieveAllUserStatuses();
