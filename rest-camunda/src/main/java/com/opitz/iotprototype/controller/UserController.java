@@ -1,16 +1,21 @@
 package com.opitz.iotprototype.controller;
 
-import com.opitz.iotprototype.entities.User;
-import com.opitz.iotprototype.services.NetworkNodeService;
-import com.opitz.iotprototype.services.UserService;
+import java.util.HashMap;
+import java.util.List;
+
 import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.HashMap;
-import java.util.List;
+import com.opitz.iotprototype.entities.User;
+import com.opitz.iotprototype.services.NetworkNodeService;
+import com.opitz.iotprototype.services.UserService;
 
 /**
  * User: Pascal Date: 03.09.13 Time: 22:06
@@ -99,45 +104,33 @@ public class UserController {
 		}
 	}
 
-    @Deprecated
+	@Deprecated
 	@ResponseBody
 	@RequestMapping(value = "/getall", method = RequestMethod.GET)
 	public List<User> getAll() {
 		return this.getAllUsers();
 	}
 
-    @ResponseBody
-    @RequestMapping(value="/", method = RequestMethod.GET)
-    public List<User> getAllUsers(){
-        return userService.listAll();
-    }
+	@ResponseBody
+	@RequestMapping(value = "/", method = RequestMethod.GET)
+	public List<User> getAllUsers() {
+		return userService.listAll();
+	}
 
-    /**
-     *
-     * @return HashMap of form Entry(MacAddress, Username)
-     */
-    @ResponseBody
-    @RequestMapping(value="/deviceList", method = RequestMethod.GET)
-    public HashMap<String, String> deviceList(){
-        return userService.getDeviceMACUserMap();
-    }
+	/**
+	 * 
+	 * @return HashMap of form Entry(MacAddress, Username)
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/deviceList", method = RequestMethod.GET)
+	public HashMap<String, String> deviceList() {
+		return userService.getDeviceMACUserMap();
+	}
 
 	@ResponseBody
 	@RequestMapping(value = "/getbyusername/{username}", method = RequestMethod.GET)
 	public User getByUsername(@PathVariable String username) {
 		return userService.load(username);
-	}
-
-	@ResponseBody
-	@RequestMapping(value = "/{username}/state", method = RequestMethod.GET)
-	public String getUserState(@PathVariable String username) {
-		return userService.retrieveUserStatusByUsername(username);
-	}
-
-	@ResponseBody
-	@RequestMapping(value = "/all/state", method = RequestMethod.GET)
-	public HashMap<String, String> getAllUserStates() {
-		return userService.retrieveAllUserStatuses();
 	}
 
 }
