@@ -24,6 +24,5 @@ public interface ElroPowerPlugService {
 
     public ElroPowerPlug load(Serializable id);
 
-
     public List<ElroPowerPlug> listAll();
 }

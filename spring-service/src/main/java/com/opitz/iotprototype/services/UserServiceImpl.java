@@ -20,9 +20,7 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	UserDAO userDAO;
-	@Autowired
-	NetworkNodeService networkNodeService;
-
+	
 	@Transactional
 	@Override
 	public Serializable save(User user) {

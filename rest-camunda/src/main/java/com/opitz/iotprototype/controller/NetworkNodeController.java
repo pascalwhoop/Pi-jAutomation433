@@ -16,6 +16,8 @@ import com.opitz.iotprototype.entities.NetworkNode;
 import com.opitz.iotprototype.services.NetworkNodeService;
 
 /**
+ * {@link NetworkNode} controller.
+ * 
  * User: Pascal Date: 27.03.14 Time: 10:32
  */
 
@@ -27,22 +29,55 @@ public class NetworkNodeController {
 	NetworkNodeService networkNodeService;
 
 	/**
-	 * Retrieve all known network nodes.
+	 * Retrieve all {@link NetworkNode}.
+	 * <p>
 	 * 
-	 * @return a list of all known nodes
+	 * <pre>
+	 * <b>REST call example:</b><br/>
+	 * {@code GET .../networkdevices}
+	 * </pre>
+	 * 
+	 * @return {@link HashMap} of MAC address as key and {@link NetworkNode} as
+	 *         value.
 	 */
 	@ResponseBody
-	@RequestMapping(value = "/getall", method = RequestMethod.GET)
-	public HashMap<String, NetworkNode> findAllByPing() {
+	@RequestMapping(method = RequestMethod.GET)
+	public HashMap<String, NetworkNode> getAll() {
 		return networkNodeService.getAllStoredDevices();
 	}
 
+	/**
+	 * Determine own ip address.
+	 * <p>
+	 * 
+	 * <pre>
+	 * <b>REST call example:</b><br/>
+	 * {@code GET .../networkdevices/ownip}
+	 * </pre>
+	 * 
+	 * @param request
+	 *            {@link HttpServletRequest}
+	 * @return ip address
+	 */
 	@ResponseBody
-	@RequestMapping(value = "/getownip", method = RequestMethod.GET)
+	@RequestMapping(value = "/ownip", method = RequestMethod.GET)
 	public String getOwnIp(HttpServletRequest request) {
 		return request.getRemoteAddr();
 	}
 
+	/**
+	 * Create several new {@link NetworkNode}s.
+	 * <p>
+	 * 
+	 * <pre>
+	 * <b>REST call example:</b><br/>
+	 * {@code POST .../networkdevices/addmultiple}
+	 * and list of {@link NetworkNode} as {@link RequestBody}
+	 * </pre>
+	 * 
+	 * @param request
+	 *            {@link HttpServletRequest}
+	 */
 	@ResponseBody
 	@RequestMapping(value = "/addmultiple", method = RequestMethod.POST)
 	public void addMultiple(@RequestBody List<NetworkNode> networkNodes) {

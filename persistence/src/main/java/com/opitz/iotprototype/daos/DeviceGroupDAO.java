@@ -16,8 +16,6 @@ public interface DeviceGroupDAO {
 
     public void update(DeviceGroup devicegroup);
 
-    public void delete(DeviceGroup devicegroup);
-
     public void delete(Serializable id);
 
     public List<DeviceGroup> findByLabel(String label);
