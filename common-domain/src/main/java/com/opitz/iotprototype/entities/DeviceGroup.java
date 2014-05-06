@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -40,6 +41,7 @@ public class DeviceGroup implements Serializable {
 	}
 
 	@Basic(optional = false)
+	@Column(unique = true)
 	public String getLabel() {
 		return label;
 	}
@@ -49,7 +51,8 @@ public class DeviceGroup implements Serializable {
 	}
 
 	@ManyToMany(fetch = FetchType.EAGER)
-	@Cascade(value = CascadeType.SAVE_UPDATE) // cause by using hbm save/update in dao
+	//cause by using hbm save/update in dao	
+	@Cascade(value = CascadeType.SAVE_UPDATE)
 	public Set<User> getUsersWithAccess() {
 		return usersWithAccess;
 	}
@@ -59,7 +62,8 @@ public class DeviceGroup implements Serializable {
 	}
 
 	@ManyToMany(fetch = FetchType.EAGER)
-	@Cascade(value = CascadeType.SAVE_UPDATE) // cause by using hbm save/update in dao
+	// cause by using hbm save/update in dao	
+	@Cascade(value = CascadeType.SAVE_UPDATE)
 	public Set<ElroPowerPlug> getElroPowerPlugs() {
 		return elroPowerPlugs;
 	}

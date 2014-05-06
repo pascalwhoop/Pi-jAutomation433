@@ -42,31 +42,27 @@ public class DeviceGroupDAOImpl implements DeviceGroupDAO {
 	}
 
 	@Override
-	public List<DeviceGroup> findByLabel(String label) {
+	public DeviceGroup findByLabel(String label) {
 		Session session = sessionFactory.getCurrentSession();
 		Query query = session
-				.createQuery("from DeviceGroup dv where (lower(dv.label)  LIKE lower('%' || :name || '%')) ");
+		    .createQuery("from DeviceGroup dv where (lower(dv.label)  LIKE lower('%' || :name || '%')) ");
 		query.setParameter("name", label);
-		// Alle Objekttypen holen
-		List<DeviceGroup> deviceGroups = query.list();
-		return deviceGroups;
+		return (DeviceGroup) query.uniqueResult();
 	}
 
 	@Override
 	public DeviceGroup load(Serializable id) {
 		Session session = sessionFactory.getCurrentSession();
-		DeviceGroup deviceGroup = (DeviceGroup) session.get(DeviceGroup.class,
-				id);
+		DeviceGroup deviceGroup = (DeviceGroup) session.get(DeviceGroup.class, id);
 		return deviceGroup;
 	}
 
 	@Override
 	public List<DeviceGroup> listAll() {
 		Session session = sessionFactory.getCurrentSession();
-		List<DeviceGroup> deviceGroups = session
-				.createCriteria(DeviceGroup.class)
-				.setResultTransformer(
-						CriteriaSpecification.DISTINCT_ROOT_ENTITY).list();
+		List<DeviceGroup> deviceGroups = session.createCriteria(DeviceGroup.class)
+		    .setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY)
+		    .list();
 		return deviceGroups;
 	}
 }

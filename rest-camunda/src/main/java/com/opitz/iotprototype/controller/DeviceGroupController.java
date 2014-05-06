@@ -31,9 +31,9 @@ public class DeviceGroupController {
 
 	@Autowired
 	UserService userService;
-	
+
 	/**
-	 * Retrieve all {@link DeviceGroup}s matched by label.
+	 * Retrieve {@link DeviceGroup} matched by label.
 	 * <p>
 	 * 
 	 * <pre>
@@ -45,7 +45,7 @@ public class DeviceGroupController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/label/{label}", method = RequestMethod.GET)
-	public List<DeviceGroup> findByLabel(@PathVariable("label") String label) {
+	public DeviceGroup findByLabel(@PathVariable("label") String label) {
 		return deviceGroupService.findByLabel(label);
 	}
 
@@ -60,14 +60,13 @@ public class DeviceGroupController {
 	 * </pre>
 	 * 
 	 * @param devicegroup
-	 *            new {@link DeviceGroup}
+	 *          new {@link DeviceGroup}
 	 * 
 	 * @return unique identifier of created {@link DeviceGroup}
 	 */
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.POST)
-	public Integer create(@RequestBody DeviceGroup devicegroup)
-			throws Exception {
+	public Integer create(@RequestBody DeviceGroup devicegroup) throws Exception {
 		return (Integer) deviceGroupService.save(devicegroup);
 	}
 
@@ -82,14 +81,13 @@ public class DeviceGroupController {
 	 * </pre>
 	 * 
 	 * @param devicegroup
-	 *            {@link DeviceGroup} with new values
+	 *          {@link DeviceGroup} with new values
 	 * 
 	 * @return unique identifier of created {@link DeviceGroup}
 	 */
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.PUT)
-	public Integer update(@RequestBody DeviceGroup devicegroup)
-			throws Exception {
+	public Integer update(@RequestBody DeviceGroup devicegroup) throws Exception {
 		deviceGroupService.update(devicegroup);
 		return devicegroup.getId();
 	}
@@ -104,10 +102,10 @@ public class DeviceGroupController {
 	 * </pre>
 	 * 
 	 * @param id
-	 *            unique identifier
+	 *          unique identifier
 	 */
 	@ResponseBody
-	@RequestMapping(value="/{id}", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public void delete(@PathVariable("id") Integer id) {
 		deviceGroupService.delete(id);
 	}
@@ -128,7 +126,7 @@ public class DeviceGroupController {
 	public List<DeviceGroup> getAll() {
 		return deviceGroupService.listAll();
 	}
-	
+
 	/**
 	 * Update a certain {@link DeviceGroup} by an existing {@link User}.
 	 * <p>
@@ -139,19 +137,20 @@ public class DeviceGroupController {
 	 * </pre>
 	 * 
 	 * @param groupId
-	 *            unique existing {@link DeviceGroup} id
+	 *          unique existing {@link DeviceGroup} id
 	 * @param username
-	 *            unique existing user name
+	 *          unique existing user name
 	 * 
 	 * @return unique identifier of updated {@link DeviceGroup}
 	 */
 	@ResponseBody
-	@RequestMapping(value="/{id}/users/{username}", method = RequestMethod.PUT)	
-	public Integer addUser(@PathVariable("id") Integer groupId, @PathVariable("username") String username) {
+	@RequestMapping(value = "/{id}/users/{username}", method = RequestMethod.PUT)
+	public Integer addUser(@PathVariable("id") Integer groupId,
+	    @PathVariable("username") String username) {
 		deviceGroupService.addUser(groupId, username);
 		return groupId;
 	}
-	
+
 	/**
 	 * Update a certain {@link DeviceGroup} by an existing {@link ElroPowerPlug}.
 	 * <p>
@@ -162,15 +161,16 @@ public class DeviceGroupController {
 	 * </pre>
 	 * 
 	 * @param groupId
-	 *            unique existing {@link DeviceGroup} id
+	 *          unique existing {@link DeviceGroup} id
 	 * @param switchId
-	 *            unique existing {@link ElroPowerPlug} id
+	 *          unique existing {@link ElroPowerPlug} id
 	 * 
 	 * @return unique identifier of updated {@link DeviceGroup}
 	 */
 	@ResponseBody
-	@RequestMapping(value="/{id}/switches/{switchId}", method = RequestMethod.PUT)	
-	public Integer addSwitch(@PathVariable("id") Integer groupId, @PathVariable("switchId") Integer switchId) {
+	@RequestMapping(value = "/{id}/switches/{switchId}", method = RequestMethod.PUT)
+	public Integer addSwitch(@PathVariable("id") Integer groupId,
+	    @PathVariable("switchId") Integer switchId) {
 		deviceGroupService.addPlug(groupId, switchId);
 		return groupId;
 	}

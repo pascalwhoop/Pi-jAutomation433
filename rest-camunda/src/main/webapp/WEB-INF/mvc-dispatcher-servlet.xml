@@ -106,8 +106,13 @@
      <bean id="processApplication" class="org.camunda.bpm.engine.spring.application.SpringServletProcessApplication" depends-on="processEngine" />
 
 	<!-- camunda delegates -->
-    <bean id="fetchDeviceService" class="com.opitz.iotprototype.delegates.FetchDeviceDelegate" />
-    <bean id="droolsService" class="com.opitz.iotprototype.delegates.DroolsDelegate" />
-    <bean id="controlPlugService" class="com.opitz.iotprototype.delegates.ControlPlugDelegate" />
-    
+    <bean id="applyFirstUser" class="com.opitz.iotprototype.delegates.ApplyFirstUserDelegate" />
+    <bean id="switchKitchen" class="com.opitz.iotprototype.delegates.SwitchKitchenDelegate" />
+    <bean id="applyEnteringRules" class="com.opitz.iotprototype.delegates.ApplyEnteringRulesDelegate" />
+    <bean id="switchSpecialPlug" class="com.opitz.iotprototype.delegates.SwitchSpecialPlugDelegate" />
+    <bean id="switchOnPlug" class="com.opitz.iotprototype.delegates.SwitchOnPlugDelegate" />
+    <bean id="applyLastUser" class="com.opitz.iotprototype.delegates.ApplyLastUserDelegate" />
+    <bean id="switchOffAllPlug" class="com.opitz.iotprototype.delegates.SwitchOffAllPlugDelegate" />
+    <bean id="applyLeavingRules" class="com.opitz.iotprototype.delegates.ApplyLeavingRulesDelegate" />
+    <bean id="switchOffPlug" class="com.opitz.iotprototype.delegates.SwitchOffPlugDelegate" />
 </beans>

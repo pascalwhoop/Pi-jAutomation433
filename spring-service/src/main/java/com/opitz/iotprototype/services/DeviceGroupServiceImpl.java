@@ -1,18 +1,18 @@
 package com.opitz.iotprototype.services;
 
+import java.io.Serializable;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.opitz.iotprototype.daos.DeviceGroupDAO;
 import com.opitz.iotprototype.daos.ElroPowerPlugDAO;
 import com.opitz.iotprototype.daos.UserDAO;
 import com.opitz.iotprototype.entities.DeviceGroup;
 import com.opitz.iotprototype.entities.ElroPowerPlug;
 import com.opitz.iotprototype.entities.User;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.io.Serializable;
-import java.util.List;
 
 /**
  * User: Pascal Date: 04.04.14 Time: 15:02
@@ -50,7 +50,7 @@ public class DeviceGroupServiceImpl implements DeviceGroupService {
 
 	@Transactional
 	@Override
-	public List<DeviceGroup> findByLabel(String label) {
+	public DeviceGroup findByLabel(String label) {
 		return deviceGroupDAO.findByLabel(label);
 	}
 
