@@ -42,8 +42,7 @@ public class SwitchKitchenDelegate implements JavaDelegate {
 
 	private void switchOnPlugs(final Set<ElroPowerPlug> elroPowerPlugs) {
 		for (ElroPowerPlug plug : elroPowerPlugs) {
-			// elroPowerPlugService.setState(plug.getId(), true);
-			System.out.println("## camunda: TEST set plug state to true");
+			elroPowerPlugService.setState(plug.getId(), true);
 		}
 	}
 

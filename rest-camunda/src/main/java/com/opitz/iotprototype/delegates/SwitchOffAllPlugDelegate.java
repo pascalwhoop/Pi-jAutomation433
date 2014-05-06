@@ -37,8 +37,7 @@ public class SwitchOffAllPlugDelegate implements JavaDelegate {
 
 	private void switchOffPlugs(final List<ElroPowerPlug> elroPowerPlugs) {
 		for (ElroPowerPlug plug : elroPowerPlugs) {
-			// elroPowerPlugService.setState(plug.getId(), false);
-			System.out.println("## camunda: TEST set plug state to false");
+			elroPowerPlugService.setState(plug.getId(), false);
 		}
 	}
 

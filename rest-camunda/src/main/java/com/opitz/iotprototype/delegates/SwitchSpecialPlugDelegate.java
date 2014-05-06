@@ -65,8 +65,7 @@ public class SwitchSpecialPlugDelegate implements JavaDelegate {
 	private void switchPlugs(final Set<ElroPowerPlug> elroPowerPlugs,
 	    final boolean state) {
 		for (ElroPowerPlug plug : elroPowerPlugs) {
-			// elroPowerPlugService.setState(plug.getId(), state);
-			System.out.println("## camunda: TEST set plug state to " + state);
+			elroPowerPlugService.setState(plug.getId(), state);
 		}
 	}
 

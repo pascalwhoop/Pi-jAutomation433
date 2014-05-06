@@ -14,6 +14,7 @@ import com.opitz.iotprototype.entities.ElroPowerPlug;
 import com.opitz.iotprototype.entities.User;
 import com.opitz.iotprototype.entities.UserState;
 import com.opitz.iotprototype.services.DeviceGroupService;
+import com.opitz.iotprototype.services.ElroPowerPlugService;
 
 /**
  * 
@@ -32,6 +33,9 @@ public class SwitchOffPlugDelegate implements JavaDelegate {
 
 	@Autowired
 	private DeviceGroupService deviceGroupService;
+
+	@Autowired
+	private ElroPowerPlugService elroPowerPlugService;
 
 	@Override
 	public void execute(DelegateExecution execution) throws Exception {
@@ -76,8 +80,7 @@ public class SwitchOffPlugDelegate implements JavaDelegate {
 
 	private void switchOffPlugs(final Set<ElroPowerPlug> elroPowerPlugs) {
 		for (ElroPowerPlug plug : elroPowerPlugs) {
-			// elroPowerPlugService.setState(plug.getId(), false);
-			System.out.println("## camunda: TEST set plug state to false");
+			elroPowerPlugService.setState(plug.getId(), false);
 		}
 	}
 
