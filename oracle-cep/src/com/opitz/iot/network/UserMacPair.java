@@ -1,13 +1,13 @@
 package com.opitz.iot.network;
 
-public class UserNode {
+public class UserMacPair {
 	private String username;
 	private String macAddress;
 	
-	public UserNode(){
+	public UserMacPair(){
 		
 	}
-	public UserNode(String username, String macAddress){
+	public UserMacPair(String username, String macAddress){
 		this.username = username;
 		this.macAddress = macAddress;
 	}

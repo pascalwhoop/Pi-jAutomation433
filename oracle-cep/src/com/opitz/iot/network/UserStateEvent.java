@@ -6,15 +6,17 @@ public class UserStateEvent {
 
 	private String username;
 	private UserState userState;
-	private final Date lastSeen;
+	private Date lastSeen;
 	
 	public UserStateEvent(){
-		lastSeen = new Date();
+		setLastSeen(new Date());
+	}
+	public UserStateEvent(String username, UserState state){
+		this.username = username;
+		this.userState = state;
 	}
 	
-	public Date getTimestamp (){
-		return lastSeen;
-	}
+	
 	
 	public UserState getUserState() {
 		return userState;
@@ -28,7 +30,19 @@ public class UserStateEvent {
 	public void setUsername(String username) {
 		this.username = username;
 	}
-	
+
+
+
+	public Date getLastSeen() {
+		return lastSeen;
+	}
+
+
+
+	public void setLastSeen(Date lastSeen) {
+		this.lastSeen = lastSeen;
+	}
+
 	
 
 }

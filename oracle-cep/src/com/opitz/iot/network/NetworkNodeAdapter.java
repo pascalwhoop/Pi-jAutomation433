@@ -31,7 +31,7 @@ public class NetworkNodeAdapter implements RunnableBean, StreamSource {
 
             discoveryService.pingAllInSubnet(); // maybe later with parameter for different pingTimeout
             HashMap<String, NetworkNode> nodes = discoveryService.getAllDevicesFromArpCache();
-            System.out.println("### We raise an event for " + nodes.values().size() +" nodes ###");
+            System.out.println("### We found " + nodes.values().size() +" nodes ###");
             for(NetworkNode node : nodes.values()){
                 generateDeviceMessage(node);
             }

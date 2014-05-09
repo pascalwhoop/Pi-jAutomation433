@@ -26,11 +26,10 @@ import com.bea.wlevs.ede.api.EventRejectedException;
 import com.bea.wlevs.ede.api.RunnableBean;
 import com.bea.wlevs.ede.api.StreamSink;
 
-public class UserNodeBean implements Adapter, RunnableBean, StreamSink { 
+public class UserNodeBean implements Adapter, RunnableBean { 
     
 	public String serverUrlString;
-    private Map<String, UserNode> users;
-    private Map<String, UserState> userStates;
+    private Map<String, UserMacPair> users;
     
     private static final int SLEEP_MILLIS = 1000 * 60 * 10; //calls our server every 10 minutes and asks for new users. if user is added, state updates may be delayed if Bean is currently "asleep" 
     private boolean suspended;
@@ -41,7 +40,12 @@ public class UserNodeBean implements Adapter, RunnableBean, StreamSink {
 		suspended = false;
         while (!isSuspended()) { 
         	
-        	users = getUserMap();
+        	Map<String, UserMacPair> newUserMap = getUserMap();
+        	if(newUserMap != null){
+        		users.clear();
+        		users.putAll(newUserMap);
+        	}
+        	
         	
         	try {
                 synchronized (this) {
@@ -57,7 +61,7 @@ public class UserNodeBean implements Adapter, RunnableBean, StreamSink {
 	 * calls the spring server and returns a hash map of (key)macAddress - (value)username
 	 * @return
 	 */
-	public Map<String, UserNode> getUserMap() {
+	public Map<String, UserMacPair> getUserMap() {
 		 
 		Object o = performHttpRequest();
 		if(o == null){
@@ -68,11 +72,11 @@ public class UserNodeBean implements Adapter, RunnableBean, StreamSink {
         return getUserMapFromJSONObject(jsonObject);	
 	}
 
-	private Map<String, UserNode> getUserMapFromJSONObject(JSONObject jsonObject) {
+	private Map<String, UserMacPair> getUserMapFromJSONObject(JSONObject jsonObject) {
 		Map<String, String> keyValueMap = (HashMap<String, String>)jsonObject;
-		Map<String, UserNode> userMap = new HashMap<String, UserNode>();
+		Map<String, UserMacPair> userMap = new HashMap<String, UserMacPair>();
 		for(Entry<String, String> entry : keyValueMap.entrySet()){
-			userMap.put(entry.getKey(), new UserNode(entry.getValue(),entry.getKey()));
+			userMap.put(entry.getKey().toLowerCase(), new UserMacPair(entry.getValue().toLowerCase(),entry.getKey().toLowerCase()));
 		}
 		return userMap;
 	}
@@ -144,30 +148,16 @@ public class UserNodeBean implements Adapter, RunnableBean, StreamSink {
         return suspended;
     }
 
-    public Map<String, UserNode> getUsers() {
+    public Map<String, UserMacPair> getUsers() {
 		return users;
 	}
 
-	public void setUsers(Map<String, UserNode> users) {
+	public void setUsers(Map<String, UserMacPair> users) {
 		this.users = users;
 	}
 
-	public Map<String, UserState> getUserStates() {
-		return userStates;
-	}
 
-	public void setUserStates(Map<String, UserState> userStates) {
-		this.userStates = userStates;
-	}
 
-	/**
-     * Method that is called when the processor kicks out an UserStateEvent.
-     * We then extract the new state and push it into our cache so further iterations of our processor will work with the new state
-     */
-	@Override
-	public void onInsertEvent(Object event) throws EventRejectedException {
-		UserStateEvent userStateEvent = (UserStateEvent) event;
-		System.out.println("###adding user state to userStateCache " + userStateEvent.getUsername() + userStateEvent.getTimestamp());
-		userStates.put(userStateEvent.getUsername(), userStateEvent.getUserState());	
-	}
+
+	
 }

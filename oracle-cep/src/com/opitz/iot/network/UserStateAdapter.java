@@ -28,13 +28,11 @@ public class UserStateAdapter implements Adapter, StreamSink {
 
 	@Override
 	public void onInsertEvent(Object event) throws EventRejectedException {
-		System.out.println("foo bar to the moon");
 		UserStateEvent e = (UserStateEvent) event;
 		
-		//only users who's state has changed are passed as a userStateEvent. yet we dont want the missing ones only online and offline in our application
-		if(e.getUserState() != UserState.MISSING){
-			sendUserState(e.getUsername(), e.getUserState());
-	    }
+		System.out.println("#### firing event for " + e.getUsername() + " and state " + e.getUserState().toString());
+		sendUserState(e.getUsername(), e.getUserState());
+	 
 
 		
 
@@ -56,7 +54,7 @@ public class UserStateAdapter implements Adapter, StreamSink {
 
 			connection.setDoInput(true);
 			connection.setDoOutput(true);
-			connection.setRequestMethod("POST");
+			connection.setRequestMethod("PUT");
 			connection.setRequestProperty("Accept", "application/json");
 			connection.setRequestProperty("Content-Type","application/json; charset=UTF-8");
 			
@@ -72,7 +70,7 @@ public class UserStateAdapter implements Adapter, StreamSink {
 			br.close();
 			connection.disconnect();
 		} catch (Exception e) {
-			throw new RuntimeException(e.getMessage());
+			e.printStackTrace();
 		}
 		
 		//TODO just for debugging
