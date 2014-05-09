@@ -1,11 +1,12 @@
 package com.opitz.iot.network;
 
 
+import java.util.HashMap;
+
 import com.bea.wlevs.ede.api.RunnableBean;
 import com.bea.wlevs.ede.api.StreamSender;
 import com.bea.wlevs.ede.api.StreamSource;
-
-import java.util.HashMap;
+ 
 
 /**
  * User: Pascal
@@ -21,6 +22,7 @@ public class NetworkNodeAdapter implements RunnableBean, StreamSource {
 
         public NetworkNodeAdapter() {
             super();
+            System.out.println("networknodeadapter instance created");
         }
 
     public void run() {
@@ -29,6 +31,7 @@ public class NetworkNodeAdapter implements RunnableBean, StreamSource {
 
             discoveryService.pingAllInSubnet(); // maybe later with parameter for different pingTimeout
             HashMap<String, NetworkNode> nodes = discoveryService.getAllDevicesFromArpCache();
+            System.out.println("### We raise an event for " + nodes.values().size() +" nodes ###");
             for(NetworkNode node : nodes.values()){
                 generateDeviceMessage(node);
             }
@@ -44,7 +47,6 @@ public class NetworkNodeAdapter implements RunnableBean, StreamSource {
     }
 
     private void generateDeviceMessage(NetworkNode node) {
-        System.out.println("NetworkNodeAdapter Sending Event : " + node);
         eventSender.sendInsertEvent(node);
 
     }

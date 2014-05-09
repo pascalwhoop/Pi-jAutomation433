@@ -34,6 +34,14 @@ public class DiscoveryRunnable implements Runnable {
     public void doPing() {
         try {
             InetAddress.getByName(ip).isReachable(timeout);
+            /*final String execStatement = "ping -c 2 -i 0.2 " + ip;
+
+            Runtime rt = Runtime.getRuntime();
+            Process pr = null;
+            System.out.println("exec: " + execStatement + "with thread ID: " + Thread.currentThread().getId());
+            pr = rt.exec(execStatement);*/
+
+            
         } catch (IOException e) {
             e.printStackTrace();
         }

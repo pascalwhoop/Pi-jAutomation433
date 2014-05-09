@@ -2,8 +2,16 @@ package com.opitz.iot.network;
 
 import java.io.IOException;
 import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
 import java.net.UnknownHostException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -22,7 +30,12 @@ import java.util.concurrent.TimeUnit;
  * However TODO ARP is not yet working
  */
 public class DiscoveryService {
-
+	
+	private final String subnet;
+	
+	public DiscoveryService(){
+		this.subnet = getOwnSubnet();
+	}
 
     /**
      * A method for pinging all devices in a local network. check arp cache afterwards
@@ -35,7 +48,7 @@ public class DiscoveryService {
         // submit jobs to be executing by the pool
         for (int i = 1;i<255;i++) {
             //build IP to ping
-            final String ipToPing = getOwnSubnet() + "." + i;
+            final String ipToPing = subnet + "." + i;
 
             threadPool.submit(new DiscoveryRunnable(ipToPing, responseTimeout));
         }
@@ -46,7 +59,7 @@ public class DiscoveryService {
         //see if our threads are all done
         try {
             if(!threadPool.awaitTermination(5, TimeUnit.SECONDS)){
-
+            	threadPool.shutdownNow();
             }
         } catch (InterruptedException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
@@ -68,7 +81,6 @@ public class DiscoveryService {
             NetworkNode node = new NetworkNode(macAddress, dnsName, ipAddress);
 
             nodes.put(node.getMacAddress(), node);
-
         }
 
 
@@ -107,9 +119,23 @@ public class DiscoveryService {
         String subnet;
         String ownIp = null;
         try {
-            ownIp = InetAddress.getLocalHost().getHostAddress();
+        	HashSet<NetworkInterface> ni = getGoodNetworkInterfaces();
+        	for(NetworkInterface nInter : ni){
+        		Enumeration<InetAddress> iNetAddresses = nInter.getInetAddresses();
+        		while(iNetAddresses.hasMoreElements()){
+        			InetAddress address =  iNetAddresses.nextElement();
+        			String ip = address.getHostAddress();
+        			if(ip.contains("192.168") || ip.contains("10.") || ip.contains("172.16.") || ip.contains("172.31.") ){
+        				ownIp = ip;
+        				System.out.println("our ip is: " + ip);
+        			}
+        		}
+        	}
+            /*ownIp = InetAddress.getLocalHost().getHostAddress();
         } catch (UnknownHostException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace(); */
+        } catch(SocketException se){
+        	se.printStackTrace();
         }
         String[] ipParts = ownIp.split("\\.");
         subnet = ipParts[0] + "." + ipParts[1] + "." + ipParts[2]; //subnet aus eigener IP schließen
@@ -122,6 +148,7 @@ public class DiscoveryService {
      * TODO fix Arping
      *
      * @return
+     * @throws SocketException 
      * @throws IOException
      */
    /* public Map<MacAddress, InetAddress> getAllDevicesWithARPing() throws IOException {
@@ -181,14 +208,14 @@ public class DiscoveryService {
         return addresses;
     }*/
 
-    /*private HashSet<NetworkInterface> getGoodNetworkInterfaces() {
+    private HashSet<NetworkInterface> getGoodNetworkInterfaces() throws SocketException {
 
-        HashSet<NetworkInterface> returnInterfaces = new HashSet<>();
+        HashSet<NetworkInterface> returnInterfaces = new HashSet<NetworkInterface>();
 
         HashSet<NetworkInterface> interfaces = getOwnInterfaces();
 
         for (NetworkInterface ni : interfaces) {
-            if (ni.getName().contains("eth") || ni.getName().contains("wlan")) {
+            if (ni.isUp() && !ni.isLoopback() && !ni.isVirtual()) {
                 if (ni.getInetAddresses().hasMoreElements()) {
                     returnInterfaces.add(ni);
                 }
@@ -197,7 +224,7 @@ public class DiscoveryService {
         }
 
         return returnInterfaces;
-    }*/
+    }
 
 
     /**
@@ -205,14 +232,14 @@ public class DiscoveryService {
      *
      * @return
      */
-    /*private HashSet<NetworkInterface> getOwnInterfaces() {
+    private HashSet<NetworkInterface> getOwnInterfaces() {
         try {
-            return new HashSet<>(Collections.list(NetworkInterface.getNetworkInterfaces()));
+            return new HashSet<NetworkInterface>(Collections.list(NetworkInterface.getNetworkInterfaces()));
         } catch (SocketException e) {
             e.printStackTrace();
-            return new HashSet<>();
+            return new HashSet<NetworkInterface>();
         }
-    }*/
+    }
 
 
 }

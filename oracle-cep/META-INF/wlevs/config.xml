@@ -1,9 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <n1:config xmlns:n1="http://www.bea.com/ns/wlevs/config/application">
 	<processor>
-		<name>NetworkNodeProcessor</name>
+		<name>UserDeviceProcessor</name>
 		<rules>
-			<query id="ExampleQuery"> <!-- <![CDATA[ select * from MyChannel [now] ]]> --> </query>
+			<query id="UserNodeQuery">  <![CDATA[ select user.username, node.lastSeen
+												 from networkNodeInputChannel[now] as node, userNodeCache as user 
+												 where  user.macAddress = node.macAddress]]> </query>
+		</rules>
+	</processor>
+	<processor>
+		<name>UserStateProcessor</name>
+		<rules>
+			<query id="UserStateQuery">  <![CDATA[ select * from UserDeviceOutputChannel [now] ]]> </query>
 		</rules>
 	</processor>
 </n1:config>

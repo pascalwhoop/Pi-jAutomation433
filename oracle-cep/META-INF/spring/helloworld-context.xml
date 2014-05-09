@@ -1,43 +1,102 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:osgi="http://www.springframework.org/schema/osgi"
-       xmlns:wlevs="http://www.bea.com/ns/wlevs/spring"
-       xsi:schemaLocation="
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:osgi="http://www.springframework.org/schema/osgi"
+	xmlns:wlevs="http://www.bea.com/ns/wlevs/spring"
+	xsi:schemaLocation="
   http://www.springframework.org/schema/beans
   http://www.springframework.org/schema/beans/spring-beans.xsd
   http://www.springframework.org/schema/osgi
   http://www.springframework.org/schema/osgi/spring-osgi.xsd
   http://www.bea.com/ns/wlevs/spring
   http://www.bea.com/ns/wlevs/spring/spring-wlevs-v11_1_1_7.xsd">
+	
+	<!-- The default processor for OCEP 11.0.0.0 is CQL -->
 
-    <wlevs:event-type-repository>
-        <wlevs:event-type type-name="HelloWorldEvent">
-            <wlevs:class>com.bea.wlevs.event.example.helloworld.HelloWorldEvent</wlevs:class>
-        </wlevs:event-type>
-    </wlevs:event-type-repository>
-
-    <!-- Adapter can be created from a local class, without having to go through a adapter factory -->
-    <wlevs:adapter id="helloworldAdapter" class="com.bea.wlevs.adapter.example.helloworld.HelloWorldAdapter" >
-        <wlevs:instance-property name="message" value="HelloWorld - the current time is:"/>
-    </wlevs:adapter>
-
-    <wlevs:channel id="helloworldInputChannel" event-type="HelloWorldEvent" >
-        <wlevs:listener ref="helloworldProcessor"/>
-        <wlevs:source ref="helloworldAdapter"/>
-    </wlevs:channel>
-
-    <!-- The default processor for OCEP 11.0.0.0 is CQL -->
-    <wlevs:processor id="helloworldProcessor" />
-    
-    <wlevs:channel id="helloworldOutputChannel" event-type="HelloWorldEvent" advertise="true">
-        <wlevs:listener>
-            <bean class="com.bea.wlevs.example.helloworld.HelloWorldBean"/>
-        </wlevs:listener>
-        <wlevs:source ref="helloworldProcessor"/>
-    </wlevs:channel>
+	<wlevs:event-type-repository>
+		
+		<wlevs:event-type type-name="NetworkNodeEvent">
+			<wlevs:class>com.opitz.iot.network.NetworkNode</wlevs:class>
+		</wlevs:event-type>
+		
+		<wlevs:event-type type-name="UserStateEvent">
+			<wlevs:class>com.opitz.iot.network.UserStateEvent</wlevs:class>
+		</wlevs:event-type>
+		
+		<wlevs:event-type type-name="UserNode">
+		<wlevs:class>com.opitz.iot.network.UserNode</wlevs:class></wlevs:event-type>
+		
+	</wlevs:event-type-repository>
+	
+	
 	<wlevs:adapter id="NetworkNodeAdapter"
-		class="com.opitz.iot.network.NetworkNodeAdapter">
+		class="com.opitz.iot.network.NetworkNodeAdapter"> <!-- The adapter that searches the local network for new nodes -->
+		<wlevs:listener ref="networkNodeInputChannel" />
+	</wlevs:adapter>
+
+	<wlevs:processor id="UserDeviceProcessor">
+		<wlevs:listener ref="UserDeviceOutputChannel" />
+		<wlevs:cache-source ref="userNodeCache" />
+	</wlevs:processor>
+	<wlevs:channel id="networkNodeInputChannel" event-type="NetworkNodeEvent">
+
+		<wlevs:listener ref="UserDeviceProcessor" />
+		<wlevs:listener ref="NetworkNodeOutputAdapter" />
+	</wlevs:channel>
+	
+	<!-- the caches we use for storing both user-mac links from spring as well as user-states and general nodes for pushing to spring-->
+	<wlevs:cache id="userNodeCache" value-type="UserNode"
+		key-properties="macAddress">
+	</wlevs:cache>
+	
+	<wlevs:cache id="userStateCache" value-type="UserStateEvent" key-properties="username" >
+	</wlevs:cache>
+	
+	<wlevs:cache id="NetworkNodeCache" value-type="NetworkNodeEvent" key-properties="macAddress">
+	</wlevs:cache>
+	
+	
+	<wlevs:caching-system id="iot-caching-system" />
+
+	
+	<wlevs:channel id="userStateOutputChannel" event-type="UserStateEvent">
+		<wlevs:listener ref="UserStateAdapter" />
+		<wlevs:listener ref="UserNodeBean" />
+	</wlevs:channel>
+	
+	<!-- the adapter that sends the user states to the spring server -->
+	<wlevs:adapter id="UserStateAdapter"
+		class="com.opitz.iot.network.UserStateAdapter">
+		<wlevs:instance-property name="serverURL"
+			value="http://springiotserver:8080/iot-spring-bpm/service/user" />
+	</wlevs:adapter>
+	
+	
+	<wlevs:event-bean id="UserNodeBean"
+		class="com.opitz.iot.network.UserNodeBean">
+		
+		<wlevs:instance-property name="serverURL"
+			value="http://springiotserver:8080/iot-spring-bpm/service/user/deviceList" />
+		<wlevs:instance-property name="users"
+			ref="userNodeCache" />
+			<wlevs:instance-property name="userStates"
+			ref="userStateCache" />
+	</wlevs:event-bean>
+	
+	<wlevs:processor id="UserStateProcessor">
+		<wlevs:listener ref="userStateOutputChannel" />
+		<wlevs:cache-source ref="userStateCache" />
+	</wlevs:processor>
+
+	<!-- The part that sends all of our found nodes to the spring context to make sure we have a list of all known nodes -->
+	<wlevs:channel id="UserDeviceOutputChannel" event-type="UserStateEvent">
+		<wlevs:listener ref="UserStateProcessor" />
+	</wlevs:channel>
+
+	<wlevs:adapter id="NetworkNodeOutputAdapter"
+		class="com.opitz.iot.network.NetworkNodeOutputAdapter">
+		<wlevs:instance-property name="networkNodes"
+			ref="NetworkNodeCache" />
+	<wlevs:instance-property name="serverURL" value="http://springiotserver:8080/iot-spring-bpm/service/networkdevices"></wlevs:instance-property>
 	</wlevs:adapter>
 </beans>
 
