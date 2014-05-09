@@ -67,7 +67,7 @@
 	<wlevs:adapter id="UserStateAdapter"
 		class="com.opitz.iot.network.UserStateAdapter">
 		<wlevs:instance-property name="serverURL"
-			value="http://springiotserver:8080/iot-spring-bpm/service/user" />
+			value="http://springiotserver:8080/iot-spring-bpm/service/users" />
 	</wlevs:adapter>
 	
 	
@@ -75,7 +75,7 @@
 		class="com.opitz.iot.network.UserNodeBean">
 		
 		<wlevs:instance-property name="serverURL"
-			value="http://springiotserver:8080/iot-spring-bpm/service/user/deviceList" />
+			value="http://springiotserver:8080/iot-spring-bpm/service/users/devices" />
 		<wlevs:instance-property name="users"
 			ref="userNodeCache" />
 			<wlevs:instance-property name="userStates"
