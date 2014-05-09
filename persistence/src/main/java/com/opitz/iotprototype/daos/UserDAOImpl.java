@@ -1,14 +1,15 @@
 package com.opitz.iotprototype.daos;
 
-import com.opitz.iotprototype.entities.User;
+import java.io.Serializable;
+import java.util.List;
+
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.io.Serializable;
-import java.util.List;
+import com.opitz.iotprototype.entities.User;
 
 /**
  * User: Pascal

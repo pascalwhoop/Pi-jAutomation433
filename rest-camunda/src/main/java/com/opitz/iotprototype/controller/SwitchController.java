@@ -1,141 +1,134 @@
 package com.opitz.iotprototype.controller;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
 import com.opitz.iotprototype.entities.ElroPowerPlug;
 import com.opitz.iotprototype.services.ElroPowerPlugService;
 import com.opitz.iotprototype.utils.DataNotFoundException;
 
-import org.camunda.bpm.engine.ProcessEngine;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-
 /**
- * User: Pascal
- * Date: 07.10.13
- * Time: 12:31
- * <p/>
- * This Controller manages all switch interaction, so basically on and off adding deleting and querying.
- * TODO scheduling plug actions
+ * This Controller manages all switch interaction, so basically on and off
+ * adding deleting and querying.
+ * <p>
+ * User: Pascal Date: 07.10.13 Time: 12:31
  */
 
 @Controller
-@RequestMapping("/service/switch")
+@RequestMapping("/service/switches")
 public class SwitchController {
 
+	@Autowired
+	ElroPowerPlugService elroPowerPlugService;
 
-    @Autowired
-    ElroPowerPlugService elroPowerPlugService;
+	/**
+	 * Activate a certain {@link ElroPowerPlug}.
+	 * <p>
+	 * 
+	 * <pre>
+	 * <b>REST call example:</b><br/>
+	 * {@code PUT .../switches/activate/<exampleId><br/>
+	 * </pre>
+	 * 
+	 * @param id
+	 *            certain {@link ElroPowerPlug} id
+	 * @return certain {@link ElroPowerPlug} retreived from the DB after
+	 *         updating the lastKnownState
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/activate/{id}", method = RequestMethod.PUT)
+	public ElroPowerPlug activate(@PathVariable("id") Integer id) {
+		elroPowerPlugService.setState(id, true);
+		return elroPowerPlugService.load(id);
+	}
 
-    @Autowired
-    ProcessEngine processEngine;
+	/**
+	 * Deactivate a certain {@link ElroPowerPlug}.
+	 * <p>
+	 * 
+	 * <pre>
+	 * <b>REST call example:</b><br/>
+	 * {@code PUT .../switches/deactivate/<exampleId><br/>
+	 * </pre>
+	 * 
+	 * @param id
+	 *            certain {@link ElroPowerPlug} id
+	 * @return certain {@link ElroPowerPlug} retreived from the DB after
+	 *         updating the lastKnownState
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/deactivate/{id}", method = RequestMethod.PUT)
+	public ElroPowerPlug deactivate(@PathVariable("id") Integer id) {
+		elroPowerPlugService.setState(id, false);
+		return elroPowerPlugService.load(id);
+	}
 
-    /*@ResponseBody
-    @RequestMapping(value="/{switchID}/activate", method = RequestMethod.POST)
-    public void testStaticAddress(@PathVariable("switchID") String switchID){
+	/**
+	 * Retrieve all {@link ElroPowerPlug}s. (TODO available to the requesting
+	 * user)
+	 * <p>
+	 * 
+	 * <pre>
+	 * <b>REST call example:</b><br/>
+	 * {@code GET .../switches}
+	 * </pre>
+	 * 
+	 * @return {@link List} of {@link ElroPowerPlug}
+	 */
+	@ResponseBody
+	@RequestMapping(method = RequestMethod.GET)
+	public List<ElroPowerPlug> getAll() {
+		return elroPowerPlugService.listAll();
+	}
 
-        NativeRCSwitchAdapter jniAdapter= NativeRCSwitchAdapter.getInstance();
-        jniAdapter.switchOn("11111", "10101");
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {}
-        jniAdapter.switchOff("11111", "10101");
+	/**
+	 * Create a new {@link ElroPowerPlug}.
+	 * <p>
+	 * 
+	 * <pre>
+	 * <b>REST call example:</b><br/>
+	 * {@code POST .../switches}<br/>
+	 * and {@link ElroPowerPlug} as {@link RequestBody}
+	 * </pre>
+	 * 
+	 * @param newPlug
+	 *            new {@link ElroPowerPlug}
+	 * 
+	 * @return created {@link ElroPowerPlug}
+	 */
+	@ResponseBody
+	@RequestMapping(method = RequestMethod.POST)
+	public ElroPowerPlug create(@RequestBody ElroPowerPlug newPlug) {
+		Integer id = (Integer) elroPowerPlugService.save(newPlug);
+		return elroPowerPlugService.load(id);
+	}
 
-    }*/
-
-    /**
-     * REST call with PUT to activate a certain plug.
-     *
-     * @param plug a JSON representation of a ElroPowerPlug
-     * @return The same plug retreived from the DB after updating the lastKnownState
-     */
-
-    @ResponseBody
-    @RequestMapping(value = "/activate", method = RequestMethod.PUT)
-    public ElroPowerPlug activateSwitch(@RequestBody ElroPowerPlug plug) {
-
-        HashMap<String, Object> processInformation = new HashMap();
-        processInformation.put("plugId", plug.getId());
-        processInformation.put("newState", true);
-        processEngine.getRuntimeService().startProcessInstanceByKey("setPlugStateProcess", processInformation);
-
-        return elroPowerPlugService.load(plug.getId());
-        //return elroPowerPlugService.setState(plug, true);
-    }
-
-
-    /**
-     * REST call with PUT to deactivate a certain plug.
-     *
-     * @param plug a JSON representation of a ElroPowerPlug
-     * @return The same plug retreived from the DB after updating the lastKnownState
-     */
-
-    @ResponseBody
-    @RequestMapping(value = "/deactivate", method = RequestMethod.PUT)
-    public ElroPowerPlug deactivateSwitch(@RequestBody ElroPowerPlug plug) {
-
-        HashMap<String, Object> processInformation = new HashMap();
-        processInformation.put("plugId", plug.getId());
-        processInformation.put("newState", false);
-        processEngine.getRuntimeService().startProcessInstanceByKey("setPlugStateProcess", processInformation);
-
-        return elroPowerPlugService.load(plug.getId());
-        //return elroPowerPlugService.setState(plug, false);
-    }
-
-    /**
-     * REST call with GET to retreive all plugs (TODO available to the requesting user )
-     *
-     * @return A List of all plugs
-     */
-
-    @ResponseBody
-    @RequestMapping(value = "/getAllPlugsAvailable", method = RequestMethod.GET)
-    public List<ElroPowerPlug> getAllPlugsAvailable() {
-        return elroPowerPlugService.listAll();
-    }
-
-
-    @ResponseBody
-    @RequestMapping(value = "/timer/{time}/activate")
-    public boolean setTimerForPlug(@RequestBody ElroPowerPlug plug, @PathVariable("time") String timeString) {
-        Date time = new Date(Long.decode(timeString));
-        return false;
-    }
-
-
-    /**
-     * REST call with POST to post a new plug to the system.
-     *
-     * @param newPlug
-     */
-
-
-    @ResponseBody
-    @RequestMapping(value = "/addplug", method = RequestMethod.POST)
-    public ElroPowerPlug addSwitch(@RequestBody ElroPowerPlug newPlug) {
-        Integer id = (Integer) elroPowerPlugService.save(newPlug);
-        return elroPowerPlugService.load(id);
-    }
-
-    /**
-     * REST call with DELETE to delete a plug from the system.
-     *
-     * @param id
-     * @throws DataNotFoundException
-     */
-
-    @ResponseBody
-    @RequestMapping(value = "/deleteplug/{id}", method = RequestMethod.DELETE)
-    public void deleteSwitch(@PathVariable("id") Integer id) throws DataNotFoundException {
-        elroPowerPlugService.delete(id);
-    }
-
+	/**
+	 * Delete {@link ElroPowerPlug} by id from system.
+	 * <p>
+	 * 
+	 * <pre>
+	 * <b>REST call example:</b><br/>
+	 * {@code DELETE .../switches/<exampleId>}
+	 * </pre>
+	 * 
+	 * @param id
+	 *            unique {@link ElroPowerPlug} identifier
+	 * 
+	 * @throws DataNotFoundException
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+	public void delete(@PathVariable("id") Integer id)
+			throws DataNotFoundException {
+		elroPowerPlugService.delete(id);
+	}
 
 }
-
-

@@ -1,0 +1,35 @@
+package com.opitz.iotprototype
+
+import com.opitz.iotprototype.entities.User;
+import java.util.HashSet;
+
+rule "Switch ON chilloutArea for jack"
+when
+   u : User( username == "jack" )
+then
+   HashSet<String> specials = new HashSet<String>();
+   specials.add( "chilloutArea" );
+   insert( specials );
+   System.out.println( "## drools: special rule to switch ON chilloutArea for jack ##" );
+end
+
+rule "Switch ON vipArea for pascal"
+when
+   u : User( username == "pascal" )
+then
+   HashSet<String> specials = new HashSet<String>();
+   specials.add( "vipArea" );
+   insert( specials );
+   System.out.println( "## drools: special rule to switch ON vipArea for pascal ##" );
+end
+
+rule "Switch ON bathroom and meetingroom for daniel"
+when
+   u : User( username == "daniel" )
+then
+   HashSet<String> specials = new HashSet<String>();
+   specials.add( "bathroom" );
+   specials.add( "meetingroom" );
+   insert( specials );
+   System.out.println( "## drools: special rule to switch ON bathroom and meetingroom for daniel ##" );
+end

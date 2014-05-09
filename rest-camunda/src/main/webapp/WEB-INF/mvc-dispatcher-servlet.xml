@@ -1,113 +1,119 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:jdbc="http://www.springframework.org/schema/jdbc"
-       xmlns:tx="http://www.springframework.org/schema/tx" xmlns:task="http://www.springframework.org/schema/task"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context.xsd
         http://www.springframework.org/schema/mvc
         http://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd">
 
-    <context:property-placeholder location="classpath:hibernate.properties" />
+	<context:property-placeholder location="classpath:hibernate.properties" />
 
-    <context:component-scan base-package="com.opitz.iotprototype"/>
+	<context:component-scan base-package="com.opitz.iotprototype" />
 
+	<mvc:annotation-driven>
+		<mvc:message-converters>
+			<!-- Use the HibernateAware mapper instead of the default -->
+			<bean
+				class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+				<property name="objectMapper">
+					<bean class="com.opitz.iotprototype.utils.HibernateAwareObjectMapper" />
+				</property>
+			</bean>
+		</mvc:message-converters>
+	</mvc:annotation-driven>
+	<mvc:default-servlet-handler />
 
-    <mvc:annotation-driven>
-        <mvc:message-converters>
-            <!-- Use the HibernateAware mapper instead of the default -->
-            <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
-                <property name="objectMapper">
-                    <bean class="com.opitz.iotprototype.utils.HibernateAwareObjectMapper" />
-                </property>
-            </bean>
-        </mvc:message-converters>
-    </mvc:annotation-driven>
-    <mvc:default-servlet-handler/>
+	<!--activates @scheduled and @async annotations for scheduling -->
+	<task:annotation-driven />
 
-    <!--activates @scheduled and @async annotations for scheduling-->
-    <task:annotation-driven/>
+	<!-- database -->
 
+	<!-- database transactions manager -->
+	<tx:annotation-driven />
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
 
-    <!-- database -->
+	<!-- hibernate config -->
 
-    <!-- database transactions manager-->
-    <tx:annotation-driven/>
-    <bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
-        <property name="sessionFactory" ref="sessionFactory"></property>
-    </bean>
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
+				<prop key="hibernate.dialect">${hibernate.dialect}</prop>
+				<prop key="hibernate.default_schema">${hibernate.schema.name}</prop>
+				<prop key="show_sql">${hibernate.show_sql}</prop>
+				<prop key="format_sql">${hibernate.format_sql}</prop>
+			</props>
+		</property>
+		<property name="packagesToScan">
+			<list>
+				<value>com.opitz.iotprototype.entities</value>
+			</list>
+		</property>
+	</bean>
 
+	<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy">
+		<property name="targetDataSource">
+			<bean class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
+				<property name="driverClass" value="${jdbc.driverClassName}" />
+				<property name="url" value="${jdbc.url}" />
+				<property name="username" value="${jdbc.user}" />
+				<property name="password" value="${jdbc.pass}" />
+			</bean>
+		</property>
+	</bean>
 
-    <!-- hibernate config -->
+	<bean id="persistenceExceptionTranslationPostProcessor"
+		class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
 
-    <bean id="sessionFactory"
-          class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
-        <property name="dataSource" ref="dataSource" />
-        <property name="hibernateProperties">
-            <props>
-                <prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
-                <prop key="hibernate.dialect">${hibernate.dialect}</prop>
-                <prop key="hibernate.default_schema">${hibernate.schema.name}</prop>
-                <prop key="show_sql">${hibernate.show_sql}</prop>
-                <prop key="format_sql">${hibernate.format_sql}</prop>
+	<!-- camunda process engine configuration -->
+	<bean id="processEngineConfiguration"
+		class="org.camunda.bpm.engine.spring.SpringProcessEngineConfiguration">
+		<property name="processEngineName" value="default" />
+		<property name="dataSource" ref="dataSource" />
+		<property name="transactionManager" ref="transactionManager" />
+		<property name="databaseSchemaUpdate" value="true" />
+		<property name="jobExecutorActivate" value="false" />
+		<property name="deploymentResources" value="classpath*:*.bpmn" />
+	</bean>
 
-            </props>
-        </property>
-        <property name="packagesToScan">
-            <list>
-                <value>com.opitz.iotprototype.entities</value>
-            </list>
-        </property>
-    </bean>
+	<!-- embedded camunda process engine -->
+	<bean id="processEngine" class="org.camunda.bpm.engine.spring.ProcessEngineFactoryBean">
+		<property name="processEngineConfiguration" ref="processEngineConfiguration" />
+	</bean>
 
-    <bean id="dataSource"
-          class="org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy">
-        <property name="targetDataSource">
-            <bean class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
-                <property name="driverClass" value="${jdbc.driverClassName}"/>
-                <property name="url" value="${jdbc.url}"/>
-                <property name="username" value="${jdbc.user}"/>
-                <property name="password" value="${jdbc.pass}"/>
+	<!-- camunda process engine services -->
+	<bean id="repositoryService" factory-bean="processEngine"
+		factory-method="getRepositoryService" />
+	<bean id="runtimeService" factory-bean="processEngine"
+		factory-method="getRuntimeService" />
+	<bean id="taskService" factory-bean="processEngine"
+		factory-method="getTaskService" />
+	<bean id="historyService" factory-bean="processEngine"
+		factory-method="getHistoryService" />
+	<bean id="managementService" factory-bean="processEngine"
+		factory-method="getManagementService" />
 
-            </bean>
-        </property>
-    </bean>
-
-
-
-    <bean id="persistenceExceptionTranslationPostProcessor"
-          class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor"/>
-
-
-    <!-- camunda process engine configuration -->
-    <bean id="processEngineConfiguration" class="org.camunda.bpm.engine.spring.SpringProcessEngineConfiguration">
-        <property name="processEngineName" value="default" />
-        <property name="dataSource" ref="dataSource" />
-        <property name="transactionManager" ref="transactionManager" />
-        <property name="databaseSchemaUpdate" value="true" />
-        <property name="jobExecutorActivate" value="false" />
-    </bean>
-    
-    <!-- embedded camunda process engine -->
-    <bean id="processEngine" class="org.camunda.bpm.engine.spring.container.ManagedProcessEngineFactoryBean">
-        <property name="processEngineConfiguration" ref="processEngineConfiguration" />
-    </bean>
-    
-    <!-- camunda process engine services -->
-    <bean id="repositoryService" factory-bean="processEngine" factory-method="getRepositoryService" />
-    <bean id="runtimeService" factory-bean="processEngine" factory-method="getRuntimeService" />
-    <bean id="taskService" factory-bean="processEngine" factory-method="getTaskService" />
-    <bean id="historyService" factory-bean="processEngine" factory-method="getHistoryService" />
-    <bean id="managementService" factory-bean="processEngine" factory-method="getManagementService" />
-    
-    <!-- deployable camunda process application for process engine (see processes.xml)  -->
-     <bean id="processApplication" class="org.camunda.bpm.engine.spring.application.SpringServletProcessApplication" depends-on="processEngine" />
-
-	<!-- camunda delegates -->
-    <bean id="fetchDeviceService" class="com.opitz.iotprototype.delegates.FetchDeviceDelegate" />
-    <bean id="droolsService" class="com.opitz.iotprototype.delegates.DroolsDelegate" />
-    <bean id="controlPlugService" class="com.opitz.iotprototype.delegates.ControlPlugDelegate" />
-    
+	<!-- camunda delegate services -->
+	<bean id="applyFirstUser" class="com.opitz.iotprototype.delegates.ApplyFirstUserDelegate" />
+	<bean id="switchKitchen" class="com.opitz.iotprototype.delegates.SwitchKitchenDelegate" />
+	<bean id="applyEnteringRules"
+		class="com.opitz.iotprototype.delegates.ApplyEnteringRulesDelegate" />
+	<bean id="switchSpecialPlug"
+		class="com.opitz.iotprototype.delegates.SwitchSpecialPlugDelegate" />
+	<bean id="switchOnPlug" class="com.opitz.iotprototype.delegates.SwitchOnPlugDelegate" />
+	<bean id="applyLastUser" class="com.opitz.iotprototype.delegates.ApplyLastUserDelegate" />
+	<bean id="switchOffAllPlug"
+		class="com.opitz.iotprototype.delegates.SwitchOffAllPlugDelegate" />
+	<bean id="applyLeavingRules"
+		class="com.opitz.iotprototype.delegates.ApplyLeavingRulesDelegate" />
+	<bean id="switchOffPlug" class="com.opitz.iotprototype.delegates.SwitchOffPlugDelegate" />
 </beans>

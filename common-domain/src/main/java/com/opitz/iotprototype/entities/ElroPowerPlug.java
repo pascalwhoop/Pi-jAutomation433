@@ -25,7 +25,7 @@ public class ElroPowerPlug implements Serializable {
 	private Integer id;
 	private String label;
 	private String switchID;
-	private String groupID;
+	private String groupID; // 5 bit binary code for a certain plug
 	private boolean lastKnownState;
 
 	// Getter Setter

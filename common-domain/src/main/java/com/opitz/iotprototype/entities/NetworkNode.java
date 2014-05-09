@@ -1,11 +1,10 @@
 package com.opitz.iotprototype.entities;
 
-import java.io.Serializable;
-import java.util.Date;
-
 import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  * User: Pascal Date: 06.03.14 Time: 15:17
@@ -13,6 +12,10 @@ import javax.persistence.Id;
 @Entity
 public class NetworkNode implements Serializable {
 
+
+    /**
+     * duplicate can be found in oracle-cep. Please make sure to update any new required fields added to this class in the oracle-cep module as well.
+     */
 	private String macAddress;
 	private String dnsName;
 	private String lastKnownIPAddress;

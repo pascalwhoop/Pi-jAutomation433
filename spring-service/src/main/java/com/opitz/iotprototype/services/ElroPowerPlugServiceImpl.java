@@ -24,9 +24,8 @@ public class ElroPowerPlugServiceImpl implements ElroPowerPlugService {
     @Autowired
     private ElroPowerPlugDAO elroPowerPlugDAO;
 
-
-    @Override
     @Transactional
+    @Override
     public ElroPowerPlug setState(ElroPowerPlug elroPowerPlug, boolean state) {
 
         NativeRCSwitchAdapter jniAdapter= NativeRCSwitchAdapter.getInstance();
@@ -48,13 +47,14 @@ public class ElroPowerPlugServiceImpl implements ElroPowerPlugService {
 
     }
 
+    @Transactional
     @Override
     public ElroPowerPlug setState(Integer id, boolean state) {
         return this.setState(elroPowerPlugDAO.load(id), state);
     }
 
-    @Override
     @Transactional
+    @Override
     public Serializable save(ElroPowerPlug elroPowerPlug) {
         if(elroPowerPlug.getId() == null){
             return elroPowerPlugDAO.save(elroPowerPlug);
