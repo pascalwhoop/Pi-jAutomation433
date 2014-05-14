@@ -19,6 +19,14 @@ import com.bea.wlevs.ede.api.EventRejectedException;
 import com.bea.wlevs.ede.api.RunnableBean;
 import com.bea.wlevs.ede.api.StreamSink;
 
+
+/**
+ * 
+ * @author Brokmeier, Pascal (pbr) OPITZ CONSULTING Deutschland GmbH
+ * This Adapter sends all our found nodes to the Spring Server periodically. This is necessary, since we want to be able to link users & network devices.
+ * These user-device mappings are then in turn used to track if a user is home or not and generate events from this.
+ *
+ */
 public class NetworkNodeOutputAdapter implements Adapter, StreamSink{
 
 	private Map<String, NetworkNode> networkNodes;
@@ -28,7 +36,9 @@ public class NetworkNodeOutputAdapter implements Adapter, StreamSink{
 
 	
 	
-	
+	/**
+	 * Every node that is found is passed to this method. We keep a cache and send all nodes from the last 10 minutes every 10 minutes.
+	 */
 	@Override
 	public void onInsertEvent(Object event) throws EventRejectedException {
 		//we add our NetworkNodes (which are the class behind the event) to our cache. put will always overwrite old node data with new one.
@@ -113,19 +123,13 @@ public class NetworkNodeOutputAdapter implements Adapter, StreamSink{
 		return serverURL;
 	}
 
-
-
 	public void setServerURL(String serverURL) {
 		this.serverURL = serverURL;
 	}
 
-
-
 	public Map getNetworkNodes() {
 		return networkNodes;
 	}
-
-
 
 	public void setNetworkNodes(Map networkNodes) {
 		this.networkNodes = networkNodes;

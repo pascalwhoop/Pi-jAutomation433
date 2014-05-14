@@ -3,28 +3,19 @@ package com.opitz.iot.network;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
-
-
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import com.bea.wlevs.ede.api.Adapter;
-import com.bea.wlevs.ede.api.EventBean;
-import com.bea.wlevs.ede.api.EventRejectedException;
 import com.bea.wlevs.ede.api.RunnableBean;
-import com.bea.wlevs.ede.api.StreamSink;
 
 public class UserNodeBean implements Adapter, RunnableBean { 
     

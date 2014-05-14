@@ -5,6 +5,9 @@ import java.util.Date;
 
 /**
  * User: Pascal Date: 06.03.14 Time: 15:17
+ * 
+ * A domain class which is used in our prototype. it represents a network node on a local network including all relevant data that can be extracted from the 
+ * ARP cache
  */
 public class NetworkNode{
 

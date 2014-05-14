@@ -14,6 +14,12 @@ import com.bea.wlevs.ede.api.Adapter;
 import com.bea.wlevs.ede.api.EventRejectedException;
 import com.bea.wlevs.ede.api.StreamSink;
 
+
+/**
+ * This class passes our created events to the server.
+ * @author Brokmeier, Pascal (pbr)
+ *
+ */
 public class UserStateAdapter implements Adapter, StreamSink {
 
 	public String serverURL;

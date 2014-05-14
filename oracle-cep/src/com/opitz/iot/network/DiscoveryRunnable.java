@@ -31,6 +31,9 @@ public class DiscoveryRunnable implements Runnable {
         doPing();
     }
 
+    /**
+     * method that performs a ping for the set up ip in this runnable using a given timeout
+     */
     public void doPing() {
         try {
             InetAddress.getByName(ip).isReachable(timeout);

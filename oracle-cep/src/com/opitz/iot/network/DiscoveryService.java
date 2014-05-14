@@ -38,7 +38,7 @@ public class DiscoveryService {
 	}
 
     /**
-     * A method for pinging all devices in a local network. check arp cache afterwards
+     * A method for pinging all devices in a local network. We use an ExecutorService and have it run multiple threads of pinging.
      * @param responseTimeout
      */
     public void pingAllInSubnet(int responseTimeout) {
@@ -70,6 +70,11 @@ public class DiscoveryService {
         this.pingAllInSubnet(150);
     }
 
+    /**
+     * retrieves all nodes from arp cache and puts them in a usable format. usually its just a long string but we need a Map or something to use in
+     * our code.
+     * @return
+     */
     public HashMap<String, NetworkNode> getAllDevicesFromArpCache() {
         HashMap<String, NetworkNode> nodes = new HashMap<String, NetworkNode>();
         for (String line : getArpTable()) {

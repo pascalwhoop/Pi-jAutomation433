@@ -10,6 +10,12 @@ import com.bea.wlevs.ede.api.StreamSender;
 import com.bea.wlevs.ede.api.StreamSink;
 import com.bea.wlevs.ede.api.StreamSource;
 
+/**
+ * This Bean is responsible for the actual event logic. It compares the events passed (user found or not?) and checks wether the user has been 
+ * in this state before or if he has been away for less (or more) than 5 minutes. There are 3 relevant states (see UserState enum)
+ * @author Brokmeier, Pascal (pbr)
+ *
+ */
 public class StateCalculatingBean implements StreamSink, StreamSource {
 
 	private Map<String, UserStateEvent> userMacPairs;
@@ -19,7 +25,6 @@ public class StateCalculatingBean implements StreamSink, StreamSource {
 	public void onInsertEvent(Object event) throws EventRejectedException {
 		
 		UserNodeStateEvent userNodeState = (UserNodeStateEvent) event;
-		System.out.println("User: " + userNodeState.getUsername() + " was " + userNodeState.isNodeFound());
 		if(userMacPairs.get(userNodeState.getUsername()) != null){
 			calculateUserState(userNodeState);
 		}
@@ -77,6 +82,11 @@ public class StateCalculatingBean implements StreamSink, StreamSource {
 		return null;
 	}
 	
+	/**
+	 * if a new user was added or on server launch, the cache is empty. then the current situation is used as a start and immediate events are triggered 
+	 * to create a "working base"
+	 * @param userNodeStateEvent
+	 */
 	private void instantiateNewUserState(UserNodeStateEvent userNodeStateEvent){
 		if(userNodeStateEvent.isNodeFound()){
 			UserStateEvent stateEvent = new UserStateEvent(userNodeStateEvent.getUsername(), UserState.ONLINE);

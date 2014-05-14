@@ -12,6 +12,8 @@ import com.bea.wlevs.ede.api.StreamSource;
  * User: Pascal
  * Date: 09.04.14
  * Time: 13:22
+ * 
+ * This Bean is responsible for performing the network discovery in our EPN. It is started on launch and then performs periodic polling of our network. 
  */
 public class NetworkNodeAdapter implements RunnableBean, StreamSource {
 
