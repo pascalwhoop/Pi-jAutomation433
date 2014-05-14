@@ -81,7 +81,7 @@ public class UserController {
 		variables.put("state", state.name().toLowerCase()); // TODO change to enum
 		ProcessInstance processInstance = runtimeService.startProcessInstanceByKey(
 		    PLUG_SWITCH_PROCESS_DEFINITION_KEY, variables);
-		return "process instance with id " + processInstance.getId() + " started.";
+		return "process instance with id " + processInstance.getId() + " done.";
 	}
 
 	/**

@@ -82,13 +82,17 @@
 		<property name="transactionManager" ref="transactionManager" />
 		<property name="databaseSchemaUpdate" value="true" />
 		<property name="jobExecutorActivate" value="false" />
-		<property name="deploymentResources" value="classpath*:*.bpmn" />
 	</bean>
 
 	<!-- embedded camunda process engine -->
-	<bean id="processEngine" class="org.camunda.bpm.engine.spring.ProcessEngineFactoryBean">
+	<bean id="processEngine"
+		class="org.camunda.bpm.engine.spring.container.ManagedProcessEngineFactoryBean">
 		<property name="processEngineConfiguration" ref="processEngineConfiguration" />
 	</bean>
+
+	<bean id="processApplication"
+		class="org.camunda.bpm.engine.spring.application.SpringServletProcessApplication"
+		depends-on="processEngine" />
 
 	<!-- camunda process engine services -->
 	<bean id="repositoryService" factory-bean="processEngine"
@@ -116,4 +120,5 @@
 	<bean id="applyLeavingRules"
 		class="com.opitz.iotprototype.delegates.ApplyLeavingRulesDelegate" />
 	<bean id="switchOffPlug" class="com.opitz.iotprototype.delegates.SwitchOffPlugDelegate" />
+	<bean id="setUserState" class="com.opitz.iotprototype.delegates.SetUserStateDelegate" />
 </beans>

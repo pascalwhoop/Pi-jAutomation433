@@ -8,7 +8,7 @@
       <bpmn2:outgoing>SequenceFlow_2</bpmn2:outgoing>
     </bpmn2:startEvent>
     <bpmn2:endEvent id="EndEvent_2" name="Plug Switch Request handled">
-      <bpmn2:incoming>SequenceFlow_46</bpmn2:incoming>
+      <bpmn2:incoming>SequenceFlow_4</bpmn2:incoming>
     </bpmn2:endEvent>
     <bpmn2:exclusiveGateway id="ParallelGateway_2" name="Go Online?" default="SequenceFlow_1">
       <bpmn2:incoming>SequenceFlow_2</bpmn2:incoming>
@@ -126,7 +126,7 @@
       <bpmn2:incoming>SequenceFlow_47</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_46</bpmn2:outgoing>
     </bpmn2:exclusiveGateway>
-    <bpmn2:sequenceFlow id="SequenceFlow_46" name="" sourceRef="ExclusiveGateway_6" targetRef="EndEvent_2"/>
+    <bpmn2:sequenceFlow id="SequenceFlow_46" name="" sourceRef="ExclusiveGateway_6" targetRef="ServiceTask_2"/>
     <bpmn2:sequenceFlow id="SequenceFlow_47" name="" sourceRef="ServiceTask_7" targetRef="ExclusiveGateway_6"/>
     <bpmn2:sequenceFlow id="SequenceFlow_48" name="" sourceRef="ParallelGateway_8" targetRef="ServiceTask_7"/>
     <bpmn2:serviceTask id="ServiceTask_11" camunda:delegateExpression="${applyFirstUser}" name="Apply first user">
@@ -142,6 +142,11 @@
     </bpmn2:serviceTask>
     <bpmn2:sequenceFlow id="SequenceFlow_1" name="no" sourceRef="ParallelGateway_2" targetRef="ServiceTask_1"/>
     <bpmn2:sequenceFlow id="SequenceFlow_3" name="" sourceRef="ServiceTask_1" targetRef="ExclusiveGateway_1"/>
+    <bpmn2:serviceTask id="ServiceTask_2" camunda:delegateExpression="${setUserState}" name="Set User state">
+      <bpmn2:incoming>SequenceFlow_46</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_4</bpmn2:outgoing>
+    </bpmn2:serviceTask>
+    <bpmn2:sequenceFlow id="SequenceFlow_4" name="" sourceRef="ServiceTask_2" targetRef="EndEvent_2"/>
     <bpmn2:textAnnotation id="TextAnnotation_1">
       <bpmn2:text>use drools entering rules</bpmn2:text>
     </bpmn2:textAnnotation>
@@ -172,18 +177,18 @@
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="_BPMNShape_EndEvent_15" bpmnElement="EndEvent_2">
-        <dc:Bounds height="36.0" width="36.0" x="1632.0" y="128.0"/>
+        <dc:Bounds height="36.0" width="36.0" x="1788.0" y="128.0"/>
         <bpmndi:BPMNLabel>
-          <dc:Bounds height="22.0" width="178.0" x="1572.0" y="170.0"/>
+          <dc:Bounds height="22.0" width="178.0" x="1728.0" y="170.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="_BPMNShape_Participant_2" bpmnElement="_Participant_2" isHorizontal="true">
-        <dc:Bounds height="517.0" width="1801.0" x="0.0" y="0.0"/>
+        <dc:Bounds height="517.0" width="1909.0" x="0.0" y="0.0"/>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="_BPMNShape_ParallelGateway_3" bpmnElement="ParallelGateway_2" isMarkerVisible="true">
         <dc:Bounds height="50.0" width="50.0" x="204.0" y="120.0"/>
         <bpmndi:BPMNLabel>
-          <dc:Bounds height="21.0" width="71.0" x="237.0" y="163.0"/>
+          <dc:Bounds height="22.0" width="71.0" x="237.0" y="163.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_2" bpmnElement="SequenceFlow_2" sourceElement="_BPMNShape_StartEvent_7" targetElement="_BPMNShape_ParallelGateway_3">
@@ -275,7 +280,7 @@
       <bpmndi:BPMNShape id="_BPMNShape_ParallelGateway_9" bpmnElement="ParallelGateway_8" isMarkerVisible="true">
         <dc:Bounds height="50.0" width="50.0" x="1200.0" y="120.0"/>
         <bpmndi:BPMNLabel>
-          <dc:Bounds height="21.0" width="30.0" x="1236.0" y="156.0"/>
+          <dc:Bounds height="22.0" width="30.0" x="1236.0" y="156.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_25" bpmnElement="SequenceFlow_25" sourceElement="_BPMNShape_ServiceTask_21" targetElement="_BPMNShape_ParallelGateway_9">
@@ -352,7 +357,7 @@
       <bpmndi:BPMNShape id="_BPMNShape_ExclusiveGateway_5" bpmnElement="ExclusiveGateway_4" isMarkerVisible="true">
         <dc:Bounds height="50.0" width="50.0" x="1212.0" y="381.0"/>
         <bpmndi:BPMNLabel>
-          <dc:Bounds height="21.0" width="30.0" x="1250.0" y="420.0"/>
+          <dc:Bounds height="22.0" width="30.0" x="1250.0" y="420.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_37" bpmnElement="SequenceFlow_37" sourceElement="_BPMNShape_ServiceTask_24" targetElement="_BPMNShape_ExclusiveGateway_5">
@@ -385,7 +390,7 @@
       <bpmndi:BPMNShape id="_BPMNShape_ExclusiveGateway_6" bpmnElement="ExclusiveGateway_5" isMarkerVisible="true">
         <dc:Bounds height="50.0" width="50.0" x="1452.0" y="298.0"/>
         <bpmndi:BPMNLabel>
-          <dc:Bounds height="21.0" width="30.0" x="1488.0" y="339.0"/>
+          <dc:Bounds height="22.0" width="30.0" x="1488.0" y="339.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_41" bpmnElement="SequenceFlow_41" sourceElement="_BPMNShape_ServiceTask_23" targetElement="_BPMNShape_ExclusiveGateway_6">
@@ -423,12 +428,12 @@
       <bpmndi:BPMNShape id="_BPMNShape_ExclusiveGateway_7" bpmnElement="ExclusiveGateway_6" isMarkerVisible="true">
         <dc:Bounds height="50.0" width="50.0" x="1500.0" y="120.0"/>
         <bpmndi:BPMNLabel>
-          <dc:Bounds height="21.0" width="30.0" x="1536.0" y="156.0"/>
+          <dc:Bounds height="22.0" width="30.0" x="1536.0" y="156.0"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_46" bpmnElement="SequenceFlow_46" sourceElement="_BPMNShape_ExclusiveGateway_7" targetElement="_BPMNShape_EndEvent_15">
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_46" bpmnElement="SequenceFlow_46" sourceElement="_BPMNShape_ExclusiveGateway_7" targetElement="_BPMNShape_ServiceTask_33">
         <di:waypoint xsi:type="dc:Point" x="1550.0" y="145.0"/>
-        <di:waypoint xsi:type="dc:Point" x="1632.0" y="146.0"/>
+        <di:waypoint xsi:type="dc:Point" x="1608.0" y="146.0"/>
         <bpmndi:BPMNLabel>
           <dc:Bounds height="6.0" width="6.0" x="1571.0" y="145.0"/>
         </bpmndi:BPMNLabel>
@@ -514,6 +519,16 @@
       <bpmndi:BPMNEdge id="BPMNEdge_Association_5" bpmnElement="Association_5" sourceElement="_BPMNShape_TextAnnotation_6" targetElement="_BPMNShape_ServiceTask_25">
         <di:waypoint xsi:type="dc:Point" x="1447.0" y="463.0"/>
         <di:waypoint xsi:type="dc:Point" x="1428.0" y="447.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="_BPMNShape_ServiceTask_33" bpmnElement="ServiceTask_2">
+        <dc:Bounds height="80.0" width="100.0" x="1608.0" y="106.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_4" bpmnElement="SequenceFlow_4" sourceElement="_BPMNShape_ServiceTask_33" targetElement="_BPMNShape_EndEvent_15">
+        <di:waypoint xsi:type="dc:Point" x="1708.0" y="146.0"/>
+        <di:waypoint xsi:type="dc:Point" x="1788.0" y="146.0"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="6.0" width="6.0" x="1749.0" y="146.0"/>
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
