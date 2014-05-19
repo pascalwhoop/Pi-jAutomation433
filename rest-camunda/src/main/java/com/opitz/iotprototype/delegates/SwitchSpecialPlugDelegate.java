@@ -51,14 +51,22 @@ public class SwitchSpecialPlugDelegate implements JavaDelegate {
 		Set<ElroPowerPlug> allPlugs = new HashSet<>();
 		for (String label : deviceGroupLabels) {
 			DeviceGroup deviceGroup = deviceGroupService.findByLabel(label);
-			System.out.println("## camunda: deviceGroup '" + label
-			    + "' requested - found '" + deviceGroup.getLabel() + "' ##");
-			allPlugs.addAll(deviceGroup.getElroPowerPlugs());
+
+			if (deviceGroup != null) {
+				System.out.println("## camunda: special deviceGroup '"
+				    + deviceGroup.getLabel() + "' found ##");
+				allPlugs.addAll(deviceGroup.getElroPowerPlugs());
+			} else {
+				System.out.println("## camunda: special deviceGroup '" + label
+				    + "' not found. Processing continues ##");
+			}
+
 		}
 
 		// switch special plugs
 		System.out.println("## camunda: " + allPlugs.size()
-		    + " ElroPowerPlugs found to switch " + state + " ##");
+		    + " ElroPowerPlugs in special deviceGroups found to switch to '"
+		    + state + "' ##");
 		this.switchPlugs(allPlugs, state);
 	}
 

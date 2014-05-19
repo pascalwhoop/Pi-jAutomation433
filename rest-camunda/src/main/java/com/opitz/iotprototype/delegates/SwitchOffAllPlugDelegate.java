@@ -24,12 +24,12 @@ public class SwitchOffAllPlugDelegate implements JavaDelegate {
 	@Override
 	public void execute(DelegateExecution execution) throws Exception {
 
-		System.out.println("## camunda: switch off ALL the plugs ##");
+		System.out.println("## camunda: switch OFF all plugs ##");
 
 		// find all plugs
 		List<ElroPowerPlug> elroPowerPlugs = elroPowerPlugService.listAll();
 		System.out.println("## camunda: " + elroPowerPlugs.size()
-		    + " plugs found to switch OFF ##");
+		    + " plugs total exist to switch OFF ##");
 
 		// switch off all plugs
 		this.switchOffPlugs(elroPowerPlugs);

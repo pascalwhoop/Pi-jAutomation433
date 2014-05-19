@@ -40,7 +40,7 @@ public class SwitchOffPlugDelegate implements JavaDelegate {
 	@Override
 	public void execute(DelegateExecution execution) throws Exception {
 
-		System.out.println("## camunda: switch off the grouped plugs ##");
+		System.out.println("## camunda: switch OFF the assigned plugs ##");
 
 		String username = (String) execution.getVariable("username");
 
@@ -59,7 +59,7 @@ public class SwitchOffPlugDelegate implements JavaDelegate {
 
 		// switch off users plugs
 		System.out.println("## camunda: " + allPlugs.size()
-		    + " ElroPowerPlugs found to switch OFF ##");
+		    + " assigned ElroPowerPlugs found to switch OFF ##");
 		this.switchOffPlugs(allPlugs);
 	}
 

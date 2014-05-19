@@ -57,10 +57,14 @@ public class ApplyEnteringRulesDelegate implements JavaDelegate {
 			    .filterFacts(workingMemory, HashSet.class);
 
 			// drools return a single object, so only first array element is
-			// processed
-			@SuppressWarnings("unchecked")
-			HashSet<String> specials = (HashSet<String>) result.toArray()[0];
-			execution.setVariable("specials", specials);
+			// processed as a Set
+			if (result.isEmpty()) {
+				execution.setVariable("specials", new HashSet<String>());
+			} else {
+				@SuppressWarnings("unchecked")
+				HashSet<String> specials = (HashSet<String>) result.toArray()[0];
+				execution.setVariable("specials", specials);
+			}
 		} finally {
 			workingMemory.dispose();
 		}

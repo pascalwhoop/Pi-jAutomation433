@@ -21,11 +21,15 @@ public class SetUserStateDelegate implements JavaDelegate {
 		String username = (String) execution.getVariable("username");
 		User user = userService.load(username);
 
-		String state = (String) execution.getVariable("state");
-		user.setState(UserState.valueOf(state.toUpperCase()));
-		userService.save(user);
+		if (user != null) {
+			String state = (String) execution.getVariable("state");
+			user.setState(UserState.valueOf(state.toUpperCase()));
+			userService.save(user);
 
-		System.out.println("## camunda: user state saved ##");
+			System.out.println("## camunda: user state saved ##");
+		} else {
+			System.out.println("## camunda: unknown user ##");
+		}
 
 	}
 
