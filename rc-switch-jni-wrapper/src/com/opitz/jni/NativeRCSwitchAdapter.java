@@ -10,6 +10,7 @@ import java.lang.reflect.Field;
 public class  NativeRCSwitchAdapter {
 
     private static final NativeRCSwitchAdapter instance = new NativeRCSwitchAdapter();
+    private static boolean workingNativeCode = false;
 
     public static NativeRCSwitchAdapter getInstance() {
         return instance;
@@ -31,11 +32,21 @@ public class  NativeRCSwitchAdapter {
             e.printStackTrace();
         }
 
-        System.out.println("+++++++++++"+System.getProperty("java.library.path"));
-        System.loadLibrary("RCSwitchAdapter");
-        System.load("/usr/local/lib/libRCSwitchAdapter.so");
-        System.out.println("+++++++++++" + "loading librarys worked");
+        try{
+            System.out.println("+++++++++++"+System.getProperty("java.library.path"));
+            System.loadLibrary("RCSwitchAdapter");
+            System.load("/usr/local/lib/libRCSwitchAdapter.so");
+            System.out.println("+++++++++++" + "loading librarys worked");
+            workingNativeCode = true;
+        }catch (UnsatisfiedLinkError e){
+            e.printStackTrace();
 
+        }
+
+    }
+
+    public static boolean isWorking(){
+        return workingNativeCode;
     }
 
     // methods to redirect to native layer (C++)
