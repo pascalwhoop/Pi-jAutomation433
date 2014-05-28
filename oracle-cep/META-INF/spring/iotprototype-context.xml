@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:osgi="http://www.springframework.org/schema/osgi"
+	xmlns:wlevs="http://www.bea.com/ns/wlevs/spring"
+	xsi:schemaLocation="
+  http://www.springframework.org/schema/beans
+  http://www.springframework.org/schema/beans/spring-beans.xsd
+  http://www.springframework.org/schema/osgi
+  http://www.springframework.org/schema/osgi/spring-osgi.xsd
+  http://www.bea.com/ns/wlevs/spring
+  http://www.bea.com/ns/wlevs/spring/spring-wlevs-v11_1_1_7.xsd">
+	
+	<!-- The default processor for OCEP 11.0.0.0 is CQL -->
+
+	<wlevs:event-type-repository>
+		
+		<wlevs:event-type type-name="NetworkNodeEvent">
+			<wlevs:class>com.opitz.iot.network.NetworkNode</wlevs:class>
+		</wlevs:event-type>
+		
+		<wlevs:event-type type-name="UserStateEvent">
+			<wlevs:class>com.opitz.iot.network.UserStateEvent</wlevs:class>
+		</wlevs:event-type>
+		
+		<wlevs:event-type type-name="UserMacPair">
+		<wlevs:class>com.opitz.iot.network.UserMacPair</wlevs:class></wlevs:event-type>
+		
+		<wlevs:event-type type-name="UserNodeStateEvent">
+		<wlevs:class>com.opitz.iot.network.UserNodeStateEvent</wlevs:class></wlevs:event-type>
+		
+		
+	</wlevs:event-type-repository>
+	
+	
+	<wlevs:adapter id="NetworkNodeAdapter"
+		class="com.opitz.iot.network.NetworkNodeAdapter"> <!-- The adapter that searches the local network for new nodes -->
+		<wlevs:listener ref="networkNodeInputChannel" />
+	</wlevs:adapter>
+	<wlevs:channel id="networkNodeInputChannel" event-type="NetworkNodeEvent">
+		<wlevs:listener ref="NetworkNodeOutputAdapter" />
+		<wlevs:listener ref="UserDeviceProcessingBean" />
+	</wlevs:channel>
+	
+	<!-- the caches we use for storing both user-mac links from spring as well as user-states and general nodes for pushing to spring-->
+	<wlevs:cache id="userMacPairCache" value-type="UserMacPair"
+		key-properties="macAddress">
+	</wlevs:cache>
+
+	<wlevs:cache id="userStateCache" value-type="UserStateEvent"
+		key-properties="username"></wlevs:cache>
+	
+	<wlevs:cache id="networkNodePushToSpringCache" value-type="NetworkNodeEvent" key-properties="macAddress">
+	</wlevs:cache>
+
+	<wlevs:cache id="nodesBuffer" value-type="NetworkNodeEvent"
+		key-properties="macAddress">
+	</wlevs:cache>
+	
+	
+	<wlevs:caching-system id="iot-caching-system" />
+
+	
+	<wlevs:channel id="userStateOutputChannel" event-type="UserStateEvent">
+		<wlevs:listener ref="UserStateAdapter" />
+	</wlevs:channel>
+	
+	<!-- the adapter that sends the user states to the spring server -->
+	<wlevs:adapter id="UserStateAdapter"
+		class="com.opitz.iot.network.UserStateAdapter">
+		<wlevs:instance-property name="serverURL"
+			value="http://springiotserver:8080/iot-spring-bpm/service/users" />
+	</wlevs:adapter>
+	
+	
+	<wlevs:event-bean id="UserNodeBean"
+		class="com.opitz.iot.network.UserNodeBean">
+		
+		<wlevs:instance-property name="serverURL"
+			value="http://springiotserver:8080/iot-spring-bpm/service/users/devices" />
+		<wlevs:instance-property name="users"
+			ref="userMacPairCache" />
+
+	</wlevs:event-bean>
+
+
+	<wlevs:event-bean id="UserDeviceProcessingBean"
+		class="com.opitz.iot.network.UserDeviceProcessingBean">
+		<wlevs:listener ref="UserDeviceOutputChannel" />
+		<wlevs:instance-property name="userMacPairs"
+			ref="userMacPairCache" />
+			<wlevs:instance-property name="nodesBuffer"
+			ref="nodesBuffer" />
+	</wlevs:event-bean>
+	
+	<wlevs:event-bean id="StateCalculatingBean"
+		class="com.opitz.iot.network.StateCalculatingBean">
+		<wlevs:instance-property name="userStates"
+			ref="userStateCache" />
+		<wlevs:listener ref="userStateOutputChannel" />
+	</wlevs:event-bean>
+
+	<!-- The part that sends all of our found nodes to the spring context to make sure we have a list of all known nodes -->
+	<wlevs:channel id="UserDeviceOutputChannel" event-type="UserNodeStateEvent">
+		<wlevs:listener ref="StateCalculatingBean" />
+	</wlevs:channel>
+
+	<wlevs:adapter id="NetworkNodeOutputAdapter"
+		class="com.opitz.iot.network.NetworkNodeOutputAdapter">
+		<wlevs:listener ref="networkNodePushToSpringCache" />
+		<wlevs:instance-property name="networkNodes"
+			ref="networkNodePushToSpringCache" />
+	<wlevs:instance-property name="serverURL" value="http://springiotserver:8080/iot-spring-bpm/service/networkdevices"></wlevs:instance-property>
+	</wlevs:adapter>
+
+	
+</beans>
+
+
