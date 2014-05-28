@@ -51,10 +51,13 @@ public class StateCalculatingBean implements StreamSink, StreamSource {
 				raiseEvent(new UserStateEvent(userNodeState.getUsername(), UserState.ONLINE));
 				currentKnownUserState.setLastSeen(new Date());
 				currentKnownUserState.setUserState(UserState.ONLINE);
+				System.out.println("User: " + userNodeState.getUsername() + " switched from OFFLINE to ONLINE");
+				
 				break;
 			case MISSING:
 				currentKnownUserState.setLastSeen(new Date());
 				currentKnownUserState.setUserState(UserState.ONLINE);
+				System.out.println("User: " + userNodeState.getUsername() + " switched from MISSING to ONLINE");
 				break;
 
 			}
@@ -64,6 +67,8 @@ public class StateCalculatingBean implements StreamSink, StreamSource {
 			switch (currentKnownUserState.getUserState()) {
 			case ONLINE:
 				currentKnownUserState.setUserState(UserState.MISSING);
+				System.out.println("User: " + userNodeState.getUsername() + " switched from ONLINE to MISSING");
+
 				break;
 			case OFFLINE:
 				//nothing
@@ -73,6 +78,8 @@ public class StateCalculatingBean implements StreamSink, StreamSource {
 				if(currentKnownUserState.getLastSeen().getTime() < (System.currentTimeMillis() - 1000 * 60 * 5)){
 					currentKnownUserState.setUserState(UserState.OFFLINE);
 					raiseEvent(new UserStateEvent(userNodeState.getUsername(), UserState.OFFLINE));
+					System.out.println("User: " + userNodeState.getUsername() + " switched from MISSING to OFFLINE");
+
 				}
 				break;
 

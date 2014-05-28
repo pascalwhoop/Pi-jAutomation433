@@ -24,10 +24,11 @@ public class NetworkNodeAdapter implements RunnableBean, StreamSource {
 
         public NetworkNodeAdapter() {
             super();
-            System.out.println("networknodeadapter instance created");
+            
         }
 
     public void run() {
+    	System.out.println("networknodeadapter started");
         suspended = false;
         while (!isSuspended()) { // Generate messages forever...
 

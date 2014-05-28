@@ -15,6 +15,7 @@ import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Pattern;
 
 /**
  * User: Pascal
@@ -96,15 +97,18 @@ public class DiscoveryService {
 
         Runtime rt = Runtime.getRuntime();
         Process pr = null;
+        
+        //a regex pattern that lets us search the arp output for mac addresses
+        Pattern macPattern = Pattern.compile("([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})");
         try {
-            pr = rt.exec("arp -a");
+            pr = rt.exec("arp -an");
             String arp = InputStreamHelper.getStringFromInputStream(pr.getInputStream());
             HashSet<String> nodes = new HashSet<String>(Arrays.asList(arp.split("\n")));
             Iterator<String> it = nodes.iterator();
             while (it.hasNext()) {
                 String node = it.next();
 
-                if (node.contains("incomplete") || node.contains("ff:ff:ff:ff:ff:ff")) {
+                if (!macPattern.matcher(node).find()) {
                     it.remove();
                 }
             }

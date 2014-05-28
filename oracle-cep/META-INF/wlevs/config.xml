@@ -1,15 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<n1:config xmlns:n1="http://www.bea.com/ns/wlevs/config/application">
-	<!--<processor>
-		<name>UserDeviceProcessor</name>
-		<rules>
-			<query id="UserNodeQuery">  <![CDATA[ select user.username AS username, node.lastSeen AS nodeFound 
-												 from networkNodeInputChannel[now] as node, userNodeCache as user 
-												 where node.macAddress = user.macAddress]]> </query>
-												 
-												  <query id="UserNodeQuery">  <![CDATA[ select user.username AS username, node.lastSeen AS nodeFound 
-												 from networkNodeInputChannel[now] as node LEFT OUTER JOIN userNodeCache as user 
-												 on node.macAddress = user.macAddress]]> </query> 
-		</rules>
-	</processor>-->
-</n1:config>
+<wlevs:config xmlns:wlevs="http://www.bea.com/ns/wlevs/config/application"
+              xmlns:jdbc="http://www.oracle.com/ns/ocep/config/jdbc">
+    
+</wlevs:config>
+
