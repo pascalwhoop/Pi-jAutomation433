@@ -1,15 +1,15 @@
 package com.opitz.iotprototype.services;
 
-import java.io.Serializable;
-import java.util.HashMap;
-import java.util.List;
-
+import com.opitz.iotprototype.daos.UserDAO;
+import com.opitz.iotprototype.entities.User;
+import com.opitz.iotprototype.entities.UserState;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.opitz.iotprototype.daos.UserDAO;
-import com.opitz.iotprototype.entities.User;
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * User: Pascal Date: 27.03.14 Time: 10:56
@@ -24,6 +24,9 @@ public class UserServiceImpl implements UserService {
 	@Transactional
 	@Override
 	public Serializable save(User user) {
+        if(user.getState() == null){
+            user.setState(UserState.OFFLINE);
+        }
 		return userDAO.save(user);
 	}
 

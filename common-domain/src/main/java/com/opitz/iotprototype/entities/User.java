@@ -24,6 +24,11 @@ public class User implements Serializable {
 
 	/* private String passwordHash; */
 
+    public User(){
+        //have user state default. Gets overridden if existent by hibernate.
+        state = UserState.OFFLINE;
+    }
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	public Integer getId() {
