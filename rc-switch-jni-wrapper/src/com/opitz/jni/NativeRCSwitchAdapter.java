@@ -39,8 +39,7 @@ public class  NativeRCSwitchAdapter {
             System.out.println("+++++++++++" + "loading librarys worked");
             workingNativeCode = true;
         }catch (UnsatisfiedLinkError e){
-            e.printStackTrace();
-
+            System.out.println("## " + e.getMessage() + " ##");
         }
 
     }
