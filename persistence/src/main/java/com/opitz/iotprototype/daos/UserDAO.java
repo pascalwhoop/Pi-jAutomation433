@@ -20,5 +20,7 @@ public interface UserDAO {
 
     public User load(String username);
 
+    public User load (Integer id);
+
     public List<User> listAll();
 }

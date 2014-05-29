@@ -1,22 +1,17 @@
 package com.opitz.iotprototype.controller;
 
-import java.util.HashMap;
-import java.util.List;
-
-import org.camunda.bpm.engine.RuntimeService;
-import org.camunda.bpm.engine.runtime.ProcessInstance;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.opitz.iotprototype.entities.User;
 import com.opitz.iotprototype.entities.UserState;
 import com.opitz.iotprototype.services.NetworkNodeService;
 import com.opitz.iotprototype.services.UserService;
+import org.camunda.bpm.engine.RuntimeService;
+import org.camunda.bpm.engine.runtime.ProcessInstance;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * {@link User} controller.
@@ -130,7 +125,7 @@ public class UserController {
 	@RequestMapping(method = RequestMethod.PUT)
 	public User update(@RequestBody User user) {
 		userService.update(user);
-		return userService.load(user.getUsername());
+		return userService.load(user.getId());
 	}
 
 	/**
@@ -148,9 +143,9 @@ public class UserController {
 	 * @return true if deletion successful, otherwise false
 	 */
 	@ResponseBody
-	@RequestMapping(value = "/{username}", method = RequestMethod.DELETE)
-	public boolean delete(@PathVariable("username") String username) {
-		User user = userService.load(username);
+	@RequestMapping(value = "/{userID}", method = RequestMethod.DELETE)
+	public boolean delete(@PathVariable("userID") Integer userID) {
+		User user = userService.load(userID);
 		try {
 			userService.delete(user);
 			return true;

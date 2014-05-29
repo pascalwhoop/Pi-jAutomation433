@@ -67,6 +67,27 @@ public class User implements Serializable {
         this.state = state;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof User){
+            User other = (User) obj;
+            if (this.getId().equals(other.getId())){
+                 return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return this.getId();
+    }
+
+    @Override
+    public String toString() {
+        return new StringBuffer().append("ID: ").append(id).append("\nUsername: ").append(username).toString();
+    }
+
     /*
 	 * public String getPasswordHash() { return passwordHash; }
 	 * 

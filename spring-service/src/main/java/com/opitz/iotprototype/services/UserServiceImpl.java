@@ -1,8 +1,11 @@
 package com.opitz.iotprototype.services;
 
+import com.opitz.iotprototype.daos.DeviceGroupDAO;
 import com.opitz.iotprototype.daos.UserDAO;
+import com.opitz.iotprototype.entities.DeviceGroup;
 import com.opitz.iotprototype.entities.User;
 import com.opitz.iotprototype.entities.UserState;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +23,12 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	UserDAO userDAO;
+
+    @Autowired
+    DeviceGroupDAO deviceGroupDAO;
+
+    @Autowired
+    SessionFactory sessionFactory;
 	
 	@Transactional
 	@Override
@@ -39,6 +48,22 @@ public class UserServiceImpl implements UserService {
 	@Transactional
 	@Override
 	public void delete(User user) {
+        //we need to "detach" the user from all of his things first (e.g. plugGroups)
+        List<DeviceGroup> groups = deviceGroupDAO.listAll();
+        for(DeviceGroup group : groups){                        //iterate over the deviceGroups
+            if(group.getUsersWithAccess().contains(user)){      //iterate over the users with access to this group
+                group.getUsersWithAccess().remove(user);        //remove the user that is to be deleted
+
+                if(group.getUsersWithAccess().size() == 0){     //if he was the last user with access to the group also delete the group
+                    deviceGroupDAO.delete(group.getId());
+                }
+                else{
+                    deviceGroupDAO.save(group);                 //else still save it so it doesnt contain the user anymore
+                }
+            }
+        }
+        sessionFactory.getCurrentSession().flush();
+        sessionFactory.getCurrentSession().clear();
 		userDAO.delete(user);
 	}
 
@@ -47,6 +72,12 @@ public class UserServiceImpl implements UserService {
 	public User load(String username) {
 		return userDAO.load(username);
 	}
+
+    @Transactional
+    @Override
+    public User load(Integer id){
+        return userDAO.load(id);
+    }
 
 	@Transactional
 	@Override

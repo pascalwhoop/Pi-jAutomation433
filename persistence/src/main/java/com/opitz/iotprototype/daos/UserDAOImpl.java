@@ -32,8 +32,7 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public void update(User user) {
-        Session session = sessionFactory.getCurrentSession();
-        session.update(user);
+        sessionFactory.getCurrentSession().update(user);
     }
 
     @Override
@@ -49,6 +48,12 @@ public class UserDAOImpl implements UserDAO {
         query.setParameter("searchString", username);
 
         return (User)query.uniqueResult();
+    }
+
+    @Override
+    public User load (Integer id){
+        Session session = sessionFactory.getCurrentSession();
+        return (User)session.get(User.class, id);
     }
 
     @Override
