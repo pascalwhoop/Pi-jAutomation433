@@ -1,20 +1,16 @@
 package com.opitz.iotprototype.controller;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.opitz.iotprototype.entities.DeviceGroup;
 import com.opitz.iotprototype.entities.ElroPowerPlug;
 import com.opitz.iotprototype.entities.User;
+import com.opitz.iotprototype.messages.DeviceGroupJSONMessage;
 import com.opitz.iotprototype.services.DeviceGroupService;
 import com.opitz.iotprototype.services.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * {@link DeviceGroup} controller.
@@ -45,8 +41,8 @@ public class DeviceGroupController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/label/{label}", method = RequestMethod.GET)
-	public DeviceGroup findByLabel(@PathVariable("label") String label) {
-		return deviceGroupService.findByLabel(label);
+	public DeviceGroupJSONMessage findByLabel(@PathVariable("label") String label) {
+		return deviceGroupService.getDeviceGroupForJSONByLabel(label);
 	}
 
 	/**
@@ -59,15 +55,15 @@ public class DeviceGroupController {
 	 * and {@link DeviceGroup} as {@link RequestBody}
 	 * </pre>
 	 * 
-	 * @param devicegroup
-	 *          new {@link DeviceGroup}
+	 * @param deviceGroupJSONMessage
+	 *          new {@link DeviceGroupJSONMessage}
 	 * 
 	 * @return unique identifier of created {@link DeviceGroup}
 	 */
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.POST)
-	public Integer create(@RequestBody DeviceGroup devicegroup) throws Exception {
-		return (Integer) deviceGroupService.save(devicegroup);
+	public Integer create(@RequestBody DeviceGroupJSONMessage deviceGroupJSONMessage) throws Exception {
+		return (Integer) deviceGroupService.saveWithJSONMessage(deviceGroupJSONMessage);
 	}
 
 	/**
@@ -123,8 +119,8 @@ public class DeviceGroupController {
 	 */
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.GET)
-	public List<DeviceGroup> getAll() {
-		return deviceGroupService.listAll();
+	public List<DeviceGroupJSONMessage> listAllInJSON() {
+		return deviceGroupService.listAllJSON();
 	}
 
 	/**

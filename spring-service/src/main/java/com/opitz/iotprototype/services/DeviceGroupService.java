@@ -1,9 +1,10 @@
 package com.opitz.iotprototype.services;
 
+import com.opitz.iotprototype.entities.DeviceGroup;
+import com.opitz.iotprototype.messages.DeviceGroupJSONMessage;
+
 import java.io.Serializable;
 import java.util.List;
-
-import com.opitz.iotprototype.entities.DeviceGroup;
 
 /**
  * User: Pascal Date: 04.04.14 Time: 15:01
@@ -11,15 +12,23 @@ import com.opitz.iotprototype.entities.DeviceGroup;
 
 public interface DeviceGroupService {
 
-	public Serializable save(DeviceGroup devicegroup);
+	public Serializable save(DeviceGroup deviceGroup);
+
+    public Serializable saveWithJSONMessage(DeviceGroupJSONMessage deviceGroupJSONMessage);
 
 	public void update(DeviceGroup devicegroup);
+
+    public void updateWithJSONMessage(DeviceGroupJSONMessage deviceGroupJSONMessage);
 
 	public void delete(Serializable id);
 
 	public DeviceGroup findByLabel(String label);
 
+    public DeviceGroupJSONMessage getDeviceGroupForJSONByLabel (String label);
+
 	public List<DeviceGroup> listAll();
+
+    public List<DeviceGroupJSONMessage> listAllJSON();
 
 	public DeviceGroup findById(Serializable id);
 
