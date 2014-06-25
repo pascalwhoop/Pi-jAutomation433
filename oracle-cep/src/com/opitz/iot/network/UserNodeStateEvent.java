@@ -2,7 +2,7 @@ package com.opitz.iot.network;
 
 public class UserNodeStateEvent {
 	
-	private String username;
+        private String username;
 	private boolean nodeFound;
 	
 	public UserNodeStateEvent(String username, boolean found){

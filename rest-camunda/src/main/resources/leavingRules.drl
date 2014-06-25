@@ -13,14 +13,14 @@ then
    System.out.println("## drools: special rule to switch OFF chilloutArea for jack ##");
 end
 
-rule "Switch OFF vipArea for pascal"
+rule "Switch OFF Office for PascalsAir"
 when
-   u : User( username == "pascal" )
+   u : User( username == "PascalsAir" )
 then
    HashSet<String> specials = new HashSet<String>();
-   specials.add( "vipArea" );
+   specials.add( "Office" );
    insert( specials );
-   System.out.println( "## drools: special rule to switch OFF vipArea for pascal ##" );
+   System.out.println( "## drools: special rule to switch OFF Office for PascalsAir ##" );
 end
 
 rule "Switch OFF bathroom and meetingroom for daniel"

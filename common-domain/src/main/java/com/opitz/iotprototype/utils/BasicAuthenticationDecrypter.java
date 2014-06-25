@@ -10,7 +10,7 @@ import java.io.IOException;
  * User: Pascal
  * Date: 02.05.13
  * Time: 13:46
- * To change this template use File | Settings | File Templates.
+ *
  */
 @Component
 public class BasicAuthenticationDecrypter {

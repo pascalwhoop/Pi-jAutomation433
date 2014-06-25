@@ -3,24 +3,24 @@ package com.opitz.iotprototype
 import com.opitz.iotprototype.entities.User;
 import java.util.HashSet;
 
-rule "Switch ON chilloutArea for jack"
+rule "Switch ON Wohnzimmer for Pascal"
 when
-   u : User( username == "jack" )
+   u : User( username == "Pascal" )
 then
    HashSet<String> specials = new HashSet<String>();
-   specials.add( "chilloutArea" );
+   specials.add( "Wohnzimmer" );
    insert( specials );
-   System.out.println( "## drools: special rule to switch ON chilloutArea for jack ##" );
+   System.out.println( "## drools: special rule to switch ON Wohnzimmer for Pascal ##" );
 end
 
-rule "Switch ON vipArea for pascal"
+rule "Switch ON Office for PascalsAir"
 when
-   u : User( username == "pascal" )
+   u : User( username == "PascalsAir" )
 then
    HashSet<String> specials = new HashSet<String>();
-   specials.add( "vipArea" );
+   specials.add( "Office" );
    insert( specials );
-   System.out.println( "## drools: special rule to switch ON vipArea for pascal ##" );
+   System.out.println( "## drools: special rule to switch ON Office for PascalsAir ##" );
 end
 
 rule "Switch ON bathroom and meetingroom for daniel"

@@ -38,9 +38,6 @@ public class UserStateAdapter implements Adapter, StreamSink {
 		
 		System.out.println("#### firing event for " + e.getUsername() + " and state " + e.getUserState().toString());
 		sendUserState(e.getUsername(), e.getUserState());
-	 
-
-		
 
 	}
 	
