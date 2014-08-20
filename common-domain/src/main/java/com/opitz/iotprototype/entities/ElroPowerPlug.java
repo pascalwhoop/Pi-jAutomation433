@@ -1,12 +1,6 @@
 package com.opitz.iotprototype.entities;
 
-import java.io.Serializable;
-
-import javax.persistence.Basic;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
  * A ELRO Power Plug has 2 times 5 DIP switches which can either be set to 0 or
@@ -15,39 +9,20 @@ import javax.persistence.Id;
  * don't have more than 1 plug with the same code (unless you explicitly intend
  * to do so)
  * 
- * One could use the System codes to represent seperate rooms but this can also
+ * One could use the System codes to represent separate rooms but this can also
  * be abstracted in the middleware.
  */
 
 @Entity
-public class ElroPowerPlug implements Serializable {
+@PrimaryKeyJoinColumn(name="DEVICE_ID")
+public class ElroPowerPlug extends Device{
 
-	private Integer id;
-	private String label;
-	private String switchID;
+
+	private String switchID; // 5 bit binary code for a group
 	private String groupID; // 5 bit binary code for a certain plug
-	private boolean lastKnownState;
 
 	// Getter Setter
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	@Basic(optional = false)
-	public String getLabel() {
-		return label;
-	}
-
-	public void setLabel(String label) {
-		this.label = label;
-	}
 
 	@Basic(optional = false)
 	public String getSwitchID() {
@@ -65,14 +40,5 @@ public class ElroPowerPlug implements Serializable {
 
 	public void setGroupID(String groupID) {
 		this.groupID = groupID;
-	}
-
-	@Basic(optional = true)
-	public boolean isLastKnownState() {
-		return lastKnownState;
-	}
-
-	public void setLastKnownState(boolean lastKnownState) {
-		this.lastKnownState = lastKnownState;
 	}
 }

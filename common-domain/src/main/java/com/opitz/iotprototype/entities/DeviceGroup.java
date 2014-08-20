@@ -19,8 +19,7 @@ public class DeviceGroup implements Serializable {
 	String label;
 
 	// initialize to avoid null values
-	Set<User> usersWithAccess = new HashSet<>();
-	Set<ElroPowerPlug> elroPowerPlugs = new HashSet<>();
+	Set<Device> devices = new HashSet<>();
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -42,25 +41,16 @@ public class DeviceGroup implements Serializable {
 		this.label = label;
 	}
 
-	@ManyToMany(fetch = FetchType.EAGER)
-	//cause by using hbm save/update in dao	
-	@Cascade(value = CascadeType.SAVE_UPDATE)
-	public Set<User> getUsersWithAccess() {
-		return usersWithAccess;
-	}
 
-	public void setUsersWithAccess(Set<User> usersWithAccess) {
-		this.usersWithAccess = usersWithAccess;
-	}
 
 	@ManyToMany(fetch = FetchType.EAGER)
 	// cause by using hbm save/update in dao	
 	@Cascade(value = CascadeType.SAVE_UPDATE)
-	public Set<ElroPowerPlug> getElroPowerPlugs() {
-		return elroPowerPlugs;
+	public Set<Device> getDevices() {
+		return devices;
 	}
 
-	public void setElroPowerPlugs(Set<ElroPowerPlug> elroPowerPlugs) {
-		this.elroPowerPlugs = elroPowerPlugs;
+	public void setDevices(Set<Device> devices) {
+		this.devices = devices;
 	}
 }

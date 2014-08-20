@@ -12,11 +12,6 @@
 	<name>${project.groupId} - ${project.artifactId}</name>
 
 	<dependencies>
-		<!--Kraken Dependency -->
-		<dependency>
-			<groupId>org.krakenapps</groupId>
-			<artifactId>kraken-pcap</artifactId>
-		</dependency>
 	</dependencies>
 
 	<build>

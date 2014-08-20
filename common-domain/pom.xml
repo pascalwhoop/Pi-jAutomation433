@@ -40,11 +40,19 @@
 			<artifactId>jackson-datatype-hibernate4</artifactId>
 		</dependency>
 
+        <!--Generic DAO's-->
+        <dependency>
+            <groupId>com.googlecode.genericdao</groupId>
+            <artifactId>dao-hibernate</artifactId>
+            <version>1.2.0</version> <!-- use current version -->
+        </dependency>
+
 		<!-- others -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<scope>test</scope>
 		</dependency>
+
 	</dependencies>
 </project>
