@@ -1,8 +1,8 @@
 package com.opitz.iotprototype.delegates;
 
-import java.util.Collection;
-import java.util.HashSet;
-
+import com.opitz.iotprototype.entities.DeviceGroup;
+import com.opitz.iotprototype.entities.User;
+import com.opitz.iotprototype.services.UserService;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.drools.KnowledgeBase;
@@ -15,15 +15,14 @@ import org.drools.io.ResourceFactory;
 import org.drools.runtime.StatefulKnowledgeSession;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.opitz.iotprototype.entities.DeviceGroup;
-import com.opitz.iotprototype.entities.User;
-import com.opitz.iotprototype.services.UserService;
+import java.util.Collection;
+import java.util.HashSet;
 
 /**
  * Load {@link User} by execution variable 'username' and apply all drools rules
  * on it. See {@link ApplyEnteringRulesDelegate#ENTERING_RULES_FILE} for rules.
  * Resulted {@link DeviceGroup}s are set in execution variable 'specials' as
- * {@link Set} for further processing steps.
+ * {@link HashSet} for further processing steps.
  * 
  * @author developer
  * 
@@ -42,8 +41,7 @@ public class ApplyEnteringRulesDelegate implements JavaDelegate {
 		    + ENTERING_RULES_FILE + " ##");
 
 		KnowledgeBase knowledgeBase = createKnowledgeBase();
-		StatefulKnowledgeSession workingMemory = knowledgeBase
-		    .newStatefulKnowledgeSession();
+		StatefulKnowledgeSession workingMemory = knowledgeBase.newStatefulKnowledgeSession();
 
 		String username = (String) execution.getVariable("username");
 		User user = userService.load(username);
@@ -53,8 +51,7 @@ public class ApplyEnteringRulesDelegate implements JavaDelegate {
 
 			workingMemory.fireAllRules();
 
-			Collection<Object> result = this
-			    .filterFacts(workingMemory, HashSet.class);
+			Collection<Object> result = this.filterFacts(workingMemory, HashSet.class);
 
 			// drools return a single object, so only first array element is
 			// processed as a Set

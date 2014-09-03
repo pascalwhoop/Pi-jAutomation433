@@ -1,11 +1,11 @@
 package com.opitz.iot.network;
 
 
-import java.util.HashMap;
-
 import com.bea.wlevs.ede.api.RunnableBean;
 import com.bea.wlevs.ede.api.StreamSender;
 import com.bea.wlevs.ede.api.StreamSource;
+
+import java.util.HashMap;
  
 
 /**
@@ -20,7 +20,7 @@ public class NetworkNodeAdapter implements RunnableBean, StreamSource {
         private static final int SLEEP_MILLIS = 10000;
         private boolean suspended;
         private StreamSender eventSender;
-        private DiscoveryService discoveryService = new DiscoveryService();
+        private DiscoveryService discoveryService = new DiscoveryService(150);
 
         public NetworkNodeAdapter() {
             super();
@@ -32,7 +32,7 @@ public class NetworkNodeAdapter implements RunnableBean, StreamSource {
         suspended = false;
         while (!isSuspended()) { // Generate messages forever...
 
-            discoveryService.pingAllInSubnet(); // maybe later with parameter for different pingTimeout
+            discoveryService.pingAllAddressesInRange(); // maybe later with parameter for different pingTimeout
             HashMap<String, NetworkNode> nodes = discoveryService.getAllDevicesFromArpCache();
             System.out.println("### We found " + nodes.values().size() +" nodes ###");
             for(NetworkNode node : nodes.values()){

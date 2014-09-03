@@ -1,17 +1,10 @@
 package com.opitz.iot.network;
 
 import java.io.IOException;
-import java.net.InetAddress;
+import java.net.InterfaceAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
-import java.net.UnknownHostException;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -25,55 +18,95 @@ import java.util.regex.Pattern;
 
 
 /**
- * This class handles the periodic network scan via ping and arp cache lookup.
- * It provides services that tell you which devices are currently found on the network.
- * It can or is supposed to be able to perform both ping based finding as well as ARP based finding of nodes.
- * However TODO ARP is not yet working
+ * This class handles the periodic network scan via ping and arp cache lookup. It provides services that tell you which
+ * devices are currently found on the network. It can or is supposed to be able to perform both ping based finding as
+ * well as ARP based finding of nodes. However TODO ARP is not yet working
  */
 public class DiscoveryService {
-	
-	private final String subnet;
-	
-	public DiscoveryService(){
-		this.subnet = getOwnSubnet();
-	}
 
-    /**
-     * A method for pinging all devices in a local network. We use an ExecutorService and have it run multiple threads of pinging.
-     * @param responseTimeout
-     */
-    public void pingAllInSubnet(int responseTimeout) {
+
+    private final ArrayList<InterfaceAddress> interfaceAddresses;
+    private final int PING_TIMEOUT;
+
+    public DiscoveryService(int timeout) {
+        this.PING_TIMEOUT = timeout;
+        this.interfaceAddresses = getOwnInterfaceAddresses();
+    }
+
+    public void pingAllAddressesInRange() {
+        for (InterfaceAddress ia : interfaceAddresses) {
+
+            //only certain types of networks
+            /*if (ia.getNetworkPrefixLength() == 16) {
+                pingAllIn16(ia.getAddress().getHostAddress());
+            }*/
+
+            //TODO for now only /24 and treating /16 as such but maybe more later  (performance issues)
+            if (ia.getNetworkPrefixLength() == 24 || ia.getNetworkPrefixLength() == 16) {
+                pingAllIn24(ia.getAddress().getHostAddress());
+            }
+        }
+    }
+
+    private void pingAllIn16(String hostAddress) {
+        long start = System.currentTimeMillis();
+        String[] ipParts = hostAddress.split("\\.");
 
         // create a pool of threads, 20 max jobs will execute in parallel
         ExecutorService threadPool = Executors.newFixedThreadPool(20);
         // submit jobs to be executing by the pool
-        for (int i = 1;i<255;i++) {
-            //build IP to ping
-            final String ipToPing = subnet + "." + i;
-
-            threadPool.submit(new DiscoveryRunnable(ipToPing, responseTimeout));
+        for (int i = 1; i <= 255; i++) {
+            for (int j = 1; j <= 255; j++) {
+                //build IP to ping
+                StringBuffer ipToPing = new StringBuffer();
+                ipToPing.append(ipParts[0]).append(".").append(ipParts[1]).append(".").append(i).append(".").append(j);
+                threadPool.submit(new DiscoveryRunnable(ipToPing.toString(), PING_TIMEOUT));
+            }
         }
-
         // once you've submitted your last job to the service it should be shut down
         threadPool.shutdown();
-
         //see if our threads are all done
         try {
-            if(!threadPool.awaitTermination(5, TimeUnit.SECONDS)){
-            	threadPool.shutdownNow();
-            }
+            if (!threadPool.awaitTermination(500, TimeUnit.SECONDS)) threadPool.shutdownNow();
+
         } catch (InterruptedException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace();
         }
+
+        System.out.println("Pinging in /16 network took " + (System.currentTimeMillis() - start) + "ms -- own IP" + hostAddress);
+
+
     }
 
-    public void pingAllInSubnet(){
-        this.pingAllInSubnet(150);
+    private void pingAllIn24(String hostAddress) {
+        long start = System.currentTimeMillis();
+        String[] ipParts = hostAddress.split("\\.");
+        // create a pool of threads, 20 max jobs will execute in parallel
+        ExecutorService threadPool = Executors.newFixedThreadPool(20);
+        // submit jobs to be executing by the pool
+        for (int i = 1; i <= 255; i++) {
+            //build IP to ping
+            final StringBuffer ipToPing = new StringBuffer();
+            ipToPing.append(ipParts[0]).append(".").append(ipParts[1]).append(".").append(ipParts[2]).append(".").append(i);
+            threadPool.submit(new DiscoveryRunnable(ipToPing.toString(), PING_TIMEOUT));
+        }
+        // once you've submitted your last job to the service it should be shut down
+        threadPool.shutdown();
+        //see if our threads are all done
+        try {
+            if (!threadPool.awaitTermination(500, TimeUnit.SECONDS)) threadPool.shutdownNow();
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("Pinging in /24 network took " + (System.currentTimeMillis() - start) + "ms -- own IP" + hostAddress);
     }
 
     /**
-     * retrieves all nodes from arp cache and puts them in a usable format. usually its just a long string but we need a Map or something to use in
-     * our code.
+     * retrieves all nodes from arp cache and puts them in a usable format. usually its just a long string but we need a
+     * Map or something to use in our code.
+     *
      * @return
      */
     public HashMap<String, NetworkNode> getAllDevicesFromArpCache() {
@@ -93,13 +126,13 @@ public class DiscoveryService {
         return nodes;
     }
 
-    private Set<String> getArpTable() {
+    protected Set<String> getArpTable() {
 
         Runtime rt = Runtime.getRuntime();
         Process pr = null;
-        
+
         //a regex pattern that lets us search the arp output for mac addresses
-        Pattern macPattern = Pattern.compile("([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})");
+        Pattern macPattern = Pattern.compile("([0-9A-Fa-f]{1,2}[:-]){5}([0-9A-Fa-f]{1,2})");
         try {
             pr = rt.exec("arp -an");
             String arp = InputStreamHelper.getStringFromInputStream(pr.getInputStream());
@@ -124,40 +157,31 @@ public class DiscoveryService {
 
     }
 
-    private String getOwnSubnet() {
-        String subnet;
-        String ownIp = null;
-        try {
-        	HashSet<NetworkInterface> ni = getGoodNetworkInterfaces();
-        	for(NetworkInterface nInter : ni){
-        		Enumeration<InetAddress> iNetAddresses = nInter.getInetAddresses();
-        		while(iNetAddresses.hasMoreElements()){
-        			InetAddress address =  iNetAddresses.nextElement();
-        			String ip = address.getHostAddress();
-        			if(ip.contains("192.168") || ip.contains("10.") || ip.contains("172.16.") || ip.contains("172.31.") ){
-        				ownIp = ip;
-        				System.out.println("our ip is: " + ip);
-        			}
-        		}
-        	}
-            /*ownIp = InetAddress.getLocalHost().getHostAddress();
-        } catch (UnknownHostException e) {
-            e.printStackTrace(); */
-        } catch(SocketException se){
-        	se.printStackTrace();
-        }
-        String[] ipParts = ownIp.split("\\.");
-        subnet = ipParts[0] + "." + ipParts[1] + "." + ipParts[2]; //subnet aus eigener IP schließen
-        return subnet;
 
+    protected ArrayList<InterfaceAddress> getOwnInterfaceAddresses() {
+        ArrayList<InterfaceAddress> ownAddresses = new ArrayList<InterfaceAddress>();
+
+        try {
+            HashSet<NetworkInterface> ni = getGoodNetworkInterfaces();
+            for (NetworkInterface nInter : ni) {
+                for (InterfaceAddress address : nInter.getInterfaceAddresses()) {
+                    ownAddresses.add(address);
+                }
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return ownAddresses;
     }
 
+
     /**
-     * currently not working way of getting all nodes via ARP technique. this is layer two and would be more reliable but it is not yet working
-     * TODO fix Arping
+     * currently not working way of getting all nodes via ARP technique. this is layer two and would be more reliable
+     * but it is not yet working TODO fix Arping
      *
      * @return
-     * @throws SocketException 
+     * @throws SocketException
      * @throws IOException
      */
    /* public Map<MacAddress, InetAddress> getAllDevicesWithARPing() throws IOException {
@@ -216,8 +240,7 @@ public class DiscoveryService {
         }
         return addresses;
     }*/
-
-    private HashSet<NetworkInterface> getGoodNetworkInterfaces() throws SocketException {
+    protected HashSet<NetworkInterface> getGoodNetworkInterfaces() throws SocketException {
 
         HashSet<NetworkInterface> returnInterfaces = new HashSet<NetworkInterface>();
 
@@ -241,7 +264,7 @@ public class DiscoveryService {
      *
      * @return
      */
-    private HashSet<NetworkInterface> getOwnInterfaces() {
+    protected HashSet<NetworkInterface> getOwnInterfaces() {
         try {
             return new HashSet<NetworkInterface>(Collections.list(NetworkInterface.getNetworkInterfaces()));
         } catch (SocketException e) {

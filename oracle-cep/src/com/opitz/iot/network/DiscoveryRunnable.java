@@ -12,6 +12,8 @@ public class DiscoveryRunnable implements Runnable {
 
     private final String ip;
     private final int timeout;
+    private Process nativeProcess;
+    private Runtime rt = Runtime.getRuntime();
 
     public DiscoveryRunnable(String ip, int timeout) {
         this.ip = ip;
@@ -35,19 +37,26 @@ public class DiscoveryRunnable implements Runnable {
      * method that performs a ping for the set up ip in this runnable using a given timeout
      */
     public void doPing() {
+        //long start = System.currentTimeMillis();
         try {
             InetAddress.getByName(ip).isReachable(timeout);
-            /*final String execStatement = "ping -c 2 -i 0.2 " + ip;
-
-            Runtime rt = Runtime.getRuntime();
-            Process pr = null;
-            System.out.println("exec: " + execStatement + "with thread ID: " + Thread.currentThread().getId());
-            pr = rt.exec(execStatement);*/
-
-            
+          /*  prepAndExecRuntime();
+            killNativeProcess();*/
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("cant ping IP: " + ip);
         }
 
+        //System.out.println("thread took " + (System.currentTimeMillis() - start));
+
+    }
+
+    public void prepAndExecRuntime() throws IOException{
+        //the Runtime exec version
+        final String execStatement = "ping -c 1 -i 0.008 " + ip;
+        nativeProcess = rt.exec(execStatement);
+    }
+
+    public void killNativeProcess(){
+        nativeProcess.destroy();
     }
 }
