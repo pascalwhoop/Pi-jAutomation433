@@ -1,18 +1,13 @@
 package com.opitz.iotprototype.controller;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.opitz.iotprototype.entities.ElroPowerPlug;
 import com.opitz.iotprototype.services.ElroPowerPlugService;
 import com.opitz.iotprototype.utils.DataNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * This Controller manages all switch interaction, so basically on and off
@@ -28,47 +23,7 @@ public class SwitchController {
 	@Autowired
 	ElroPowerPlugService elroPowerPlugService;
 
-	/**
-	 * Activate a certain {@link ElroPowerPlug}.
-	 * <p>
-	 * 
-	 * <pre>
-	 * <b>REST call example:</b><br/>
-	 * {@code PUT .../switches/activate/<exampleId><br/>
-	 * </pre>
-	 * 
-	 * @param id
-	 *            certain {@link ElroPowerPlug} id
-	 * @return certain {@link ElroPowerPlug} retreived from the DB after
-	 *         updating the lastKnownState
-	 */
-	@ResponseBody
-	@RequestMapping(value = "/activate/{id}", method = RequestMethod.PUT)
-	public ElroPowerPlug activate(@PathVariable("id") Integer id) {
-		elroPowerPlugService.setState(id, true);
-		return elroPowerPlugService.load(id);
-	}
 
-	/**
-	 * Deactivate a certain {@link ElroPowerPlug}.
-	 * <p>
-	 * 
-	 * <pre>
-	 * <b>REST call example:</b><br/>
-	 * {@code PUT .../switches/deactivate/<exampleId><br/>
-	 * </pre>
-	 * 
-	 * @param id
-	 *            certain {@link ElroPowerPlug} id
-	 * @return certain {@link ElroPowerPlug} retreived from the DB after
-	 *         updating the lastKnownState
-	 */
-	@ResponseBody
-	@RequestMapping(value = "/deactivate/{id}", method = RequestMethod.PUT)
-	public ElroPowerPlug deactivate(@PathVariable("id") Integer id) {
-		elroPowerPlugService.setState(id, false);
-		return elroPowerPlugService.load(id);
-	}
 
 	/**
 	 * Retrieve all {@link ElroPowerPlug}s. (TODO available to the requesting
@@ -130,5 +85,27 @@ public class SwitchController {
 			throws DataNotFoundException {
 		elroPowerPlugService.delete(id);
 	}
+
+    /**
+     * Update an {@link ElroPowerPlug}.
+     * <p>
+     *
+     * <pre>
+     * <b>REST call example:</b><br/>
+     * {@code POST .../switches/{id}}<br/>
+     * and {@link ElroPowerPlug} as {@link RequestBody}
+     * </pre>
+     *
+     * @param plug
+     *            {@link ElroPowerPlug}
+     *
+     * @return updated{@link ElroPowerPlug}
+     */
+    @ResponseBody
+    @RequestMapping(value = "/{id}", method = RequestMethod.POST)
+    public ElroPowerPlug update(@RequestBody ElroPowerPlug plug) {
+        Integer id = (Integer) elroPowerPlugService.save(plug);
+        return elroPowerPlugService.load(id);
+    }
 
 }

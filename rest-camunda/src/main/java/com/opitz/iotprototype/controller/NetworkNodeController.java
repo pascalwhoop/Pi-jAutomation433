@@ -1,10 +1,7 @@
 package com.opitz.iotprototype.controller;
 
-import java.util.HashMap;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-
+import com.opitz.iotprototype.entities.NetworkNode;
+import com.opitz.iotprototype.services.NetworkNodeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,8 +9,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.opitz.iotprototype.entities.NetworkNode;
-import com.opitz.iotprototype.services.NetworkNodeService;
+import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * {@link NetworkNode} controller.
@@ -61,8 +59,10 @@ public class NetworkNodeController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/ownip", method = RequestMethod.GET)
-	public String getOwnIp(HttpServletRequest request) {
-		return request.getRemoteAddr();
+	public HashMap<String, String> getOwnIp(HttpServletRequest request) {
+        HashMap<String, String> map = new HashMap<>();
+        map.put("ip", request.getRemoteAddr());
+		return map;
 	}
 
 	/**
@@ -74,9 +74,7 @@ public class NetworkNodeController {
 	 * {@code POST .../networkdevices/addmultiple}
 	 * and list of {@link NetworkNode} as {@link RequestBody}
 	 * </pre>
-	 * 
-	 * @param request
-	 *            {@link HttpServletRequest}
+	 *
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/addmultiple", method = RequestMethod.POST)

@@ -13,8 +13,9 @@ import java.util.List;
  */
 public interface ElroPowerPlugService {
 
-    public ElroPowerPlug setState(ElroPowerPlug elroPowerPlug, boolean state);
-    public ElroPowerPlug setState(Integer id, boolean state);
+    public void setPhysicalState(ElroPowerPlug elroPowerPlug);
+
+    public void setPhysicalStateAndSaveToDB(Integer id, boolean state);
 
     public Serializable save(ElroPowerPlug elroPowerPlug);
 

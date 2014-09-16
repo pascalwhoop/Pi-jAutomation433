@@ -1,8 +1,6 @@
 package com.opitz.iotprototype.controller;
 
 import com.opitz.iotprototype.entities.DeviceGroup;
-import com.opitz.iotprototype.entities.ElroPowerPlug;
-import com.opitz.iotprototype.entities.User;
 import com.opitz.iotprototype.messages.DeviceGroupJSONMessage;
 import com.opitz.iotprototype.services.DeviceGroupService;
 import com.opitz.iotprototype.services.UserService;
@@ -29,7 +27,7 @@ public class DeviceGroupController {
 	UserService userService;
 
 	/**
-	 * Retrieve {@link DeviceGroup} matched by label.
+	 * Retrieve {@link DeviceGroup} matched by id.
 	 * <p>
 	 * 
 	 * <pre>
@@ -40,9 +38,9 @@ public class DeviceGroupController {
 	 * @return {@link List} of {@link DeviceGroup}
 	 */
 	@ResponseBody
-	@RequestMapping(value = "/label/{label}", method = RequestMethod.GET)
-	public DeviceGroupJSONMessage findByLabel(@PathVariable("label") String label) {
-		return deviceGroupService.getDeviceGroupForJSONByLabel(label);
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	public DeviceGroupJSONMessage findByID(@PathVariable("id") Integer id) {
+		return deviceGroupService.getDeviceGroupJSONMessageByID(id);
 	}
 
 	/**
@@ -82,7 +80,7 @@ public class DeviceGroupController {
 	 * @return unique identifier of created {@link DeviceGroup}
 	 */
 	@ResponseBody
-	@RequestMapping(method = RequestMethod.PUT)
+	@RequestMapping(value="/{id}" , method = RequestMethod.POST)
 	public Integer update(@RequestBody DeviceGroup devicegroup) throws Exception {
 		deviceGroupService.update(devicegroup);
 		return devicegroup.getId();
@@ -123,52 +121,5 @@ public class DeviceGroupController {
 		return deviceGroupService.listAllJSON();
 	}
 
-	/**
-	 * Update a certain {@link DeviceGroup} by an existing {@link User}.
-	 * <p>
-	 * 
-	 * <pre>
-	 * <b>REST call example:</b><br/>
-	 * {@code PUT .../groups/<exampleGroupId>/users/<exampleUsername><br/>
-	 * </pre>
-	 * 
-	 * @param groupId
-	 *          unique existing {@link DeviceGroup} id
-	 * @param username
-	 *          unique existing user name
-	 * 
-	 * @return unique identifier of updated {@link DeviceGroup}
-	 */
-	@ResponseBody
-	@RequestMapping(value = "/{id}/users/{username}", method = RequestMethod.PUT)
-	public Integer addUser(@PathVariable("id") Integer groupId,
-	    @PathVariable("username") String username) {
-		deviceGroupService.addUser(groupId, username);
-		return groupId;
-	}
-
-	/**
-	 * Update a certain {@link DeviceGroup} by an existing {@link ElroPowerPlug}.
-	 * <p>
-	 * 
-	 * <pre>
-	 * <b>REST call example:</b><br/>
-	 * {@code PUT .../groups/<exampleGroupId>/switches/<exampleSwitchId><br/>
-	 * </pre>
-	 * 
-	 * @param groupId
-	 *          unique existing {@link DeviceGroup} id
-	 * @param switchId
-	 *          unique existing {@link ElroPowerPlug} id
-	 * 
-	 * @return unique identifier of updated {@link DeviceGroup}
-	 */
-	@ResponseBody
-	@RequestMapping(value = "/{id}/switches/{switchId}", method = RequestMethod.PUT)
-	public Integer addSwitch(@PathVariable("id") Integer groupId,
-	    @PathVariable("switchId") Integer switchId) {
-		deviceGroupService.addPlug(groupId, switchId);
-		return groupId;
-	}
 
 }

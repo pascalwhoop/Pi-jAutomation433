@@ -106,27 +106,29 @@ public class UserController {
 		return userService.load(user.getUsername());
 	}
 
-	/**
-	 * Update a {@link User}.
-	 * <p>
-	 * 
-	 * <pre>
-	 * <b>REST call example:</b><br/>
-	 * {@code PUT .../users<br/>
-	 * and {@link User} as {@link RequestBody}
-	 * </pre>
-	 * 
-	 * @param user
-	 *          {@link User} with new values
-	 * 
-	 * @return updated {@link User}
-	 */
-	@ResponseBody
-	@RequestMapping(method = RequestMethod.PUT)
-	public User update(@RequestBody User user) {
-		userService.update(user);
-		return userService.load(user.getId());
-	}
+    /**
+     * Update a {@link User}.
+     * <p>
+     * Please note that when updating a user via rest, there must be a network
+     * node supplied with the user.
+     * <p>
+     *
+     * <pre>
+     * <b>REST call example:</b><br/>
+     * {@code POST .../users/{id}}<br/>
+     * and {@link User} as {@link RequestBody}
+     * </pre>
+     *
+     * @param user {@link User}
+     *
+     * @return updated {@link User}
+     */
+    @ResponseBody
+    @RequestMapping(value="/{id}" , method = RequestMethod.POST)
+    public User update(@RequestBody User user) {
+        userService.save(user);
+        return userService.load(user.getUsername());
+    }
 
 	/**
 	 * Delete {@link User} by user name.
@@ -205,7 +207,7 @@ public class UserController {
 	 * @return {@link User}
 	 */
 	@ResponseBody
-	@RequestMapping(value = "/username/{username}", method = RequestMethod.GET)
+	@RequestMapping(value = "/{username}", method = RequestMethod.GET)
 	public User findByUsername(@PathVariable("username") String username) {
 		return userService.load(username);
 	}

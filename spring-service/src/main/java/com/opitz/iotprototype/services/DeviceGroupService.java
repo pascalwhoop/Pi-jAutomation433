@@ -24,7 +24,7 @@ public interface DeviceGroupService {
 
 	public DeviceGroup findByLabel(String label);
 
-    public DeviceGroupJSONMessage getDeviceGroupForJSONByLabel (String label);
+    public DeviceGroupJSONMessage getDeviceGroupJSONMessageByID(Integer id);
 
 	public List<DeviceGroup> listAll();
 

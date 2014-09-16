@@ -59,7 +59,7 @@ public class SwitchOnPlugDelegate implements JavaDelegate {
 
 	private void switchOnPlugs(final Set<ElroPowerPlug> elroPowerPlugs) {
 		for (ElroPowerPlug plug : elroPowerPlugs) {
-			elroPowerPlugService.setState(plug.getId(), true);
+			elroPowerPlugService.setPhysicalStateAndSaveToDB(plug.getId(), true);
 		}
 	}
 

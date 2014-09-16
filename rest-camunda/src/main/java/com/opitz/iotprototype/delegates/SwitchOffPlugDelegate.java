@@ -80,7 +80,7 @@ public class SwitchOffPlugDelegate implements JavaDelegate {
 
 	private void switchOffPlugs(final Set<ElroPowerPlug> elroPowerPlugs) {
 		for (ElroPowerPlug plug : elroPowerPlugs) {
-			elroPowerPlugService.setState(plug.getId(), false);
+			elroPowerPlugService.setPhysicalStateAndSaveToDB(plug.getId(), false);
 		}
 	}
 

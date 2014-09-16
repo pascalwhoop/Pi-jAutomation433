@@ -1,17 +1,16 @@
 package com.opitz.iotprototype.delegates;
 
-import java.util.HashSet;
-import java.util.Set;
-
+import com.opitz.iotprototype.entities.DeviceGroup;
+import com.opitz.iotprototype.entities.ElroPowerPlug;
+import com.opitz.iotprototype.services.DeviceGroupService;
+import com.opitz.iotprototype.services.ElroPowerPlugService;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.Expression;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.opitz.iotprototype.entities.DeviceGroup;
-import com.opitz.iotprototype.entities.ElroPowerPlug;
-import com.opitz.iotprototype.services.DeviceGroupService;
-import com.opitz.iotprototype.services.ElroPowerPlugService;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * 
@@ -73,7 +72,7 @@ public class SwitchSpecialPlugDelegate implements JavaDelegate {
 	private void switchPlugs(final Set<ElroPowerPlug> elroPowerPlugs,
 	    final boolean state) {
 		for (ElroPowerPlug plug : elroPowerPlugs) {
-			elroPowerPlugService.setState(plug.getId(), state);
+			elroPowerPlugService.setPhysicalStateAndSaveToDB(plug.getId(), state);
 		}
 	}
 

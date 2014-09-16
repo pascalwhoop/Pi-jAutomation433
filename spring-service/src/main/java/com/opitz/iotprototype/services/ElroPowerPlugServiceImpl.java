@@ -24,44 +24,39 @@ public class ElroPowerPlugServiceImpl implements ElroPowerPlugService {
     @Autowired
     private ElroPowerPlugDAO elroPowerPlugDAO;
 
-    @Transactional
     @Override
-    public ElroPowerPlug setState(ElroPowerPlug elroPowerPlug, boolean state) {
+    public void setPhysicalState(ElroPowerPlug elroPowerPlug) {
 
         NativeRCSwitchAdapter jniAdapter= NativeRCSwitchAdapter.getInstance();
-        System.out.println("++++++++" + state + " setting to Switch: " + elroPowerPlug.getGroupID() + " " + elroPowerPlug.getSwitchID());
+        System.out.println("++++++++" + elroPowerPlug.isLastKnownState() + " setting to Switch: " + elroPowerPlug.getGroupID() + " " + elroPowerPlug.getSwitchID());
 
         if(NativeRCSwitchAdapter.isWorking()){  //if native code is working perform switching, else do nothing but return the current plug from DB
-            if(state){
+            if(elroPowerPlug.isLastKnownState()){
                 jniAdapter.switchOn(elroPowerPlug.getGroupID(), elroPowerPlug.getSwitchID());
             }
             else{
                 jniAdapter.switchOff(elroPowerPlug.getGroupID(), elroPowerPlug.getSwitchID());
             }
-
-            // after sending the Signal, we set the new "last known state"
-            elroPowerPlug.setLastKnownState(state);
-            save(elroPowerPlug);    //saves the current last known state of the plug, of course only if the signal went through
         }
-
-        return elroPowerPlugDAO.load(elroPowerPlug.getId());
-
-    }
-
-    @Transactional
-    @Override
-    public ElroPowerPlug setState(Integer id, boolean state) {
-        return this.setState(elroPowerPlugDAO.load(id), state);
     }
 
     @Transactional
     @Override
     public Serializable save(ElroPowerPlug elroPowerPlug) {
+        setPhysicalState(elroPowerPlug);
+
         if(elroPowerPlug.getId() == null){
             return elroPowerPlugDAO.save(elroPowerPlug);
         }
         elroPowerPlugDAO.update(elroPowerPlug);
         return elroPowerPlug.getId();
+    }
+
+    @Override
+    public void setPhysicalStateAndSaveToDB(Integer id, boolean state) {
+        ElroPowerPlug plug = load(id);
+        plug.setLastKnownState(state);
+        save(plug);
     }
 
     @Transactional

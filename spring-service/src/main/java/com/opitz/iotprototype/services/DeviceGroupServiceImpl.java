@@ -62,7 +62,8 @@ public class DeviceGroupServiceImpl implements DeviceGroupService {
 
     @Override
     public void updateWithJSONMessage(DeviceGroupJSONMessage deviceGroupJSONMessage){
-        deviceGroupDAO.update(getDeviceGroup(deviceGroupJSONMessage));
+        DeviceGroup deviceGroup = getDeviceGroup(deviceGroupJSONMessage);
+        save(deviceGroup);
     }
 
 	@Transactional
@@ -79,16 +80,15 @@ public class DeviceGroupServiceImpl implements DeviceGroupService {
 
     /**
      * Utility function that returns a JSON optimized Message of the group not all containing all objects and their data
-     * @param label
+     * @param id
      * @return
      */
 
     @Override
     @Transactional
-    public DeviceGroupJSONMessage getDeviceGroupForJSONByLabel(String label){
-        DeviceGroup group = findByLabel(label);
+    public DeviceGroupJSONMessage getDeviceGroupJSONMessageByID(Integer id){
+        DeviceGroup group = deviceGroupDAO.load(id);
         return getDeviceGroupJSONMessage(group);
-
     }
 
     @Transactional
