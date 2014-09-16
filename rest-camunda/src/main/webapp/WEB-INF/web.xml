@@ -15,4 +15,15 @@
 		<servlet-name>mvc-dispatcher</servlet-name>
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
+
+    <!--spring servlet filter-->
+    <filter>
+        <filter-name>SimpleCORSFilter</filter-name>
+        <filter-class>com.opitz.iotprototype.filter.SimpleCORSFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>SimpleCORSFilter</filter-name>
+        <servlet-name>mvc-dispatcher</servlet-name>
+    </filter-mapping>
 </web-app>

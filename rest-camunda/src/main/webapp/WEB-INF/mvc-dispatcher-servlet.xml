@@ -26,6 +26,8 @@
 	</mvc:annotation-driven>
 	<mvc:default-servlet-handler />
 
+
+
 	<!--activates @scheduled and @async annotations for scheduling -->
 	<task:annotation-driven />
 
